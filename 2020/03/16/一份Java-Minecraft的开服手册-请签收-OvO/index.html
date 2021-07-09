@@ -1,0 +1,800 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  
+    <meta name="description" content="寒冰的博客">
+  
+  <meta name="author" content="Hanbings">
+  <meta name="keywords" content="hanbings,Hanbings&#39;S blog,寒冰,寒冰的博客">
+  
+  <title>一份Java Minecraft的开服手册 --请签收 OvO ~ Hanbings -- Cat On Cloud</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"hanbings.github.io","root":"/","version":"1.8.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>寒冰的猫窝</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                主页 Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档 Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类 Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签 Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于 About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://s2.ax1x.com/2020/02/17/3CaHpj.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="一份Java Minecraft的开服手册 --请签收 OvO">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-16 18:49" pubdate>
+        2020年3月16日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      55
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">一份Java Minecraft的开服手册 --请签收 OvO</h1>
+            
+            <div class="markdown-body">
+              <p class="note note-danger">本文章内容过于远古 仅供参考</p>
+
+<h2 id="0x00-注意事项"><a href="#0x00-注意事项" class="headerlink" title="0x00 注意事项"></a>0x00 注意事项</h2><p>首先要清楚，根据***Minecraft最终用户许可协议(Minecraft EULA)**<em>中的“</em>try to make money from anything we’ve made*”这一条项，也就是说搭建的Minecraft服务器是不能被用于商业用途</p>
+<blockquote>
+<ul>
+<li>give copies of our Game to anyone else;</li>
+<li>make commercial use of anything we’ve made;</li>
+<li>try to make money from anything we’ve made; or</li>
+<li>let other people get access to anything we’ve made in a way that is unfair or unreasonable;</li>
+</ul>
+</blockquote>
+<h2 id="0x01-服务端和客户端"><a href="#0x01-服务端和客户端" class="headerlink" title="0x01 服务端和客户端"></a>0x01 服务端和客户端</h2><p>MInecraft服务端和Minecraft客户端是什么关系？</p>
+<p>这个其实是一个很简单的概念</p>
+<p>1.<strong>服务端和客户端是两个东西</strong>，并不是一体的，服务端不包含客户端，客户端不包含服务端</p>
+<p>2.服务端顾名思义，是用于服务客户端的</p>
+<p>3.客户端是分发内容，是用于向服务器提出服务请求和响应服务器的动作的，它应该分发给玩家。（其中包括服主和管理员，也就是说服主和管理员只是有服务器的权限，同时<strong>一样也是玩家</strong>，都需要客户端才能进入服务端）这种包通常称之为服务器整合包</p>
+<p>4.综上所述，一个完整的服务器应该由服务端和客户端两个不同的软件来组成，但这<strong>两个软件是可以在同一台主机上运行的</strong></p>
+<p><a target="_blank" rel="noopener" href="https://s2.ax1x.com/2020/02/17/3CNzrV.png"><img src="https://s2.ax1x.com/2020/02/17/3CNzrV.png" srcset="/img/loading.gif" alt="img"></a></p>
+<p><em>仍然不清楚的话可以通过关于页的联系方式找到我嗷</em></p>
+<h2 id="0x02-核心介绍"><a href="#0x02-核心介绍" class="headerlink" title="0x02 核心介绍"></a>0x02 核心介绍</h2><p>***<code>由于Github被墙，图片的加载速度会很慢，所以如果图片看不了的话建议使用梯子来进行加速</code>***</p>
+<p>在Minecraft服务端中，最重要的部分就是服务端核心，<strong>一般来说，服务端核心的选择决定了服务器会有什么的功能</strong>，核心通常有以下几类</p>
+<ul>
+<li>Minecraft原版核心</li>
+<li>Minecraft纯插件核心</li>
+<li>Minecraft纯MOD核心</li>
+<li>Minecraft插件MOD混合核心</li>
+</ul>
+<p>原版核心即纯净版核心，它不能添加任何的插件和MOD</p>
+<p>插件是一些能帮助服主完成管理工作的额外组件，它不需要再客户端安装</p>
+<p>相比于插件，MOD则是需要在服务端和客户端同时添加才能够使用，单独在服务端添加客户端将无法进入服务器，单独在客户端添加，能进入服务器，但MOD将不会起到作用（辅助类另说，如小地图，顶部显示物品，Xray透视等，这里仅指功能类）</p>
+<blockquote>
+<p><em>依据对服务器的功能需求而去选择最合适的核心是对服务器最大的优化（bushi）</em></p>
+</blockquote>
+<h3 id="Minecraft-Server-官服"><a href="#Minecraft-Server-官服" class="headerlink" title="Minecraft_Server(官服)"></a>Minecraft_Server(官服)</h3><p>Minecraft_Server是Mojang自家的核心，是更新最快的，一般在Minecraft发布后的几天就会更新</p>
+<p>它是没有任何的插件和MOD支持，也就是说它并不能安装任何的插件和MOD</p>
+<h3 id="CraftBukkit-水桶服"><a href="#CraftBukkit-水桶服" class="headerlink" title="CraftBukkit (水桶服)"></a>CraftBukkit (水桶服)</h3><p>CraftBukkit是一个使用Bukkit API的Minecraft多人模式服务端</p>
+<p>它能使用CraftBukkit插件</p>
+<p>但它对Spigot插件兼容性比较差</p>
+<p>它只能加CraftBukkit插件和Spigot的部分插件，同样不能添加MOD</p>
+<h3 id="Spigot-水龙头"><a href="#Spigot-水龙头" class="headerlink" title="Spigot(水龙头)"></a>Spigot(水龙头)</h3><p>CraftBukkit 之后的延续版本，兼容CraftBukkit插件，有自己的一套API</p>
+<p>性能比 CraftBukkit 好，自带反作弊功能</p>
+<p>能使用Spigot和Craft的插件，不能添加MOD</p>
+<h3 id="PaperSpigot-纸龙头"><a href="#PaperSpigot-纸龙头" class="headerlink" title="PaperSpigot(纸龙头)"></a>PaperSpigot(纸龙头)</h3><p>也叫Paper端，在Spogot的基础上的再开发版本，支持 CraftBukkit 和 Spigot 插件</p>
+<p>再带TPS优化，在1.9.x之前的版本的核心自带反作弊功能，1.9.x后被移除</p>
+<p>能使用Spigot和Craft的插件，仍然不能添加MOD</p>
+<h3 id="TorchSpigot-火龙头-VefLand"><a href="#TorchSpigot-火龙头-VefLand" class="headerlink" title="TorchSpigot(火龙头)(VefLand)"></a>TorchSpigot(火龙头)(VefLand)</h3><p>Spigot的优化版，可加入Bukkit插件<br>在各方面性能相较于PaperSpigot更加好，稳定性十分强<br>支持<strong>多核心运算</strong>，并内置反作弊<br>（作者在1.9.4版本之后就咕咕咕了）</p>
+<h3 id="SpongeVanilla-海绵香草端"><a href="#SpongeVanilla-海绵香草端" class="headerlink" title="SpongeVanilla(海绵香草端)"></a>SpongeVanilla(海绵香草端)</h3><p>Sponge端的纯净版，支持Sponge插件，不支持ForgeMOD<br>Sponge插件可在客户端中安装（不是很懂什么意思）<br>占用内存少，配置需求低</p>
+<p>*<em>Sponge家族</em></p>
+<h3 id="ServerForge-Minecraft-Server-Forge"><a href="#ServerForge-Minecraft-Server-Forge" class="headerlink" title="ServerForge(Minecraft_Server_Forge)"></a>ServerForge(Minecraft_Server_Forge)</h3><p>是在官服的基础上加入了Forge，稳定性较好<br>无法使用任何的插件，支持ForgeMOD</p>
+<p>因为只能安装ForgeMOD，可自定义功能较少</p>
+<h3 id="SpongeForge-海绵端"><a href="#SpongeForge-海绵端" class="headerlink" title="SpongeForge(海绵端)"></a>SpongeForge(海绵端)</h3><p>原名Sponge，支持Sponge插件，其在高版本的Minecraft中支持ForgeMOD而更名为SpongeForge</p>
+<p>同为早期成熟的核心</p>
+<p>只能加入Sponge插件和ForgeMod，不兼容SpigotAPI和BukkitAPI</p>
+<p>*<em>Sponge家族</em></p>
+<h3 id="Cauldron-MCPC"><a href="#Cauldron-MCPC" class="headerlink" title="Cauldron(MCPC+)"></a>Cauldron(MCPC+)</h3><p>MCPC+为先前的名字，KCauldron为最后几个1.7.10版的名字<br>能加MOD也能加Bukkit插件</p>
+<p>性能上存在较多问题，Bukkit插件并非完全兼容</p>
+<p>*<em>Cauldron家族</em></p>
+<h3 id="Thermos-Cauldron的优化版"><a href="#Thermos-Cauldron的优化版" class="headerlink" title="Thermos(Cauldron的优化版)"></a>Thermos(Cauldron的优化版)</h3><p>是Cauldron的优化版本，比原先的Cauldron更加稳定</p>
+<p>能添加MOD也能添加Bukkit插件</p>
+<p>*<em>Cauldron家族</em></p>
+<h3 id="Uranium-铀端"><a href="#Uranium-铀端" class="headerlink" title="Uranium(铀端)"></a>Uranium(铀端)</h3><p>同Cauldron一家子，支持Bukkit插件和ForgeMOD</p>
+<p>在Cauldron的基础上进行了优化（这里很迷，不知道优化些什么，Google结果极少）</p>
+<p>*<em>Cauldron家族</em></p>
+<h3 id="Contigo-水杯端"><a href="#Contigo-水杯端" class="headerlink" title="Contigo(水杯端)"></a>Contigo(水杯端)</h3><p>还还还是Cauldron一家子，是Thermos的儿子</p>
+<p>进行了大多优化</p>
+<p>服务器滞后优化,更低的延迟,更好的优化</p>
+<p>更好的世界防护 (Forge调用的物品不经过Bukkit插件!)</p>
+<p>Spigot的安全更新有许多KCauldron并没调用</p>
+<p>*<em>Cauldron家族</em></p>
+<h3 id="CatServer-猫端"><a href="#CatServer-猫端" class="headerlink" title="CatServer(猫端)"></a>CatServer(猫端)</h3><p>一代神端，国人开发</p>
+<p>尽管CatServer拥有一段黑历史，<del>但并不可以阻止向高版本进军的服主和玩家</del></p>
+<p>Catserver支持ForgeMOD和Bukkit/Spigot插件</p>
+<p>并且优化了多线程，<del>优化之强，万人膜拜</del></p>
+<p>最重要的是，支持高版本的Minecraft，且仍在更新</p>
+<p>这使得CatServer成为了除了Minecraft_Server_Forge之外，最热门的高版本ForgeMod服务器的选择</p>
+<p>更何况CatServer还支持Bukkit插件</p>
+<table>
+<thead>
+<tr>
+<th>核心</th>
+<th>Bukkit插件</th>
+<th>Spigot插件</th>
+<th>Sponge插件</th>
+<th>MOD</th>
+<th>1.12.2支持</th>
+<th>1.7.10支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Minecraft_Server</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>CraftBukkit</td>
+<td>✅</td>
+<td>✅/❓</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Spigot</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>PaperSpigot</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>TorchSpigot</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>SpongeVanilla</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+<td>❓</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>ServerForge</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>SpongeForge</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Cauldron</td>
+<td>✅</td>
+<td>✅/❓</td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Thermos</td>
+<td>✅</td>
+<td>✅/❓</td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Uranium</td>
+<td>✅</td>
+<td>✅/❓</td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Contigo</td>
+<td>✅</td>
+<td>✅/❓</td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>KCauldron</td>
+<td>✅</td>
+<td>✅/❓</td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>CatServer</td>
+<td>✅</td>
+<td>✅/❓</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<p>*<strong>注：✅表示支持 ❌表示不支持 ✅/❓表示需要依据开发的插件来判读是否支持 ❓表示状态未知*</strong></p>
+<h2 id="0x03-下载核心"><a href="#0x03-下载核心" class="headerlink" title="0x03 下载核心"></a>0x03 下载核心</h2><p>那么呢，根据0x02的表格呢，可以知道无论什么版本都能用Minecraft_Server来开服务器，但是它是没有任何的插件和ForgeMOD的支持</p>
+<p>或许你不需要插件来辅助管理服务器只是需要MOD支持，那么ServerForge就可以满足啦</p>
+<p><del>可是我怎么可能这么容易满足</del></p>
+<p>那么我想要一个又能有插件，又能加ForgeMOD的核心，那么1.7.10和1.12.2都是有得选择哒</p>
+<p>我选择是1.7.10：Thermos / 1.12.2 CatServer这两个端</p>
+<p>这里采用CatServer 1.12.2的开服和目录结构分析</p>
+<blockquote>
+<p>CatServer的官网是：<a target="_blank" rel="noopener" href="http://catserver.moe/">http://catserver.moe</a></p>
+<p>CatServer的Github地址是：<a target="_blank" rel="noopener" href="https://github.com/Luohuayu/CatServer/releases">https://github.com/Luohuayu/CatServer/releases</a></p>
+<p>CatServer的MCBBS帖子是：<a target="_blank" rel="noopener" href="https://www.mcbbs.net/thread-924736-1-1.html">https://www.mcbbs.net/thread-924736-1-1.html</a></p>
+<p>CatServerVailla的Github地址是：<a target="_blank" rel="noopener" href="https://github.com/Luohuayu/CatServerVanilla">https://github.com/Luohuayu/CatServerVanilla</a></p>
+</blockquote>
+<p>通过上面的地址都可以下载到CatServer的核心，请不要到不知名的网站下载哦</p>
+<p>CatServer也有三个分支，分别是Universal Async 和 Vanilla</p>
+<blockquote>
+<p><strong>Universal是稳定版本</strong>，适合单核心性能强的使用</p>
+<p><strong>Async是多核心优化版本</strong>，适合核心多的服务器使用，可能存在兼容性问题</p>
+<p><strong>Vanilla是香草版本</strong>，就是简洁版本，只可以用Bukkit/Spigot插件</p>
+</blockquote>
+<p>我选择稳定版本，有需求的小伙伴们可以自己选择核心和版本</p>
+<blockquote>
+<p>文件：<strong>CatServer-3413a60-universal.jar</strong></p>
+<p>MD5：769F975826B723034CE2CE8D1DB6ABA6</p>
+<p>SHA1：68743363068CF90DE7CF4B4BAA067597BB14B2D3</p>
+<p>CRC32：A209921F</p>
+</blockquote>
+<p><em>这里提醒一下，鉴于Catserver后门事件，请下载核心一定要到 官网 / Github / 授权的镜像站 下载核心</em></p>
+<h2 id="0x04-创建脚本并尝试启动核心"><a href="#0x04-创建脚本并尝试启动核心" class="headerlink" title="0x04 创建脚本并尝试启动核心"></a>0x04 创建脚本并尝试启动核心</h2><p><a target="_blank" rel="noopener" href="https://s2.ax1x.com/2020/02/18/3FKVmQ.png"><img src="https://s2.ax1x.com/2020/02/18/3FKVmQ.png" srcset="/img/loading.gif" alt="img"></a></p>
+<p>这里呢，下载好核心，创建一个<strong>独立的空白的</strong>文件夹（建议这么做）</p>
+<p>把核心放进去，<strong>这个核心所在的位置，这就被称为服务端根目录（就是指创建的空白文件夹）</strong></p>
+<p>接下来，需要一个<strong>启动脚本</strong></p>
+<blockquote>
+<p>借用MCBBS大佬的脚本参数：<a target="_blank" rel="noopener" href="https://www.mcbbs.net/thread-839828-1-1.html">https://www.mcbbs.net/thread-839828-1-1.html</a> （侵删）</p>
+</blockquote>
+<p>在服务端根目录创建一个<strong>start.bat</strong>这样的文件（名字可以随意，以bat结尾）</p>
+<p>32位的版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Xincgc -Xmx最大内存G -Xms最小内存M -Xss512K -XX:+AggressiveOpts -XX:+UseFastAccessorMethods -XX:ParallelGCThreads=4 -XX:+UseConcMarkSweepGC -XX:CMSFullGCsBeforeCompaction=2 -XX:CMSInitiatingOccupancyFraction=70 -XX:-DisableExplicitGC -XX:TargetSurvivorRatio=90 -jar 服务端核心.jar<br></code></pre></td></tr></table></figure>
+
+<p>64位的版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -server -Xincgc -Xmx最大内存M -Xms最小内存M -Xss512K -XX:+AggressiveOpts -XX:+UseCompressedOops -XX:+UseCMSCompactAtFullCollection -XX:+UseFastAccessorMethods -XX:ParallelGCThreads=4 -XX:+UseConcMarkSweepGC -XX:CMSFullGCsBeforeCompaction=2 -XX:CMSInitiatingOccupancyFraction=70 -XX:-DisableExplicitGC -XX:TargetSurvivorRatio=90 -jar 服务端核心.jar<br></code></pre></td></tr></table></figure>
+
+<p>脚本具体内容请到原帖查看（或许以后会专门写一个博客介绍）</p>
+<p>注意：并不是参数越多越好的，如果不认识这些参数建议脚本如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -jar 服务端核心.jar<br></code></pre></td></tr></table></figure>
+
+<p>这里的核心名字是CatServer-3413a60-universal.jar | Java的64位的JDK1.8</p>
+<p>所以我的脚本是：</p>
+<p>java -server -Xincgc -Xmx2048M -Xms32M -Xss512K -XX:+AggressiveOpts -XX:+UseCompressedOops -XX:+UseCMSCompactAtFullCollection -XX:+UseFastAccessorMethods -XX:ParallelGCThreads=4 -XX:+UseConcMarkSweepGC -XX:CMSFullGCsBeforeCompaction=2 -XX:CMSInitiatingOccupancyFraction=70 -XX:-DisableExplicitGC -XX:TargetSurvivorRatio=90 -jar CatServer-3413a60-universal.jar</p>
+<p>于是我在服务端根目录得到两个文件：</p>
+<p><a target="_blank" rel="noopener" href="https://s2.ax1x.com/2020/02/18/3FleTH.png"><img src="https://s2.ax1x.com/2020/02/18/3FleTH.png" srcset="/img/loading.gif" alt="img"></a></p>
+<p>双击start.bat（或者自定义的名字）就会自动从各个源网站下载镜像了，前提是要有网络嗷</p>
+<p><a target="_blank" rel="noopener" href="https://s2.ax1x.com/2020/02/18/3Flahn.png"><img src="https://s2.ax1x.com/2020/02/18/3Flahn.png" srcset="/img/loading.gif" alt="img"></a></p>
+<p>直到看到<strong>Done (xx.xxxS)! For help, type “help” or “?”</strong>就意味着开服成功了</p>
+<p><a target="_blank" rel="noopener" href="https://s2.ax1x.com/2020/02/18/3FlX9I.png"><img src="https://s2.ax1x.com/2020/02/18/3FlX9I.png" srcset="/img/loading.gif" alt="img"></a></p>
+<p>此时，输入stop指令即可停止核心运行</p>
+<h2 id="0x05-服务端根目录结构分析"><a href="#0x05-服务端根目录结构分析" class="headerlink" title="0x05 服务端根目录结构分析"></a>0x05 服务端根目录结构分析</h2><p><a target="_blank" rel="noopener" href="https://s2.ax1x.com/2020/02/18/3F0Jxg.png"><img src="https://s2.ax1x.com/2020/02/18/3F0Jxg.png" srcset="/img/loading.gif" alt="img"></a></p>
+<p>上图是服务端根目录示意图</p>
+<p>主要的目录是</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/config/</span>...<br><span class="hljs-regexp">/libraries/</span>...<br><span class="hljs-regexp">/logs/</span>...<br><span class="hljs-regexp">/mods/</span>...<br><span class="hljs-regexp">/plugins/</span>...<br><span class="hljs-regexp">/world/</span>...<br></code></pre></td></tr></table></figure>
+
+<p>主要的服务端根目录文件</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">banned-ips.json<br>help.yml`<br>`banned-players.json<br>server.properties`<br>`bukkit.yml<br>spigot.yml`<br>`catserver.yml<br>minecraft_server.<span class="hljs-number">1.12</span>.<span class="hljs-number">2</span>.jar<br>start.bat`<br>`CatServer-<span class="hljs-number">3413</span>a60-universal.jar<br>usercache.json`<br>`commands.yml<br>ops.json<br>whitelist.json`<br>`permissions.yml<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="config-…"><a href="#config-…" class="headerlink" title="/config/…"></a>/config/…</h3><p>config的意思是配置，是由Forge创建的文件夹，MOD的配置都在这个目录下</p>
+<h3 id="libraries-…"><a href="#libraries-…" class="headerlink" title="/libraries/…"></a>/libraries/…</h3><p>lib目录通常是依赖库的位置，在CatServer中一样，是CatServer的依赖库的目录</p>
+<h3 id="logs-…"><a href="#logs-…" class="headerlink" title="/logs/…"></a>/logs/…</h3><p>logs是日志文件目录，里面存放了所有的服务器日志文件，包括了DEBUG的日志，INFO的日志等</p>
+<p>似乎CatServer会将日志记录完成后压缩存放并继续记录新的日志日志（忠实的机器嗷）</p>
+<h3 id="mods-…"><a href="#mods-…" class="headerlink" title="/mods/…"></a>/mods/…</h3><p>这个是ForgeMOD的存放目录，如果要添加MOD应该找到适合Forge版本和游戏版本的ForgeMOD然后放到这个目录</p>
+<h3 id="plugins-…"><a href="#plugins-…" class="headerlink" title="/plugins/…"></a>/plugins/…</h3><p>这个是Bukkit/Spigot插件的存放目录</p>
+<h3 id="world-…"><a href="#world-…" class="headerlink" title="/world/…"></a>/world/…</h3><p>无特殊，此处是默认地图存档存放处</p>
+<hr>
+<h3 id="banned-ips-json"><a href="#banned-ips-json" class="headerlink" title="banned-ips.json"></a>banned-ips.json</h3><p>被ban掉ip的玩家的列表，可手动添加，要注意，以<strong>JSON格式</strong>的条目才会生效</p>
+<p>游戏中 /banip 玩家名 可以使玩家被添加这个文件里</p>
+<h3 id="help-yml"><a href="#help-yml" class="headerlink" title="help.yml"></a>help.yml</h3><p>这是自定义玩家在输入/help的自定义文件</p>
+<h3 id="banned-players-json"><a href="#banned-players-json" class="headerlink" title="banned-players.json"></a>banned-players.json</h3><p>和banned-ips.json类似，是ban掉玩家名的列表，一样需要JSON格式</p>
+<p>游戏中 /ban 玩家名 可使玩家被添加这个文件里</p>
+<h3 id="server-properties"><a href="#server-properties" class="headerlink" title="server.properties"></a>server.properties</h3><p>服务器主配置文件，十分重要，后面会详细讲解</p>
+<h3 id="bukkit-yml"><a href="#bukkit-yml" class="headerlink" title="bukkit.yml"></a>bukkit.yml</h3><p>是Bukkit核心的配置文件，由于CatServer也是Bukkit的产物，借用了Bukkit的一些方法，所以会产生bukkit的配置文件，服务器优化参数主要分布在这个文件和spigot.yml</p>
+<h3 id="spigot-yml"><a href="#spigot-yml" class="headerlink" title="spigot.yml"></a>spigot.yml</h3><p>是Spigot核心的配置文件，因为Spigot本身由bukkit发展而来，添加了优化的方法，同样会产生此配置文件</p>
+<h3 id="catserver-yml"><a href="#catserver-yml" class="headerlink" title="catserver.yml"></a>catserver.yml</h3><p>CatServer核心的配置文件，同bukkit.yml，后面会详细讲解</p>
+<h3 id="minecraft-server-1-12-2-jar"><a href="#minecraft-server-1-12-2-jar" class="headerlink" title="minecraft_server.1.12.2.jar"></a>minecraft_server.1.12.2.jar</h3><p>官服的核心，CatServer的构造大致为Minecraft_server.1.12.2 + Catserver对Bukkit支持 + Forge，故官服核心在开服步骤被下载到此处</p>
+<h3 id="start-bat"><a href="#start-bat" class="headerlink" title="start.bat"></a>start.bat</h3><p>启动脚本</p>
+<h3 id="CatServer-3413a60-universal-jar"><a href="#CatServer-3413a60-universal-jar" class="headerlink" title="CatServer-3413a60-universal.jar"></a>CatServer-3413a60-universal.jar</h3><p>CatServer核心</p>
+<h3 id="usercache-json"><a href="#usercache-json" class="headerlink" title="usercache.json"></a>usercache.json</h3><p>储存玩家的ID和UUID（ID是指玩家名UUID是指玩家名所对应的唯一编号）</p>
+<h3 id="commands-yml"><a href="#commands-yml" class="headerlink" title="commands.yml"></a>commands.yml</h3><p>自定义命令配置文件</p>
+<h3 id="ops-json"><a href="#ops-json" class="headerlink" title="ops.json"></a>ops.json</h3><p>服务器最高权限管理员名单配置文件，同为JSON格式</p>
+<p>游戏中使用/op 玩家名 赋予玩家OP权限</p>
+<h3 id="whitelist-json"><a href="#whitelist-json" class="headerlink" title="whitelist.json"></a>whitelist.json</h3><p>玩家白名单，若在主配置文件中开启了白名单，需要将白名单玩家添加到这里才能进入服务器</p>
+<p>相当于相反的黑名单，不在名单上的不允许进入服务器</p>
+<p>在游戏中使用/whitelist查看帮助，通常/whitelist add 玩家名 是添加玩家 /whitelist del 玩家名是移除玩家</p>
+<h3 id="permissions-yml"><a href="#permissions-yml" class="headerlink" title="permissions.yml"></a>permissions.yml</h3><p>权限组配置文件</p>
+<h2 id="0x06-配置文件与服务器优化"><a href="#0x06-配置文件与服务器优化" class="headerlink" title="0x06 配置文件与服务器优化"></a>0x06 配置文件与服务器优化</h2><p>一个好的服务器，必然做了许多优化……..哎呀…….编不下去了qwq</p>
+<h3 id="server-properties-1"><a href="#server-properties-1" class="headerlink" title="server.properties"></a>server.properties</h3><p>参考：<a target="_blank" rel="noopener" href="https://minecraft-zh.gamepedia.com/index.php?title=Server.properties&amp;variant=zh-cn">https://minecraft-zh.gamepedia.com/index.php?title=Server.properties&amp;variant=zh-cn</a></p>
+<p>来源：Minecraft Wiki</p>
+<p>默认配置文件，来自Wiki，#号后为注释 </p>
+<p>注释[B]表示布尔数值 即true或者false</p>
+<p>注释[I]表示一个整数</p>
+<p>注释[S]表示一串字符</p>
+<hr>
+<p>#Minecraft server properties<br>#（文件修改时间戳）<br>broadcast-rcon-to-ops=true #广播RCON信息给OP[B]<br>view-distance=10 #视野距离，个人理解为区块加载范围，性能影响严重，超过10个人建议设置为6[I]<br>max-build-height=256 #建筑的最大高度，通常为256格，不建议调小，65534可能是其最大值[I]<br>server-ip= #服务器ip，请留空，将自动配置[S]<br>level-seed= #地图种子，等同单人存档种子[S]<br>rcon.port=25575 #RCON是一种远程连接协议，可以忽略[I]<br>gamemode=survival #游戏模式1.12后改为字符串来代替原有的数字，请注意[S]<br>server-port=25565 #游戏端口，根据个人设置[I]<br>allow-nether=true #允许穿过地狱门抵达地狱，如果不需要地狱的话可以设置为false[B]<br>enable-command-block=false #开启命令方块 若为false则无法使用命令方块[B]<br>enable-rcon=false #开启RCON功能，建议false，RCON风险极大[B]<br>enable-query=false #允许使用GameSpy4协议的服务器监听器，详细请前往Wiki查看[B]<br>op-permission-level=4 #OP等级，设置为4为控制台同等权限，建议为2[I]<br>prevent-proxy-connections=false #检测异地登陆并阻止进入游戏，对开放盗版服务器无效，原理是通过Mojang的服务器来查询IP[B]<br>generator-settings= #生成器设置，留空默认为原版生成器[S]<br>resource-pack= #服务器使用资源包，此处填写资源包在服务器内的目录[S]<br>level-name=world #地图名称[S]<br>rcon.password= #RCON密码，若不开启RCON功能可无视[S]<br>player-idle-timeout=0 #挂机检测，0为关闭，单位为分钟[I]<br>motd=A Minecraft Server #服务器标题，最多为59字节（貌似新版本会换行了）注意的是要求是unicode格式文字，否则将会出错[S]<br>query.port=25565 #Query端口，如果不开Query的话可忽略[I]<br>force-gamemode=false #强制游戏模式[B]<br>hardcore=false #极限生存，死亡后会变观察者模式[B]<br>white-list=false #白名单，true为开启[B]<br>broadcast-console-to-ops=true #广播控制台信息给OP[B]<br>pvp=true #玩家间攻击，true为开启[B]<br>spawn-npcs=true #生成村民，true为生成[B]<br>generate-structures=true #生成建筑，true为生成[B]<br>spawn-animals=true #生成动物，true为生成[B]<br>snooper-enabled=true #允许采集服务器信息true为允许[B]<br>difficulty=easy #强制难度选项[S]<br>function-permission-level=2 #函数默认权限等级，建议不要动[I]<br>network-compression-threshold=256 #数据包压缩大小，建议保留[I]<br>level-type=default #种子类型，default为默认[S]<br>spawn-monsters=true #生成怪物，即和平选项，true为生成[B]<br>max-tick-time=60000 #服务器最大崩溃等待响应时间，60000代表1分钟，超时后会自动结束服务器[I]<br>enforce-whitelist=false #强制白名单，为false玩家同样能进入游戏，但会在一段时间后被踢出，直到加入白名单，前提是白名单开启[B]<br>use-native-transport=true #针对Linux的优化，如果系统是Linux建议开启[B]<br>max-players=20 #最大玩家数量[I]<br>resource-pack-sha1= #资源包验证，使用sha1，此处填资源包的sha1[S]<br>spawn-protection=16 #出生点保护，设置为0则关闭[I]<br>online-mode=true #在线模式，就是正版模式[B]<br>allow-flight=false #允许飞行，false当然是不允许啦[B]<br>max-world-size=29999984 #世界生成上限，若到达则会出现空气墙[I]</p>
+<hr>
+<p><em><strong>以上是server.properties配置，如果有不懂的话欢迎QQ或者下方评论区骚扰嗷</strong></em></p>
+<h3 id="bukkit-yml-1"><a href="#bukkit-yml-1" class="headerlink" title="bukkit.yml"></a>bukkit.yml</h3><p>bukkit.yml是Bukkit的配置文件，不是每一种核心都会生成</p>
+<p>参考MCBBS大神 <a target="_blank" rel="noopener" href="https://www.mcbbs.net/thread-478126-1-1.html">https://www.mcbbs.net/thread-478126-1-1.html</a></p>
+<p>（侵删）</p>
+<p>主要优化参数：</p>
+<p>spawn-limits 即生物生成</p>
+<p>超过10个人的服务器建议以下参数</p>
+<p>monsters：50 #怪物</p>
+<p>animals：10 #动物</p>
+<p>water-animals：3 #水生物</p>
+<p>ambient：1 #蝙蝠</p>
+<p>注意这里的生成数量不是指全服的，只是一个人对应的生物数量，假设monsters为50，那么十个人在线则为最多500个怪物生成</p>
+<p><strong>另外加Spigot.yml的一些优化参数解析：</strong></p>
+<p>不单独写Spigot的原因是这个配置文件会极大的影响玩家体验，建议不要修改</p>
+<p>random-light-updates: #随机光照更新，建议改为false，效果未知</p>
+<p>max-tnt-per-tick：#最多每秒用多少kick去运算tnt防止卡服，警告，此选项会给使用TNT的红石科技带来极大影响，建议为20</p>
+<p>tick-per：#控制漏斗运算，设置它将会给红石科技意想不到的效果，建议<strong>不要更改</strong></p>
+<h3 id="0x07-常常常见问题-F-amp-Q……QAQ怎么还有"><a href="#0x07-常常常见问题-F-amp-Q……QAQ怎么还有" class="headerlink" title="0x07 常常常见问题 F&amp;Q……QAQ怎么还有"></a>0x07 常常常见问题 F&amp;Q……QAQ怎么还有</h3><h5 id="问题：怎么给玩家OP"><a href="#问题：怎么给玩家OP" class="headerlink" title="问题：怎么给玩家OP"></a>问题：怎么给玩家OP</h5><p>应该在控制台（后台）输入op 玩家名</p>
+<h5 id="问题：该如何下载插件"><a href="#问题：该如何下载插件" class="headerlink" title="问题：该如何下载插件"></a>问题：该如何下载插件</h5><p>mcbbs.com 有你更精彩</p>
+<h5 id="问题：如何下载MOD"><a href="#问题：如何下载MOD" class="headerlink" title="问题：如何下载MOD"></a>问题：如何下载MOD</h5><p>国外下载站：CurseForge</p>
+<p>国内下载站：MC百科</p>
+<h5 id="问题：为什么进入服务器就在游戏提示无效的游戏会话"><a href="#问题：为什么进入服务器就在游戏提示无效的游戏会话" class="headerlink" title="问题：为什么进入服务器就在游戏提示无效的游戏会话"></a>问题：为什么进入服务器就在游戏提示无效的游戏会话</h5><p>qwq 哼！你没买正版，快去把正版认证关了吧</p>
+<h5 id="问题：为什么服务器后台一直说Can‘t-not-keep-！"><a href="#问题：为什么服务器后台一直说Can‘t-not-keep-！" class="headerlink" title="问题：为什么服务器后台一直说Can‘t not keep ！"></a>问题：为什么服务器后台一直说Can‘t not keep ！</h5><p>表示CPU性能不是很好，一个动作执行了xxxxxms都没执行完，注意，这里的tick数，如果超过60000是会引发崩溃的，轻则大量玩家被t出服务器，重则直接崩溃，若出现，游戏内也没有明显卡顿建议把max-tick-time设置得大一点</p>
+<h5 id="问题：白名单开启后即使是在玩家被添加到白名单也会出现不能进入游戏的情况"><a href="#问题：白名单开启后即使是在玩家被添加到白名单也会出现不能进入游戏的情况" class="headerlink" title="问题：白名单开启后即使是在玩家被添加到白名单也会出现不能进入游戏的情况"></a>问题：白名单开启后即使是在玩家被添加到白名单也会出现不能进入游戏的情况</h5><p>哼！看看看，不买正版才会这样的！</p>
+<p>解决办法：</p>
+<p>enforce-whitelist设置为false，等待玩家第一次进入游戏时给予白名单</p>
+<p>或</p>
+<p>使用白名单插件</p>
+<h5 id="问题：为什么我一直无法启动服务器，bat的窗口总是一闪而过"><a href="#问题：为什么我一直无法启动服务器，bat的窗口总是一闪而过" class="headerlink" title="问题：为什么我一直无法启动服务器，bat的窗口总是一闪而过"></a>问题：为什么我一直无法启动服务器，bat的窗口总是一闪而过</h5><p>请检查EULA.txt文件，是否false改为了true 同意EULA协议</p>
+<h5 id="问题：为什么EULA也更改仍然不能启动"><a href="#问题：为什么EULA也更改仍然不能启动" class="headerlink" title="问题：为什么EULA也更改仍然不能启动"></a>问题：为什么EULA也更改仍然不能启动</h5><p>qwq 这…….检查下JAVA和启动脚本有没有配置好或者填写好？</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Minecraft/">Minecraft</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Minecraft/">Minecraft</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/17/%E7%A5%9E%E5%A5%87%E7%9A%84Bukkit%E7%AC%94%E8%AE%B0-%E6%8F%92%E4%BB%B6%E5%AF%B9%E5%85%B6%E4%BB%96%E6%8F%92%E4%BB%B6%E7%9A%84%E8%BD%AF%E4%BE%9D%E8%B5%96/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">神奇的Bukkit笔记 -- 插件对其他插件的软依赖</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/18/Ubuntu-16-04-%E5%9B%BD%E5%86%85%E6%BA%90/">
+                        <span class="hidden-mobile">Ubuntu 16.04 国内源</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://icp.gov.moe" target="_blank">萌ICP备 </a><a href="https://icp.gov.moe/?keyword=20212512" target="_blank"> 20212512号</a><p> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

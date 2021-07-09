@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  
+    <meta name="description" content="寒冰的博客">
+  
+  <meta name="author" content="Hanbings">
+  <meta name="keywords" content="hanbings,Hanbings&#39;S blog,寒冰,寒冰的博客">
+  
+  <title>用正经和不正经的方法来搞定MDK ~ Hanbings -- Cat On Cloud</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"hanbings.github.io","root":"/","version":"1.8.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>寒冰的猫窝</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                主页 Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档 Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类 Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签 Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于 About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://s2.ax1x.com/2020/01/11/l55YnK.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="用正经和不正经的方法来搞定MDK">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-01-11 21:53" pubdate>
+        2020年1月11日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">用正经和不正经的方法来搞定MDK</h1>
+            
+            <div class="markdown-body">
+              <h1 id="用正经和不正经的方法来搞定MDK"><a href="#用正经和不正经的方法来搞定MDK" class="headerlink" title="用正经和不正经的方法来搞定MDK"></a>用正经和不正经的方法来搞定MDK</h1><p class="note note-danger">本文章内容过于远古 仅供参考</p>
+
+<blockquote>
+<p>MDK是Minecraft Development Kit，Minecraft开发组件的缩写 </p>
+</blockquote>
+<p>写在前面：Forge的网站以及ForgeMDK的文件服务器均在国外，国内的网络情况下载……你懂的，大多数人都是在下载MDK这步被Forge劝退了，所以本文提供了两个方法来部署MDK，即适用于有梯子或者网络情况过得去的正经方案和直接使用已经下载下来的MDK开发包的不正经方法</p>
+<h2 id="1-MDK部署的正经方法"><a href="#1-MDK部署的正经方法" class="headerlink" title="1.MDK部署的正经方法"></a>1.MDK部署的正经方法</h2><blockquote>
+<p>注意：这个部署MDK方法适用于网速稳定且速度较快的地方</p>
+</blockquote>
+<h3 id="1-到Forge上下载MDK包"><a href="#1-到Forge上下载MDK包" class="headerlink" title="1.到Forge上下载MDK包"></a>1.到Forge上下载MDK包</h3><p>点击这里：<a target="_blank" rel="noopener" href="https://files.minecraftforge.net/">Forge</a></p>
+<p>如果你在这里已经进不去Forge了，那么建议看离线安装包的方法去</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M0aDds.jpg" srcset="/img/loading.gif"></p>
+<blockquote>
+<p>使用1.12.2的MDK来开发MOD</p>
+</blockquote>
+<p>下载好后就会有</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M0aWyF.jpg" srcset="/img/loading.gif"></p>
+<h3 id="2-开始部署"><a href="#2-开始部署" class="headerlink" title="2.开始部署"></a>2.开始部署</h3><p>打开文件管理器，在记得住的位置创建一个新的文件夹，名字随意，请确保记住路径</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M0dk6S.jpg" srcset="/img/loading.gif"></p>
+<p>把压缩包解压到这个文件夹里</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M0dQpV.jpg" srcset="/img/loading.gif"></p>
+<blockquote>
+<p>可能文件名字不太相同，但大致是forge-1.12.2-14.xx.x.xxxx-mdk，不用太在意，只要版本号是1.12.2就行</p>
+</blockquote>
+<p>按住键盘上的Shift不要松开，对着文件夹空白处按下鼠标右键，选择右键菜单上的“在此处打开PowerShell”</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M0wF41.jpg" srcset="/img/loading.gif"></p>
+<p>然后输入两条指令</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript">.<span class="hljs-string">\gradlew</span> SetupDecompWorkspace<br></code></pre></td></tr></table></figure>
+
+<p>接着</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript">.<span class="hljs-string">\gradlew</span> eclipse<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：此处如果安装了其他的IDE应该填写IDE名字，如IDEA应输入.\gradlew idea</p>
+</blockquote>
+<blockquote>
+<p>对于可能出现的错误，请拉到底部FAQ查看帮助</p>
+</blockquote>
+<p>输入每条指令之后能看到：Build Successful说明你成功了，恭喜啦，快去休息下吧</p>
+<h2 id="2-MDK部署的离线安装包方法"><a href="#2-MDK部署的离线安装包方法" class="headerlink" title="2.MDK部署的离线安装包方法"></a>2.MDK部署的离线安装包方法</h2><p>首先你需要下载MDK离线包</p>
+<p>我使用的离线包版本</p>
+<p>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1dOgYFCuIuy8uktMRx-iDgQ">https://pan.baidu.com/s/1dOgYFCuIuy8uktMRx-iDgQ</a> 提取码: gq67 </p>
+<p>全部的离线包版本</p>
+<p>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1-87qGuuF3XIuvveohatWhA">https://pan.baidu.com/s/1-87qGuuF3XIuvveohatWhA</a> 提取码: 9ned </p>
+<blockquote>
+<p>注意：请选择1.12.2的版本</p>
+</blockquote>
+<p><del>不知道百度网盘和国外服务器比起来谁更快QAQ</del></p>
+<p><del>不过至少百度网盘能按暂停</del></p>
+<p>这个离线包来自于： <a target="_blank" rel="noopener" href="https://www.mcbbs.net/forum.php?mod=viewthread&amp;tid=790472">https://www.mcbbs.net/forum.php?mod=viewthread&amp;tid=790472</a> </p>
+<p>MCBBS社区，感谢大佬贡献，如果有版权问题请联系我</p>
+<p>下载离线包会得到一个压缩包（引用自上链接原话）</p>
+<blockquote>
+<p> 将.gradle文件夹解压出来,这个文件夹包含了你所需要开发的版本的所有jar文件的支持,解压出来后放入位置<strong>C -&gt; 用户(有的电脑是Users) -&gt; 你的电脑用户名(以电脑用户名为命名的文件夹)</strong>,将.gradle文件放到这个位置,如果存在可以删除(如果你有配置好其他的环境的话请谨慎操作). </p>
+</blockquote>
+<p>然后另外一个forge-1.12.2-14.xx.x.xxxx-mdk的文件按照正经的部署方法一样，放到一个记得住的文件夹就行</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M0dk6S.jpg" srcset="/img/loading.gif"></p>
+<p>按住键盘上的Shift不要松开，对着文件夹空白处按下鼠标右键，选择右键菜单上的“在此处打开PowerShell”</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M0wF41.jpg" srcset="/img/loading.gif"></p>
+<p>然后输入两条指令</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript">.<span class="hljs-string">\gradlew</span> SetupDecompWordspace<br></code></pre></td></tr></table></figure>
+
+<p>接着</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript">.<span class="hljs-string">\gradlew</span> eclipse<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：此处如果安装了其他的IDE应该填写IDE名字，如IDEA应输入.\gradlew idea</p>
+</blockquote>
+<blockquote>
+<p>对于可能出现的错误，请拉到底部FAQ查看帮助</p>
+</blockquote>
+<p>同样，出现Build Successful证明你成功了</p>
+<h2 id="3-FAQ：疑难杂症解决"><a href="#3-FAQ：疑难杂症解决" class="headerlink" title="3.FAQ：疑难杂症解决"></a>3.FAQ：疑难杂症解决</h2><h5 id="1-JVM各种报错"><a href="#1-JVM各种报错" class="headerlink" title="1.JVM各种报错"></a>1.JVM各种报错</h5><p>解决办法：检查Java环境变量设置</p>
+<h5 id="2-java环境设置正确的情况下JVM还是各种报错"><a href="#2-java环境设置正确的情况下JVM还是各种报错" class="headerlink" title="2.java环境设置正确的情况下JVM还是各种报错"></a>2.java环境设置正确的情况下JVM还是各种报错</h5><p>解决办法：调整MDK内配置文件创建JVM虚拟机内存大小</p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M00cWt.jpg" srcset="/img/loading.gif"></p>
+<p>右键使用记事本打开这个文件</p>
+<p>如果双击能打开当然不用记事本啦 (&gt;▽&lt;) </p>
+<p><img src="https://s2.ax1x.com/2019/11/16/M00HWq.jpg" srcset="/img/loading.gif"></p>
+<p>修改此处-Xmx3G为-Xmx1G或者-Xmx1024MB</p>
+<h5 id="3-输入一条指令后四五个小时也还没有完成或者根本一动不动"><a href="#3-输入一条指令后四五个小时也还没有完成或者根本一动不动" class="headerlink" title="3.输入一条指令后四五个小时也还没有完成或者根本一动不动"></a>3.输入一条指令后四五个小时也还没有完成或者根本一动不动</h5><p>解决方案：看离线安装包办法</p>
+<p>END.</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Minecraft/">Minecraft</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Forge/">Forge</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/01/11/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85Eclipse/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">下载并安装Eclipse</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/11/Java%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/">
+                        <span class="hidden-mobile">Java环境配置教程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://icp.gov.moe" target="_blank">萌ICP备 </a><a href="https://icp.gov.moe/?keyword=20212512" target="_blank"> 20212512号</a><p> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
