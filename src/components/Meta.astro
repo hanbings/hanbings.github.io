@@ -1,0 +1,11 @@
+---
+const { prefix = '🐱 寒冰是喵喵', title } = Astro.props
+const strings = `${title} - ${prefix}`
+---
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{strings}</title>
+</head>

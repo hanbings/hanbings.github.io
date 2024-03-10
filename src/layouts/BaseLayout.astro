@@ -1,0 +1,23 @@
+---
+import Header from "../components/Header.astro"
+import Footer from "../components/Footer.astro"
+import Navigation from "../components/Navigation.astro"
+import Meta from "../components/Meta.astro"
+
+const { title } = Astro.props
+---
+<div class="h-full w-full">
+    <Meta title={title}/>
+    <div class="m-16 mb-2">
+        <Header/>
+    </div>
+    <div class="m-2">
+        <Navigation/>
+    </div>
+    <div class="m-6">
+        <slot />
+    </div>
+    <div class="m-6">
+        <Footer/>
+    </div>
+</div>

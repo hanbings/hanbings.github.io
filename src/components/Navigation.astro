@@ -1,0 +1,17 @@
+---
+const pages = [
+    { page: '主页', to: '/' },
+    { page: '文章', to: '/posts'},
+    { page: '关于', to: '/about'},
+    { page: '朋友们', to: '/friends'},
+]
+---
+<div class="flex flex-row justify-center items-center gap-2">
+    {
+        pages.map(page =>
+                <a class="border-b-2 hover:border-green-500" href={page.to}>
+                    {page.page}
+                </a>
+        )
+    }
+</div>
