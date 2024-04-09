@@ -1,45 +1,11 @@
 ---
-import pkg from 'nodejieba';
-const {cut, load} = pkg;
 import BaseLayout from "../layouts/BaseLayout.astro"
 import Content from "../content/specs/home.md"
 import Markdown from "../components/Markdown.astro"
 import {convertDateFormat} from "../utils/date"
 import {getCollection} from "astro:content"
 
-function filterNonChineseCharacters(strArray: string[]): string[] {
-    const chineseRegex = /[\u4e00-\u9fa5]/g;
-    return strArray.map((str) => {
-        const chineseCharacters = str.match(chineseRegex);
-        return chineseCharacters ? chineseCharacters.join("") : "";
-    });
-}
-
-function countWordOccurrences(allWord: string[]): string[][] {
-    const wordCountMap = new Map();
-
-    // 统计每个字符串的出现次数
-    allWord.forEach((word) => {
-        if (wordCountMap.has(word)) {
-            wordCountMap.set(word, wordCountMap.get(word) + 1);
-        } else {
-            wordCountMap.set(word, 1);
-        }
-    });
-
-    // 将结果转换为二维数组形式
-    return Array.from(wordCountMap, ([word, count]) => [word, count]);
-}
-
 const allPosts = await getCollection('posts')
-// 收集文字
-const allText = allPosts.map(post => post.body)
-
-// 加载分词器
-load()
-
-const allWord = cut(filterNonChineseCharacters(allText).toString())
-const allCount = countWordOccurrences(allWord)
 ---
 <BaseLayout title="主页">
     <Markdown>
@@ -61,35 +27,6 @@ const allCount = countWordOccurrences(allWord)
                     )
                 }
             </div>
-            <p class="text-xl font-bold mt-6">词云</p>
-            <div class="flex flex-col m-2 gap-0">
-                <p id="word-count-texts" class="hidden">{allCount.toString()}</p>
-                <canvas id="chart"/>
-            </div>
         </div>
     </div>
 </BaseLayout>
-<script>
-    // @ts-ignore
-    import WordCloud from 'wordcloud'
-
-    // 分割字符串成为单个项
-    // @ts-ignore
-    const items = document.getElementById('word-count-texts').innerHTML.split(',');
-
-    // 将项分组成字符和数字的二维数组
-    const result = []
-    for (let i = 0; i < items.length; i += 2) {
-        const pair = [items[i], parseInt(items[i + 1])]
-        result.push(pair);
-    }
-
-    WordCloud(
-        document.getElementById('chart'),
-        {
-            list: result,
-            color: '#000',
-            fontFamily: 'source-han-serif-simplified-chinese'
-        }
-    )
-</script>
