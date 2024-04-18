@@ -1,20 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
 import Content from "../content/specs/posts.md"
-import Markdown from "../components/Markdown.astro"
 import {getCollection} from "astro:content"
 import {convertDateFormat} from "../utils/date"
+import "../styles/github-markdown.css"
 
 const allPosts = await getCollection('posts')
 // @ts-ignore
 const allTags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
 ---
 <BaseLayout title="文章">
-    <Markdown>
+    <div class="markdown-body">
         <Content/>
-    </Markdown>
+    </div>
     <div class="flex justify-center items-center">
-        <div class="flex flex-col w-[600px]">
+        <div class="flex flex-col w-[720px]">
             <p class="text-xl font-bold">标签</p>
             <div class="flex flex-row m-2 gap-2">
                 {

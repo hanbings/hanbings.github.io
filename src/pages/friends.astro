@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
 import Content from "../content/specs/friends.md"
-import Markdown from "../components/Markdown.astro"
+import "../styles/github-markdown.css"
 
 const friends = [
     {
@@ -38,11 +38,11 @@ const friends = [
 ]
 ---
 <BaseLayout title="朋友们">
-    <Markdown>
+    <div class="markdown-body">
         <Content/>
-    </Markdown>
+    </div>
     <div class="flex justify-center items-center">
-        <div class="flex flex-wrap justify-center items-center gap-2 m-6 max-w-[600px]">
+        <div class="flex flex-wrap justify-center items-center gap-2 m-6 max-w-[720px]">
             {
                 friends.map(friend =>
                         <div class="flex items-center gap-2 h-24 p-3 rounded-xl w-[260px] hover:shadow-2xl">

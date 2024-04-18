@@ -1,18 +1,18 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
 import Content from "../content/specs/home.md"
-import Markdown from "../components/Markdown.astro"
 import {convertDateFormat} from "../utils/date"
 import {getCollection} from "astro:content"
+import "../styles/github-markdown.css"
 
 const allPosts = await getCollection('posts')
 ---
 <BaseLayout title="主页">
-    <Markdown>
+    <div class="markdown-body">
         <Content/>
-    </Markdown>
+    </div>
     <div class="flex justify-center items-center">
-        <div class="flex flex-col w-[600px]">
+        <div class="flex flex-col w-[720px]">
             <p class="text-xl font-bold mt-6">近期文章</p>
             <div class="flex flex-col m-2 gap-0">
                 {
