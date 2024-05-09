@@ -6,9 +6,11 @@ tags: ['rust']
 author: '🐱 寒冰'
 ---
 
+# Effective Rust
+
 ## 一. 使用类型系统表达数据结构
 
-1. Rust isn't a language where you're going to be doing much in the way of converting between pointers and integers — 在 C / C++ 中是允许操作内存地址的，比如加减内存地址。
+1. Rust isn't a language where you're going to be doing much in the way of converting between pointers and integers — 在 C / C++ 中是允许操作内存地址的，比如加减内存地址
 2. Rust 允许在数字字面量声明类型：
    
     ```jsx
@@ -48,3 +50,45 @@ author: '🐱 寒冰'
 4. Rust 支持闭包，即将函数作为另一个函数的参数进行传递，当然 lambda 表达式支持也少不了。Rust 的表达式语法为 `|args…| = { … };` 。
    
     > 对于 Rust 语言而言，**这种基于语句（statement）和表达式（expression）的方式是非常重要的，你需要能明确的区分这两个概念**, 但是对于很多其它语言而言，这两个往往无需区分。基于表达式是函数式语言的重要特征，**表达式总要返回值**。 — 圣经
+    > 
+5. 可以使用一些 Trait 来对作为参数传入的函数类型作出限制。`FnOnce` 是指移交所有权的参数；`FnMut` 相当于 `&mut T` 指传入一个可变引用；Fn 相当于 &T，指传入引用。
+   
+    ```rust
+    pub fn modify_all<F>(data: &mut [u32], mut mutator: F)
+    where
+        F: FnMut(u32) -> u32,
+    {
+        for value in data {
+            *value = mutator(*value);
+        }
+    }
+    ```
+    
+6. Rust 没有函数重载，函数重载有违 Rust 设计哲学之一的 Be Explicit，而大多数情况都可以改用泛型解决。
+   
+    ```rust
+    use num::Num;
+    
+    fn plus<T: Num>(a: T, b: T) -> T {
+        a + b
+    }
+    ```
+    
+7. Rust 可以依据 Trait 限制泛型边界（Trait bounds）。
+   
+    ```rust
+    pub fn dump_sorted<T>(mut collection: T)
+    where
+        T: Sort + IntoIterator,
+        T::Item: std::fmt::Debug,
+    {
+        // Next line requires `T: Sort` trait bound.
+        collection.sort();
+        // Next line requires `T: IntoIterator` trait bound.
+        for item in collection {
+            // Next line requires `T::Item : Debug` trait bound
+            println!("{:?}", item);
+        }
+    }
+    ```
+    

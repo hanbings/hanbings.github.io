@@ -1,7 +1,7 @@
 ---
 title: '为 Linux 服务器 SSH 添加 TOTP 动态验证码以及 Java 实现算法'
 description: '添加 TOTP 验证到 Linux 服务器'
-date: '2024-03-10 10:57:00'
+date: '2020-03-10 10:57:00'
 tags: ['java', 'crypto']
 author: '🐱 寒冰'
 ---
