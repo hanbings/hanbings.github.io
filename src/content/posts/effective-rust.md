@@ -1,16 +1,20 @@
 ---
-title: 'Effective Rust 速查表（正在施工）'
-description: 'Effective Rust 速查表'
+title: 'Effective Rust - 类型 - 速查表（正在施工）'
+description: 'Effective Rust 速查表 - 类型'
 date: '2024-04-25 03:25:00'
 tags: ['rust']
 author: '🐱 寒冰'
 ---
 
-# Effective Rust
+本文提炼于：
+
+[Types - Effective Rust](https://www.lurklurk.org/effective-rust/types.html)
+
+感谢作者以及出版社为广大 Rust 提供了一本这么好的 Rust 编码参考规则。
 
 ## 一. 使用类型系统表达数据结构
 
-1. Rust isn't a language where you're going to be doing much in the way of converting between pointers and integers — 在 C / C++ 中是允许操作内存地址的，比如加减内存地址
+1. Rust isn't a language where you're going to be doing much in the way of converting between pointers and integers — 在 C / C++ 中是允许操作内存地址的，比如加减内存地址。
 2. Rust 允许在数字字面量声明类型：
    
     ```jsx
@@ -92,3 +96,82 @@ author: '🐱 寒冰'
     }
     ```
     
+
+## 三. 使用 match 表达式转换 Option 和 Result
+
+> 
+> - `[Option<T>](https://doc.rust-lang.org/std/option/enum.Option.html)`: To express that a value (of type `T`) may or may not be present
+> - `[Result<T, E>](https://doc.rust-lang.org/std/result/enum.Result.html)` : For when an operation to return a value (of type `T`) may not succeed  and may instead return an error (of type `E`)
+1. 正如前面所提：在 Rust 中，表达可能存在错误使用 `Result<T, E>`，表达可能不存在值使用 `Option<T>` 。
+   
+    我们使用 match 来匹配 Option 和 Result：
+    
+    ```rust
+    // Option
+    struct S {
+        field: Option<i32>,
+    }
+    
+    let s = S { field: Some(42) };
+    match &s.field {
+        Some(i) => println!("field is {i}"),
+        None => {}
+    }
+    
+    // Result
+    let result = std::fs::File::open("/etc/passwd");
+    let f = match result {
+        Ok(f) => f,
+        Err(_e) => panic!("Failed to open /etc/passwd!"),
+    };
+    ```
+    
+2. 使用 `if let` 语句或是 `if let else` 语句简化 `Option` 和 `Result` 代码的解析
+   
+    ```rust
+    // Option
+    if let Some(i) = &s.field {
+        println!("field is {i}");
+    }
+    
+    // Result
+    if let Ok(i) = &s.field {
+        println!("field is {i}");
+    }
+    ```
+    
+3. 应该处理或返回 `Option` 或 `Result` 而不是使用 `unwarp` 忽略封装直接返回结果。
+   
+    > However, in many situations, the right decision for error handling is to defer the decision to somebody else.
+    > 
+    
+    使用 `unwarp` 时候，如果遇到 `None` 或是 `Err`，将导致代码将在此处被 `panic!`，除非你清楚自己在干什么，否则不要使用它。
+    
+4. 标记一个 `#[must_use]` 可以迫使使用者必须处理 `Result`。
+   
+    ```rust
+    warning: unused `Result` that must be used
+      --> src/main.rs:63:5
+       |
+    63 |     f.set_len(0); // Truncate the file
+       |     ^^^^^^^^^^^^
+       |
+       = note: this `Result` may be an `Err` variant, which should be handled
+       = note: `#[warn(unused_must_use)]` on by default
+    help: use `let _ = ...` to ignore the resulting value
+       |
+    63 |     let _ = f.set_len(0); // Truncate the file
+       |     +++++++
+    ```
+    
+5. 可以使用 [? 操作符](https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator) 将错误向上传播。
+   
+    > • In particular, use these transformations to convert result types into a form where the `?` operator applies.
+    > 
+    
+    ```rust
+    pub fn find_user(username: &str) -> Result<UserId, std::io::Error> {
+        let f = std::fs::File::open("/etc/passwd")?;
+        // ...
+    }
+    ```
