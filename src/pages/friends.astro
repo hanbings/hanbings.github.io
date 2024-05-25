@@ -45,7 +45,7 @@ const friends = [
         <div class="flex flex-wrap justify-center items-center gap-2 m-6 max-w-[720px]">
             {
                 friends.map(friend =>
-                        <div class="flex items-center gap-2 h-24 p-3 rounded-xl w-[260px] hover:shadow-2xl">
+                        <div class="flex items-center gap-2 h-24 p-3 rounded-xl w-[260px] hover:shadow-2xl dark:hover:shadow-[0_25px_50px_-12px_rgb(255,255,255,0.25)]">
                             <img alt={friend.name} src={friend.avatar} class="h-16 rounded-full"/>
                             <div class="flex flex-col">
                                 <a href={friend.link} class="font-bold">
