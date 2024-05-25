@@ -17,10 +17,10 @@ const tags = [...entry.data['tags']]
 <PostLayout title={entry.data['title']}>
     <div class="flex flex-row gap-2">
         {
-            <a class="text-gray-600">{entry.data['author']}</a>
+            <a class="text-gray-600 dark:text-gray-400">{entry.data['author']}</a>
         }
         {
-            tags.map(tag => <a href={`/tags/${tag}`} class="text-gray-600 hover:font-bold">{`#${tag}`}</a>)
+            tags.map(tag => <a href={`/tags/${tag}`} class="text-gray-600 dark:text-gray-400 hover:font-bold">{`#${tag}`}</a>)
         }
     </div>
     <div class="markdown-body">
