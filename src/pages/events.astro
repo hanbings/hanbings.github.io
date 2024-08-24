@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Content from "../content/specs/posts.md"
+import {getCollection} from "astro:content"
+import {convertDateFormat} from "../utils/date"
+import "../styles/github-markdown.css"
+
+const allEvents = await getCollection('events')
+---
+<BaseLayout title="Events">
+    <div class="markdown-body">
+        <Content/>
+    </div>
+    <div class="flex justify-center items-center">
+        <div class="flex flex-col w-[720px]">
+            <p class="text-xl font-bold mt-6">Events</p>
+            <div class="flex flex-col m-2 gap-0">
+                {
+                    allEvents.map(
+                        events =>
+                                <div class="flex flex-row gap-3 items-center text-gray-600 dark:text-gray-400 hover:font-bold">
+                                    {convertDateFormat(events.data.date)}
+                                    <a href={`/events/${events.slug}`} id={events.data.title}>
+                                        {events.data.title}
+                                    </a>
+                                </div>
+                    )
+                }
+            </div>
+        </div>
+    </div>
+</BaseLayout>
