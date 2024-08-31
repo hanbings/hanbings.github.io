@@ -7,7 +7,21 @@ author: 'hanbings (hanbings@hanbings.io)'
 
 Hi, I am [hanbings](https://github.com/hanbings). and provided most of the code submissions during GSoC in the table below.
 
+## Description
+
+[uutils/findutils](https://github.com/uutils/findutils): A safer and more performant implementation of the GNU suite's xargs, find, locate and updatedb tools in rust.
+
+Currently, findutils implements many common commands in Linux and provides a better user experience in addition to compatibility. However, the current pass number in the GNU test is still relatively low, and there are many features that have not yet been implemented. By implementing them and writing test code, compatibility with the original GNU suite will be improved, and using the Rust language will result in high maintainability and high performance.
+
+The main work in this GSoC proposal is as follows:
+
+- Investigate pre-2020 issues to determine if they have been fixed, implemented, or otherwise. (1 weeks)
+- Identify directions for improving compatibility based on GNU testing of findutils. (9 weeks)
+- Improve test code coverage of other codes in findutils. (2 weeks)
+
 ## Achievements
+
+> In addition, I have a work document showing the progress of the past two months. [Click here](https://docs.google.com/document/d/1TqQpV4U7Z-GJYnZpJPGYvMjDxCnAE8mvoWfzhbooAQA/edit)
 
 **Implementing the `find` feature.**
 
@@ -36,6 +50,10 @@ Hi, I am [hanbings](https://github.com/hanbings). and provided most of the code 
 [find: Fix convert_arg_to_comparable_value() function parsing unexpected characters.](https://github.com/uutils/findutils/pull/361)
 
 [Provide GNU test comparison comments for PRs in Github Actions.](https://github.com/uutils/findutils/pull/400)
+
+## TODO
+
+To be honest, the goal of this GSoC is not completely complete. We still have a lot of integration testing (mainly reflected in test coverage) work to be completed. In the near future, I will continue to complete this work.
 
 
 
