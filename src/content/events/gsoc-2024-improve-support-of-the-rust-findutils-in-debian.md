@@ -5,7 +5,7 @@ date: '2024-08-25 04:29:01'
 author: 'hanbings (hanbings@hanbings.io)'
 ---
 
-Hi, I am [hanbings](https://github.com/hanbings). and provided most of the code submissions during GSoC in the table below.
+Hi, I am [hanbings](https://github.com/hanbings). and provided most of the code submissions during [GSoC](https://summerofcode.withgoogle.com/programs/2024/projects/Rv3xx9w2) in the table below.
 
 ## Description
 
