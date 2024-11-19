@@ -18,7 +18,7 @@ const allEvents = await getCollection('events')
                 {
                     allEvents.map(
                         events =>
-                                <div class="flex flex-row gap-3 items-center text-gray-600 dark:text-gray-400 hover:font-bold">
+                                <div class="flex flex-row gap-3 items-center text-gray-600 dark:text-gray-400 hover:underline hover:decoration-2 hover:decoration-[#ffce75] dark:hover:decoration-[#c18c2b]">
                                     {convertDateFormat(events.data.date)}
                                     <a href={`/events/${events.slug}`} id={events.data.title}>
                                         {events.data.title}

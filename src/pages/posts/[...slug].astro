@@ -27,7 +27,7 @@ const tags = [...entry.data['tags']]
             🏷
             {
                 tags.map(tag => <a href={`/tags/${tag}`}
-                                   class="text-gray-600 dark:text-gray-400 hover:cursor-pointer">{`#${tag}`}</a>)
+                                   class="text-gray-600 dark:text-gray-400 hover:underline hover:decoration-2 hover:decoration-[#ffce75] dark:hover:decoration-[#c18c2b]">{`#${tag}`}</a>)
             }
         </div>
     </div>

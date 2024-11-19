@@ -4,7 +4,7 @@ import Footer from "../components/Footer.astro"
 import Navigation from "../components/Navigation.astro"
 import Meta from "../components/Meta.astro"
 
-const { title } = Astro.props
+const {title} = Astro.props
 ---
 <div class="h-full min-h-lvh w-full dark:text-[#e6edf3] dark:bg-[#0d1117]">
     <Meta title={title}/>
@@ -15,8 +15,8 @@ const { title } = Astro.props
         <Navigation/>
     </div>
     <div class="p-6 flex justify-center items-center">
-        <div class="w-auto md:w-[720px]">
-            <slot />
+        <div class="w-[360px] md:w-[720px]">
+            <slot/>
         </div>
     </div>
     <div class="p-6">
