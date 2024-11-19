@@ -3,7 +3,7 @@ title: 'Java 实现一个简单的 EventBus'
 description: '基于 Java 编写一个 EventBus'
 date: '2020-03-10 10:57:00'
 tags: ['java']
-author: '🐱 寒冰'
+author: '寒冰'
 ---
 
 ### 0x00 EventBus

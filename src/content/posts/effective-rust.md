@@ -3,7 +3,7 @@ title: 'Effective Rust - 类型 - 速查表（停止更新）'
 description: 'Effective Rust 速查表 - 类型'
 date: '2024-04-25 03:25:00'
 tags: ['rust']
-author: '🐱 寒冰'
+author: '寒冰'
 ---
 
 本文提炼于：
