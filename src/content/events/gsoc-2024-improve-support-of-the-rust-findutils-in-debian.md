@@ -1,6 +1,6 @@
 ---
-title: 'GSoC 2024:  Improve support of the Rust  findutils in Debian'
-description: 'GSoC 2024:  Improve support of the Rust  findutils in Debian'
+title: 'GSoC 2024: Improve support of the Rust  findutils in Debian'
+description: 'GSoC 2024: Improve support of the Rust  findutils in Debian'
 date: '2024-08-25 04:29:01'
 author: 'hanbings (hanbings@hanbings.io)'
 ---

@@ -42,7 +42,7 @@ struct Adder {
 }
 ```
 
-注意！其中的  `#[repr(C)]` 和 `unsafe extern "C"` ，前者是用于声明结构体按 C 语言的结构体的内存结构进行布局（是的，Rust 的结构体内存布局与 C 语言并不一样，在黑魔书中有提及：https://doc.rust-lang.org/nomicon/other-reprs.html），而 `extern` 是 Rust 语言专为 FFI 接口设计的向外暴露函数的关键字，`extern "C”` 意为按照 C 语言的 ABI （Application Binary Interface 定义了如何在汇编语言层面调用此函数）接口标准向外暴露函数。它们都是必要的写法。
+注意！其中的  `#[repr(C)]` 和 `unsafe extern "C"` ，前者是用于声明结构体按 C 语言的结构体的内存结构进行布局（是的，Rust 的结构体内存布局与 C 语言并不一样，在黑魔书中有提及：[Rust Docs - nomicon - other-reprs](https://doc.rust-lang.org/nomicon/other-reprs.html)，而 `extern` 是 Rust 语言专为 FFI 接口设计的向外暴露函数的关键字，`extern "C”` 意为按照 C 语言的 ABI （Application Binary Interface 定义了如何在汇编语言层面调用此函数）接口标准向外暴露函数。它们都是必要的写法。
 
 ---
 
