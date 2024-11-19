@@ -44,13 +44,72 @@ struct Adder {
 
 注意！其中的  `#[repr(C)]` 和 `unsafe extern "C"` ，前者是用于声明结构体按 C 语言的结构体的内存结构进行布局（是的，Rust 的结构体内存布局与 C 语言并不一样，在黑魔书中有提及：https://doc.rust-lang.org/nomicon/other-reprs.html），而 `extern` 是 Rust 语言专为 FFI 接口设计的向外暴露函数的关键字，`extern "C”` 意为按照 C 语言的 ABI （Application Binary Interface 定义了如何在汇编语言层面调用此函数）接口标准向外暴露函数。它们都是必要的写法。
 
+
+
 ### 关于结构体的内存布局
 
-…
+Rust 一些 unsafe 操作允许操作内存，例如 `std::mem::transmute`，可以将结构体 A 替换为结构体 B。很好玩的是，Rust 提供了结构体 A、B 的长度检查，只有两个结构体长度一致才可以通过编译，而不检查类型是否一致。也就是说：
+
+```rust
+// 是能够成功转换的
+struct A {
+    e: u16,
+    a: u8,
+    b: u8
+}
+
+struct B {
+    e: u8,
+    a: u8,
+    b: u8,
+    c: u8,
+}
+
+// 不能成功转换
+struct A {
+    e: u16,
+    a: u8,
+    b: u8
+}
+
+struct B {
+    e: u16,
+    a: u8,
+    b: u8,
+    c: u8,
+}
+```
+
+而：
+
+```rust
+struct A {
+    e: u16,
+    a: u8,
+    b: u8
+}
+
+struct B {
+    e: bool,
+    a: bool,
+    b: bool,
+    c: u8,
+}
+```
+
+也是可以转换成功的，因为一个 `bool` 值会占用 `u8` 长度的内存空间。本文想要提醒的是，不同的 C 语言编译器也许会将多个 `boolean` 压缩到一个 8 位或是说结构体对齐长度中来优化内存。
+
+
 
 ### 关于 `c_int`
 
-…
+[Rust Docs - std/ffi/type.c_int](https://doc.rust-lang.org/std/ffi/type.c_int.html) 文档中，可以看到解释为与 C 语言中（未提及具体标准或版本）的 `signed int`（也就是 int） 相等。实际上它只是一个类型别名 `pub type c_int = i32;` 。
+
+[Rust Docs - std/ffi/types](https://doc.rust-lang.org/std/ffi/index.html#types) 可以看到更多用于在 Rust 中绑定到 C 语言（的类型）的类型别名，应该在编写 FFI 代码时候尽可能使用它们来避免不经意间使用了那些不支持的类型。
+
+同时 [Rust Docs - std/ffi/structs](https://doc.rust-lang.org/std/ffi/index.html#structs) 还定义了一些与字符串相关的工具，使用它们可以避免不受非法字符串的攻击。比如使用 [Rust Docs - std/ffi/structs.OsString](https://doc.rust-lang.org/std/ffi/struct.OsString.html) 替代 `String`。
+
+
 
 接着使用 dlopen2 进行动态链接库的加载：
 
@@ -104,13 +163,19 @@ crate-type = ["cdylib"]
 
 然后使用 `cargo build` 即可生成动态链接库。
 
-这里的 `#[no_mangle]` 意为让 Rust 不要混淆函数名称，以方便加载器根据函数名称查找这些函数。
-
 编译，然后运行它吧！`cargo run`！
+
+
 
 ### 关于 `#[no_mangle]`
 
-…
+这里的 `#[no_mangle]` 用于来告诉 Rust 编译器不要混淆此函数的名称。
+
+混淆是指 Rust 编译器会将函数更改为别的名称，这个名称包含更多信息，可以给编译过程的其他部分使用，但可读性较差。每种编程语言编译器对名称的混淆都略有不同，因此，为了让 Rust 函数可以被其他语言命名，必须禁用 Rust 编译器的名称混淆。
+
+文档：https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#calling-rust-functions-from-other-languages
+
+
 
 接着我们需要添加一个函数回调（Callback），其实就是加载器向插件传递函数的内存地址（也就是指针）的过程。
 
@@ -149,10 +214,6 @@ pub unsafe extern "C" fn simple_add_two_numbers(
     callback(a + b);
 }
 ```
-
-### 关于通过参数将函数传递到动态链接库
-
-…
 
 ![ff37f8648bdfd032eb4c3e6583b9fb79.jpg](https://picture.hanbings.io/2024/11/09/ff37f8648bdfd032eb4c3e6583b9fb79.jpeg)
 
