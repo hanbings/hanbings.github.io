@@ -1,6 +1,6 @@
 ---
-title: 'oscamp：操作系统虚拟化'
-description: 'oscamp：操作系统虚拟化'
+title: 'oscamp：操作系统 Hypervisor 方向（Draft）'
+description: 'oscamp：操作系统 Hypervisor 方向'
 date: '2024-12-20 21:01:12'
 tags: ['rust', 'os', 'hypervisor']
 author: '寒冰'
@@ -111,4 +111,4 @@ $ hexdump -C /home/hanbings/github/arceos-umhv/arceos-vmm/arceos-vmm_x86_64-qemu
 
 ## 进度
 
-[虚拟化技术：AMD SVM Hypervisor](https://blog.hanbings.io/posts/rvm-amd-support.md)
+[虚拟化技术：AMD SVM Hypervisor](https://blog.hanbings.io/posts/rvm-amd-support)
