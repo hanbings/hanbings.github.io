@@ -5,7 +5,11 @@ import {getCollection} from "astro:content"
 import {convertDateFormat} from "../utils/date"
 import "../styles/github-markdown.css"
 
-const allPosts = await getCollection('posts')
+const allPosts =
+    (await getCollection('posts'))
+        .sort((a, b) =>
+            new Date(b.data.date.replace(" ", "T")).getTime() -
+            new Date(a.data.date.replace(" ", "T")).getTime())
 // @ts-ignore
 const allTags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
 ---
