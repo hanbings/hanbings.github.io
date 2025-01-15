@@ -1,10 +1,11 @@
 ---
 title: 'Rust：使用 uefi-rs 编写一个 UEFI 应用并加载内核（Draft）'
-description: ''Rust：使用 uefi-rs 编写一个 UEFI 应用并加载内核'
-date: '2025-1-16 03:02:16'
+description: 'Rust：使用 uefi-rs 编写一个 UEFI 应用并加载内核'
+date: '2025-01-16 03:02:16'
 tags: ['rust',  'uefi', 'os', 'kernel', 'bootloader']
 author: '寒冰'
 ---
+
 
 本文主要介绍如何使用 Rust 和 [uefi-rs](https://github.com/rust-osdev/uefi-rs) 库编写一个 EFI 引导加载程序（Bootloader），该 Bootloader 实现加载并跳转到一个简单的内核，内核则负责在显示区域绘制颜色。
 
