@@ -1,5 +1,5 @@
 ---
-title: 'Rust 实现插件系统'
+title: 'Rust：实现插件系统'
 description: 'FFI、C ABI 和 dynlib 的 Rust 插件系统'
 date: '2024-11-09 17:50:11'
 tags: ['rust', 'dynlib', 'ffi', 'c-abi']

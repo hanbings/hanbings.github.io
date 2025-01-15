@@ -1,5 +1,5 @@
 ---
-title: 'Rust 实现一份 Mimalloc（Draft）'
+title: 'Rust：实现一份 Mimalloc（Draft）'
 description: 'Rust 实现一份 Mimalloc -- Chaos HMM (Chaos Heap Memory Manager)'
 date: '2024-12-12 04:32:03'
 tags: ['rust', 'os', 'alloc']
