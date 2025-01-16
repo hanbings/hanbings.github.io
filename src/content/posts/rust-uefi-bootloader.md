@@ -1,5 +1,5 @@
 ---
-title: 'Rust：使用 uefi-rs 编写一个 UEFI 应用并加载内核（Draft）'
+title: 'Rust：使用 uefi-rs 编写一个 UEFI 应用并加载内核'
 description: 'Rust：使用 uefi-rs 编写一个 UEFI 应用并加载内核'
 date: '2025-01-16 03:02:16'
 tags: ['rust',  'uefi', 'os', 'kernel', 'bootloader']
