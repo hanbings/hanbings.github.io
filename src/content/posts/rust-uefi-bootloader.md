@@ -464,4 +464,4 @@ qemu-system-x86_64 \
 
 ![test](https://i.miji.bid/2025/01/16/2027c82d740e142e3331d7aec3ecf825.png)
 
-[本文完整源码](https://github.com/hanbings/canicula)
+[本文完整源码](https://github.com/hanbings/canicula/tree/blog-uefi-bootloader)
