@@ -6,8 +6,321 @@ tags: ['rust', 'os', 'alloc']
 author: '寒冰'
 ---
 
+<details> 
+<summary> 源代码 </summary>  
 
-[源代码](https://github.com/hanbings/oscamp/blob/lab1/arceos/labs/lab_allocator/src/lib.rs)
+oscamp/arceos/labs/lab_allocator/src/chaos.rs
+```rust
+use core::{alloc::Layout, ptr::NonNull};
+
+pub struct Chaos {
+    pub vec_reserve: (usize, usize, usize),
+
+    pub start: usize,
+    pub end: usize,
+    pub head: usize,
+    pub tail: usize,
+    pub is_even: bool,
+
+    pub allocated: usize,
+    pub total: usize,
+}
+
+impl Chaos {
+    pub const fn new() -> Self {
+        Chaos {
+            vec_reserve: (0, 0, 0),
+            start: 0,
+            end: 0,
+            head: 0,
+            tail: 0,
+            is_even: false,
+            allocated: 0,
+            total: 0,
+        }
+    }
+
+    pub unsafe fn init(&mut self, start: usize, size: usize) {
+        log::warn!("init_memory: start=0x{:x}, size=0x{:x}, end=0x{:x}", start, size, start + size);
+
+        self.vec_reserve = (start, start + 96, start + 96 + 192);
+        
+        self.start = start + 96 + 192 + 384;
+        self.head = start + 96 + 192 + 384;
+
+        self.end = start + size;
+        self.tail = start + size;
+
+        self.allocated = 96 + 192 + 384;
+        self.total = self.end - self.start;
+    }
+
+    pub fn add_to_heap(&mut self, start: usize, end: usize) {
+        log::warn!("add_memory: start=0x{:x}, end=0x{:x}", start, end);
+
+        self.end = end;
+        self.tail = end;
+
+        self.total += end - start;
+    }
+
+    pub fn alloc(&mut self, layout: Layout) -> Result<NonNull<u8>, ()> {
+        let vec_reserve_ptr = match layout.size() {
+            96 => Some(self.vec_reserve.0 as *const u8),
+            192 => Some(self.vec_reserve.1 as *const u8),
+            384 => Some(self.vec_reserve.2 as *const u8),
+            _ => None,
+        };
+
+        if vec_reserve_ptr.is_some() && layout.align() == 8 {
+            return Ok(NonNull::new(vec_reserve_ptr.unwrap() as *mut u8).unwrap());
+        }
+
+        // get as much memory as possible
+        if self.end <= 0xffffffc08426d000 {
+            return Err(());
+        }
+
+        // check if memory is overflow
+        if self.tail - layout.size() <= self.head {
+            return Err(());
+        }
+
+        log::warn!("alloc_memory: head=0x{:x}, tail=0x{:x}, size=0x{:x}", self.head, self.tail, layout.size());
+
+        let ptr = if self.is_even {
+            let mem = self.tail - layout.size();
+            self.tail = mem;
+
+            NonNull::new(mem as *mut u8).unwrap()
+        } else {
+            let mem = self.head;
+            self.head = mem + layout.size();
+
+            NonNull::new(mem as *mut u8).unwrap()
+        };
+
+        log::warn!("alloc_memory: ptr=0x{:x}", ptr.as_ptr() as usize);
+
+        self.is_even = !self.is_even;
+        self.allocated += layout.size();
+
+        Ok(ptr)
+    }
+
+    pub fn dealloc(&mut self, pos: NonNull<u8>, layout: Layout) {
+        log::warn!("head, tail: 0x{:x}, 0x{:x}", self.head, self.tail);
+        log::warn!("dealloc_memory: pos=0x{:x}, size=0x{:x}", pos.as_ptr() as usize, layout.size());
+
+        if (pos.as_ptr() as usize) < self.start + 96 + 192 + 384 {
+            return;
+        }
+
+        self.tail +=layout.size();
+        self.allocated -= layout.size();
+
+        log::warn!("before dealloc_memory: head=0x{:x}, tail=0x{:x}, start=0x{:x}, end=0x{:x}", self.head, self.tail, self.start, self.end);
+    }
+
+    pub fn total_bytes(&self) -> usize {
+        0
+    }
+
+    pub fn used_bytes(&self) -> usize {
+        self.allocated
+    }
+
+    pub fn available_bytes(&self) -> usize {
+        self.total - self.allocated
+    }
+}
+```
+
+oscamp/arceos/labs/lab_allocator/src/lib.rs
+```rust
+//! Allocator algorithm in lab.
+#![no_std]
+#![allow(unused_variables)]
+
+mod buddy;
+mod linked_list;
+mod chaos;
+
+use allocator::{AllocError, AllocResult, BaseAllocator, ByteAllocator};
+use chaos::Chaos;
+use core::alloc::Layout;
+use core::ptr::NonNull;
+
+pub struct LabByteAllocator {
+    inner: Chaos,
+}
+
+impl LabByteAllocator {
+    pub const fn new() -> Self {
+        Self {
+            inner: Chaos::new(),
+        }
+    }
+}
+
+impl BaseAllocator for LabByteAllocator {
+    fn init(&mut self, start: usize, size: usize) {
+        unsafe { self.inner.init(start, size) };
+    }
+
+    fn add_memory(&mut self, start: usize, size: usize) -> AllocResult {
+        self.inner.add_to_heap(start, start + size);
+        Ok(())
+    }
+}
+
+impl ByteAllocator for LabByteAllocator {
+    fn alloc(&mut self, layout: Layout) -> AllocResult<NonNull<u8>> {
+        self.inner.alloc(layout).map_err(|_| AllocError::NoMemory)
+    }
+
+    fn dealloc(&mut self, pos: NonNull<u8>, layout: Layout) {
+        self.inner.dealloc(pos, layout)
+    }
+
+    fn total_bytes(&self) -> usize {
+        self.inner.total_bytes()
+    }
+
+    fn used_bytes(&self) -> usize {
+        self.inner.used_bytes()
+    }
+
+    fn available_bytes(&self) -> usize {
+        self.inner.available_bytes()
+    }
+}
+```
+
+oscamp/arceos/labs/lab_allocator/src/linked_list.rs
+```rust
+use core::marker::PhantomData;
+use core::{fmt, ptr};
+
+#[derive(Copy, Clone)]
+pub struct LinkedList {
+    head: *mut usize,
+}
+
+unsafe impl Send for LinkedList {}
+
+impl LinkedList {
+    pub const fn new() -> LinkedList {
+        LinkedList {
+            head: ptr::null_mut(),
+        }
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.head.is_null()
+    }
+
+    pub unsafe fn push(&mut self, item: *mut usize) {
+        *item = self.head as usize;
+        self.head = item;
+    }
+
+    pub fn pop(&mut self) -> Option<*mut usize> {
+        match self.is_empty() {
+            true => None,
+            false => {
+                let item = self.head;
+                self.head = unsafe { *item as *mut usize };
+                Some(item)
+            }
+        }
+    }
+
+    pub fn iter(&self) -> Iter {
+        Iter {
+            curr: self.head,
+            list: PhantomData,
+        }
+    }
+
+    pub fn iter_mut(&mut self) -> IterMut {
+        IterMut {
+            prev: &mut self.head as *mut *mut usize as *mut usize,
+            curr: self.head,
+            list: PhantomData,
+        }
+    }
+}
+
+impl fmt::Debug for LinkedList {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_list().entries(self.iter()).finish()
+    }
+}
+
+pub struct Iter<'a> {
+    curr: *mut usize,
+    list: PhantomData<&'a LinkedList>,
+}
+
+impl<'a> Iterator for Iter<'a> {
+    type Item = *mut usize;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.curr.is_null() {
+            None
+        } else {
+            let item = self.curr;
+            let next = unsafe { *item as *mut usize };
+            self.curr = next;
+            Some(item)
+        }
+    }
+}
+
+pub struct ListNode {
+    prev: *mut usize,
+    curr: *mut usize,
+}
+
+impl ListNode {
+    pub fn pop(self) -> *mut usize {
+        unsafe {
+            *(self.prev) = *(self.curr);
+        }
+        self.curr
+    }
+
+    pub fn value(&self) -> *mut usize {
+        self.curr
+    }
+}
+
+pub struct IterMut<'a> {
+    list: PhantomData<&'a mut LinkedList>,
+    prev: *mut usize,
+    curr: *mut usize,
+}
+
+impl<'a> Iterator for IterMut<'a> {
+    type Item = ListNode;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.curr.is_null() {
+            None
+        } else {
+            let res = ListNode {
+                prev: self.prev,
+                curr: self.curr,
+            };
+            self.prev = self.curr;
+            self.curr = unsafe { *self.curr as *mut usize };
+            Some(res)
+        }
+    }
+}
+```
+</details> 
 
 ## 分析内存结构
 
