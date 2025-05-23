@@ -1,11 +1,15 @@
 import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
-import tailwind from '@astrojs/tailwind'
-
 import sitemap from '@astrojs/sitemap';
+
+import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-    integrations: [react(), tailwind(), sitemap()],
-    site: 'https://blog.hanbings.io',
+  integrations: [react(), sitemap()],
+  site: 'https://blog.hanbings.io',
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 })
