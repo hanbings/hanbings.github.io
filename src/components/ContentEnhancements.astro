@@ -1,0 +1,125 @@
+<dialog class="image-lightbox" aria-label="图片预览" aria-describedby="image-lightbox-caption">
+    <button class="image-lightbox-close" type="button" aria-label="关闭图片预览">×</button>
+    <img class="image-lightbox-preview" alt="" />
+    <p id="image-lightbox-caption" class="image-lightbox-caption"></p>
+</dialog>
+
+<script>
+    const copyText = async (text: string) => {
+        if (!navigator.clipboard) {
+            throw new Error('Clipboard API is unavailable')
+        }
+
+        await navigator.clipboard.writeText(text)
+    }
+
+    const enhanceCodeBlocks = () => {
+        if (!navigator.clipboard) return
+
+        document.querySelectorAll<HTMLPreElement>('.markdown-body .astro-code').forEach((block) => {
+            if (block.dataset.copyReady) return
+
+            const code = block.querySelector('code')
+            if (!code) return
+
+            const button = document.createElement('button')
+            button.type = 'button'
+            button.className = 'code-copy-button'
+            button.textContent = '复制'
+            button.setAttribute('aria-label', '复制代码')
+            button.setAttribute('aria-live', 'polite')
+
+            let resetTimer: number | undefined
+            button.addEventListener('click', async () => {
+                window.clearTimeout(resetTimer)
+                button.disabled = true
+
+                try {
+                    await copyText(code.textContent ?? '')
+                    button.textContent = '已复制'
+                    button.dataset.state = 'success'
+                } catch {
+                    button.textContent = '复制失败'
+                    button.dataset.state = 'error'
+                } finally {
+                    button.disabled = false
+                }
+
+                resetTimer = window.setTimeout(() => {
+                    button.textContent = '复制'
+                    delete button.dataset.state
+                }, 1800)
+            })
+
+            const wrapper = document.createElement('div')
+            wrapper.className = 'code-block-wrapper'
+            block.dataset.copyReady = 'true'
+            block.before(wrapper)
+            wrapper.append(block, button)
+        })
+    }
+
+    const enhanceImages = () => {
+        const dialog = document.querySelector<HTMLDialogElement>('.image-lightbox')
+        const preview = dialog?.querySelector<HTMLImageElement>('.image-lightbox-preview')
+        const caption = dialog?.querySelector<HTMLElement>('.image-lightbox-caption')
+        const closeButton = dialog?.querySelector<HTMLButtonElement>('.image-lightbox-close')
+        if (!dialog || !preview || !caption || !closeButton) return
+
+        let trigger: HTMLImageElement | undefined
+
+        const closeDialog = () => {
+            if (dialog.open) dialog.close()
+        }
+
+        const openImage = (image: HTMLImageElement) => {
+            const source = image.currentSrc || image.src
+            if (typeof dialog.showModal !== 'function') {
+                window.open(source, '_blank', 'noopener,noreferrer')
+                return
+            }
+
+            trigger = image
+            preview.src = source
+            caption.textContent = image.alt
+
+            try {
+                dialog.showModal()
+                document.documentElement.classList.add('lightbox-open')
+            } catch {
+                preview.removeAttribute('src')
+                window.open(source, '_blank', 'noopener,noreferrer')
+            }
+        }
+
+        document.querySelectorAll<HTMLImageElement>('.markdown-body img').forEach((image) => {
+            if (!image.alt.trim() || image.closest('a') || image.dataset.lightboxReady) return
+
+            image.dataset.lightboxReady = 'true'
+            image.classList.add('zoomable-image')
+            image.tabIndex = 0
+            image.setAttribute('role', 'button')
+            image.setAttribute('aria-haspopup', 'dialog')
+            image.setAttribute('aria-label', `放大图片：${image.alt}`)
+            image.addEventListener('click', () => openImage(image))
+            image.addEventListener('keydown', (event) => {
+                if (event.key !== 'Enter' && event.key !== ' ') return
+                event.preventDefault()
+                openImage(image)
+            })
+        })
+
+        closeButton.addEventListener('click', closeDialog)
+        dialog.addEventListener('click', (event) => {
+            if (event.target === dialog) closeDialog()
+        })
+        dialog.addEventListener('close', () => {
+            document.documentElement.classList.remove('lightbox-open')
+            preview.removeAttribute('src')
+            trigger?.focus()
+        })
+    }
+
+    enhanceCodeBlocks()
+    enhanceImages()
+</script>
