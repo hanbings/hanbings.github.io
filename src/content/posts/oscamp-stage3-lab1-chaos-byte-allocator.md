@@ -355,7 +355,7 @@ fn alloc_pass(delta: usize) -> Vec<Vec<u8>> {
 
 结果为：
 
-```
+```log
 Running bumb tests...
 Indicator: 0
 Item Capacity: 4
@@ -460,7 +460,7 @@ pub fn add_to_heap(&mut self, start: usize, end: usize) {
 
 从 `add_to_heap` 的输出：
 
-```
+```log
 Running bumb tests...
 Indicator: 0
 [  0.082919 0 lab_allocator::chaos:66] head, tail: 0xffffffc08026d2a0, 0xffffffc080275000
@@ -583,7 +583,7 @@ if vec_reserve_ptr.is_some() && layout.align() == 8 {
 
 处理完这个问题后，算法成功跑到 152 轮。
 
-```
+```log
 Indicator: 152
 [ 25.511024 0 lab_allocator::chaos:71] alloc_memory: head=0xffffffc084f352a8, tail=0xffffffc085015be2, size=0xb8
 [ 25.513985 0 lab_allocator::chaos:85] alloc_memory: ptr=0xffffffc085015b2a
@@ -634,7 +634,7 @@ pub fn alloc(&mut self, layout: Layout) -> Result<NonNull<u8>, ()> { Err(()) }
 
 ```
 
-```
+```log
 Indicator: 0
 [  0.088199 0 lab_allocator::chaos:46] add_memory: start=0xffffffc080275000, end=0xffffffc08027d000 # 32768
 [  0.090785 0 lab_allocator::chaos:46] add_memory: start=0xffffffc08027d000, end=0xffffffc08028d000 # 65536

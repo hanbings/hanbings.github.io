@@ -88,7 +88,7 @@ UEFI（Unified Extensible Firmware Interface），统一可扩展固件接口，
 
 **EDK2：**
 
-```
+```c
 EFI_STATUS EFIAPI main (
    IN EFI_HANDLE ImageHandle,
    IN EFI_SYSTEM_TABLE *SystemTable
@@ -98,7 +98,7 @@ EFI_STATUS EFIAPI main (
 > **uefi-rs：**
 > 
 > 
-> ```
+> ```rust
 > fn main(image_handle: Handle, mut system_table: SystemTable<Boot>) -> Status { }
 > ```
 > 
@@ -134,7 +134,7 @@ fn main() -> Status { }
 
 其函数原型为：
 
-```
+```c
 typedef
 EFI_STATUS
 (EFIAPI *EFI_LOCATE_PROTOCOL) (
@@ -151,7 +151,7 @@ EFI_STATUS
 
 因此有代码：
 
-```
+```c
 // 声明一个状态，用于接受函数表明执行状态的返回值
 EFI_STATUS Status;
 // 提前声明一个指针用于指向函数的返回值数据
@@ -173,7 +173,7 @@ if (EFI_ERROR(Status)) {
 
 基于 Rust 的特性，可以使用 Result 替换掉 EFI_STATUS 这种需要额外声明一个变量来存放状态的方式。
 
-```
+```rust
 let graphics_output_protocol_handle = boot::get_handle_for_protocol::<GraphicsOutput>()
     // 返回类型为 Result<Handle>
     // 这里便于理解直接使用了 unwarp，但在正常编码中，应该使用 map_or 或 expect 等方式显式处理错误。

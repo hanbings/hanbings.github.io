@@ -17,7 +17,7 @@ author: '寒冰'
 1. Rust isn't a language where you're going to be doing much in the way of converting between pointers and integers — 在 C / C++ 中是允许操作内存地址的，比如加减内存地址。
 2. Rust 允许在数字字面量声明类型：
    
-    ```jsx
+    ```rust
     let x = 23i32;
     ```
     
