@@ -7,6 +7,15 @@ export default defineConfig({
   integrations: [sitemap()],
   site: 'https://blog.hanbings.io',
 
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: 'one-light',
+        dark: 'tokyo-night',
+      },
+    },
+  },
+
   vite: {
     plugins: [tailwindcss()],
   },

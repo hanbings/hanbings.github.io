@@ -20,14 +20,14 @@ const tags = [...entry.data['tags']]
         <div class="flex flex-row gap-2">
             🐱
             {
-                <span class="text-gray-600 dark:text-gray-400">{entry.data['author']}</span>
+                <span class="text-[var(--theme-muted)]">{entry.data['author']}</span>
             }
         </div>
         <div class="flex flex-row gap-2">
             🏷
             {
                 tags.map(tag => <a href={`/tags/${tag}`}
-                                   class="text-gray-600 dark:text-gray-400 hover:underline hover:decoration-2 hover:decoration-[#ffce75] dark:hover:decoration-[#c18c2b]">{`#${tag}`}</a>)
+                                   class="theme-muted-link">{`#${tag}`}</a>)
             }
         </div>
     </div>

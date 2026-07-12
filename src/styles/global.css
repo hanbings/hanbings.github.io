@@ -1,19 +1,121 @@
 @import 'tailwindcss';
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+:root {
+  color-scheme: light;
+  --theme-bg: #fafafa;
+  --theme-surface-muted: #f5f5f5;
+  --theme-fg: #383a42;
+  --theme-muted: #696c77;
+  --theme-border: #dbdbdc;
+  --theme-accent: #356fdc;
+  --theme-accent-soft: rgb(82 111 255 / 14%);
+  --theme-shadow: rgb(56 58 66 / 18%);
+}
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --theme-bg: #1a1b26;
+    --theme-surface-muted: #1e202e;
+    --theme-fg: #a9b1d6;
+    --theme-muted: #9aa5ce;
+    --theme-border: #292e42;
+    --theme-accent: #7aa2f7;
+    --theme-accent-soft: rgb(61 89 161 / 36%);
+    --theme-shadow: rgb(0 0 0 / 42%);
+  }
+
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
 @layer base {
+  html,
+  body {
+    min-height: 100%;
+    background-color: var(--theme-bg);
+    color: var(--theme-fg);
+  }
+
+  body {
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  ::selection {
+    background-color: var(--theme-accent-soft);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--theme-accent);
+    outline-offset: 3px;
+  }
+
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--theme-border);
+  }
+}
+
+@layer components {
+  .markdown-body .astro-code {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .theme-title {
+    border-radius: 0.5rem;
+    background-color: var(--theme-accent-soft);
+    color: var(--theme-accent);
+    padding: 0.25rem 0.75rem;
+    font-weight: 600;
+  }
+
+  .theme-nav-link {
+    border-color: var(--theme-border);
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+
+  .theme-nav-link:hover {
+    border-color: var(--theme-accent);
+    color: var(--theme-accent);
+  }
+
+  .theme-entry,
+  .theme-muted-link {
+    color: var(--theme-muted);
+  }
+
+  .theme-entry:hover,
+  .theme-muted-link:hover {
+    text-decoration-line: underline;
+    text-decoration-color: var(--theme-accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .theme-friend-card {
+    transition: background-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .theme-friend-card:hover {
+    background-color: var(--theme-surface-muted);
+    box-shadow: 0 20px 30px -16px var(--theme-shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .theme-nav-link,
+  .theme-friend-card {
+    transition: none;
   }
 }
