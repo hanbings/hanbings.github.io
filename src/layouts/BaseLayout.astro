@@ -3,24 +3,31 @@ import Header from "../components/Header.astro"
 import Footer from "../components/Footer.astro"
 import Navigation from "../components/Navigation.astro"
 import Meta from "../components/Meta.astro"
-import "../styles/global.css";
+import "../styles/global.css"
 
 const {title} = Astro.props
 ---
-<div class="h-full min-h-lvh w-full dark:text-[#e6edf3] dark:bg-[#0d1117]">
-    <Meta title={title}/>
-    <div class="p-16 pb-0">
-        <Header/>
-    </div>
-    <div class="p-2">
-        <Navigation/>
-    </div>
-    <div class="p-6 flex justify-center items-center">
-        <div class="w-[360px] md:w-[720px]">
-            <slot/>
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <Meta title={title}/>
+    </head>
+    <body>
+        <div class="min-h-lvh w-full dark:text-[#e6edf3] dark:bg-[#0d1117]">
+            <header class="p-16 pb-0">
+                <Header/>
+            </header>
+            <nav class="p-2" aria-label="主导航">
+                <Navigation/>
+            </nav>
+            <main class="p-6 flex justify-center items-center">
+                <div class="w-full max-w-[720px]">
+                    <slot/>
+                </div>
+            </main>
+            <footer class="p-6">
+                <Footer/>
+            </footer>
         </div>
-    </div>
-    <div class="p-6">
-        <Footer/>
-    </div>
-</div>
+    </body>
+</html>

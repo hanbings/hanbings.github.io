@@ -6,7 +6,7 @@ const parser = new MarkdownIt();
 
 export async function GET(context) {
     const allPosts =
-        (await getCollection('posts'))
+        (await getCollection('posts', ({ data }) => !data.draft))
             .sort((a, b) =>
                 new Date(b.data.date.replace(" ", "T")).getTime() -
                 new Date(a.data.date.replace(" ", "T")).getTime())
@@ -19,7 +19,7 @@ export async function GET(context) {
             title: post.data.title,
             pubDate: post.data.date,
             description: post.data.description,
-            link: `/posts/${post.slug}/`,
+            link: `/posts/${post.id}/`,
             content: sanitizeHtml(parser.render(post.body), {
                 allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img'])
             }),

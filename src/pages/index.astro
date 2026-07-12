@@ -6,7 +6,7 @@ import {getCollection} from "astro:content"
 import "../styles/github-markdown.css"
 
 const allPosts =
-    (await getCollection('posts'))
+    (await getCollection('posts', ({ data }) => !data.draft))
         .sort((a, b) =>
             new Date(b.data.date.replace(" ", "T")).getTime() -
             new Date(a.data.date.replace(" ", "T")).getTime())
@@ -17,14 +17,14 @@ const allPosts =
     </div>
     <div class="flex justify-center items-center">
         <div class="flex flex-col w-auto md:w-[720px]">
-            <p class="text-xl font-bold mt-6">近期文章</p>
+            <h2 class="text-xl font-bold mt-6">近期文章</h2>
             <div class="flex flex-col m-2 gap-0">
                 {
                     allPosts.map(
                         post =>
                                 <div class="flex flex-row gap-3 items-center text-gray-600 dark:text-gray-400 hover:underline hover:decoration-2 hover:decoration-[#ffce75] dark:hover:decoration-[#c18c2b]">
                                     {convertDateFormat(post.data.date)}
-                                    <a href={`/posts/${post.slug}`} id={post.data.title}>
+                                    <a href={`/posts/${post.id}`}>
                                         {post.data.title}
                                     </a>
                                 </div>

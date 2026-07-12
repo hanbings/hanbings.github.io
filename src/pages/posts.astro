@@ -6,12 +6,11 @@ import {convertDateFormat} from "../utils/date"
 import "../styles/github-markdown.css"
 
 const allPosts =
-    (await getCollection('posts'))
+    (await getCollection('posts', ({ data }) => !data.draft))
         .sort((a, b) =>
             new Date(b.data.date.replace(" ", "T")).getTime() -
             new Date(a.data.date.replace(" ", "T")).getTime())
-// @ts-ignore
-const allTags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
+const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))]
 ---
 <BaseLayout title="文章">
     <div class="markdown-body">
@@ -19,21 +18,21 @@ const allTags = [...new Set(allPosts.map((post) => post.data.tags).flat())]
     </div>
     <div class="flex justify-center items-center">
         <div class="flex flex-col">
-            <p class="text-xl font-bold">标签</p>
+            <h2 class="text-xl font-bold">标签</h2>
             <div class="flex flex-row m-2 gap-2">
                 {
                     allTags.map(tag => <a href={`/tags/${tag}`}
                                           class="text-gray-600 dark:text-gray-400 hover:underline hover:decoration-2 hover:decoration-[#ffce75] dark:hover:decoration-[#c18c2b]">{`#${tag}`}</a>)
                 }
             </div>
-            <p class="text-xl font-bold mt-6">文章</p>
+            <h2 class="text-xl font-bold mt-6">文章</h2>
             <div class="flex flex-col m-2 gap-0">
                 {
                     allPosts.map(
                         post =>
                                 <div class="flex flex-row gap-3 items-center text-gray-600 dark:text-gray-400 hover:underline hover:decoration-2 hover:decoration-[#ffce75] dark:hover:decoration-[#c18c2b]">
                                     {convertDateFormat(post.data.date)}
-                                    <a href={`/posts/${post.slug}`} id={post.data.title}>
+                                    <a href={`/posts/${post.id}`}>
                                         {post.data.title}
                                     </a>
                                 </div>

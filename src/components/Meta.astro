@@ -1,11 +1,15 @@
 ---
 const { prefix = '🐱 寒冰是喵喵', title } = Astro.props
-const strings = `${title} - ${prefix}`
+const pageTitle = `${title} - ${prefix}`
 ---
-<head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{strings}</title>
-</head>
+<meta charset="utf-8" />
+<link rel="icon" href="/favicon.ico" />
+<link
+    rel="alternate"
+    type="application/rss+xml"
+    title="🐱 寒冰是喵喵的 blog"
+    href={new URL("rss.xml", Astro.site)}
+/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<title>{pageTitle}</title>

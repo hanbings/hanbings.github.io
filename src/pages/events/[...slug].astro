@@ -1,17 +1,17 @@
 ---
-import {getCollection} from 'astro:content'
+import {getCollection, render} from 'astro:content'
 import PostLayout from "../../layouts/PostLayout.astro"
 import "../../styles/github-markdown.css"
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection('events')
+    const blogEntries = await getCollection('events', ({ data }) => !data.draft)
     return blogEntries.map(entry => ({
-        params: {slug: entry.slug}, props: {entry},
+        params: {slug: entry.id}, props: {entry},
     }))
 }
 
 const {entry} = Astro.props
-const {Content} = await entry.render()
+const {Content} = await render(entry)
 ---
 <PostLayout title={entry.data['title']}>
     <h1 class="text-2xl font-bold">{entry.data['title']}</h1>

@@ -1,17 +1,17 @@
 ---
-import {getCollection} from 'astro:content'
+import {getCollection, render} from 'astro:content'
 import PostLayout from "../../layouts/PostLayout.astro"
 import "../../styles/github-markdown.css"
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection('posts')
+    const blogEntries = await getCollection('posts', ({ data }) => !data.draft)
     return blogEntries.map(entry => ({
-        params: {slug: entry.slug}, props: {entry},
+        params: {slug: entry.id}, props: {entry},
     }))
 }
 
 const {entry} = Astro.props
-const {Content} = await entry.render()
+const {Content} = await render(entry)
 const tags = [...entry.data['tags']]
 ---
 <PostLayout title={entry.data['title']}>
@@ -20,7 +20,7 @@ const tags = [...entry.data['tags']]
         <div class="flex flex-row gap-2">
             🐱
             {
-                <a class="text-gray-600 dark:text-gray-400">{entry.data['author']}</a>
+                <span class="text-gray-600 dark:text-gray-400">{entry.data['author']}</span>
             }
         </div>
         <div class="flex flex-row gap-2">

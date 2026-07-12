@@ -106,12 +106,21 @@ const friends = [
             {
                 friends.map(friend =>
                         <div class="flex items-center gap-2 h-24 p-3 rounded-xl w-[260px] hover:shadow-2xl dark:hover:shadow-[0_25px_50px_-12px_rgb(255,255,255,0.25)]">
-                            <img alt={friend.name} src={friend.avatar} class="h-16 rounded-full"/>
+                            <img
+                                alt={friend.name}
+                                src={friend.avatar}
+                                width="64"
+                                height="64"
+                                loading="lazy"
+                                decoding="async"
+                                referrerpolicy="no-referrer"
+                                class="h-16 rounded-full"
+                            />
                             <div class="flex flex-col">
                                 <a href={friend.link} class="font-bold">
                                     {friend.name}
                                 </a>
-                                <a>{friend.about}</a>
+                                <span>{friend.about}</span>
                             </div>
                         </div>
                 )
