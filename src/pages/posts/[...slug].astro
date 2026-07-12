@@ -1,6 +1,7 @@
 ---
 import {getCollection, render} from 'astro:content'
 import PostLayout from "../../layouts/PostLayout.astro"
+import TableOfContents from "../../components/TableOfContents.astro"
 import "../../styles/github-markdown.css"
 
 export async function getStaticPaths() {
@@ -11,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const {entry} = Astro.props
-const {Content} = await render(entry)
+const {Content, headings} = await render(entry)
 const tags = [...entry.data['tags']]
 ---
 <PostLayout title={entry.data['title']}>
@@ -31,6 +32,7 @@ const tags = [...entry.data['tags']]
             }
         </div>
     </div>
+    <TableOfContents headings={headings}/>
     <div class="markdown-body">
         <Content/>
     </div>

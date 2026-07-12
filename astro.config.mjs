@@ -13,6 +13,7 @@ export default defineConfig({
         light: 'one-light',
         dark: 'tokyo-night',
       },
+      defaultColor: false,
     },
   },
 

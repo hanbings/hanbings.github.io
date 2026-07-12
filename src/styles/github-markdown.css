@@ -39,8 +39,8 @@
         --color-border-default: #292e42;
         --color-border-muted: #24283b;
         --color-neutral-muted: rgb(84 92 126 / 25%);
-        --color-accent-fg: #7aa2f7;
-        --color-accent-emphasis: #3d59a1;
+        --color-accent-fg: #f6c445;
+        --color-accent-emphasis: #b8860b;
         --color-success-fg: #9ece6a;
         --color-success-emphasis: #449dab;
         --color-attention-fg: #e0af68;
@@ -94,8 +94,8 @@
         --color-border-default: #dbdbdc;
         --color-border-muted: #e5e5e6;
         --color-neutral-muted: rgb(56 58 66 / 10%);
-        --color-accent-fg: #356fdc;
-        --color-accent-emphasis: #526fff;
+        --color-accent-fg: #8a5a00;
+        --color-accent-emphasis: #b87800;
         --color-success-fg: #50a14f;
         --color-success-emphasis: #3bba54;
         --color-attention-fg: #c18401;

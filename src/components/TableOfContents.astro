@@ -1,0 +1,29 @@
+---
+interface Heading {
+    depth: number
+    slug: string
+    text: string
+}
+
+const {headings} = Astro.props as {headings: Heading[]}
+const entries = headings.filter(({depth}) => depth >= 2 && depth <= 3)
+---
+
+{
+    entries.length > 0 && (
+        <nav class="post-toc" aria-label="文章目录">
+            <p class="post-toc-title">目录</p>
+            <ol class="post-toc-list">
+                {
+                    entries.map(({depth, slug, text}) => (
+                        <li>
+                            <a class={`post-toc-link post-toc-depth-${depth}`} href={`#${slug}`}>
+                                {text}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ol>
+        </nav>
+    )
+}
