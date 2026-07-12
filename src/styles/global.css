@@ -4,7 +4,7 @@
   color-scheme: light;
   --theme-bg: #fafafa;
   --theme-surface-muted: #f5f5f5;
-  --theme-code-bg: #f0f0f0;
+  --theme-code-bg: #ffffff;
   --theme-fg: #383a42;
   --theme-muted: #696c77;
   --theme-border: #dbdbdc;
@@ -13,6 +13,14 @@
   --theme-accent-contrast: #383a42;
   --theme-focus: #356fdc;
   --theme-shadow: rgb(56 58 66 / 18%);
+}
+
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
 }
 
 @media (prefers-color-scheme: dark) {
