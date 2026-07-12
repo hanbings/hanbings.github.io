@@ -7,8 +7,10 @@
   --theme-fg: #383a42;
   --theme-muted: #696c77;
   --theme-border: #dbdbdc;
-  --theme-accent: #356fdc;
-  --theme-accent-soft: rgb(82 111 255 / 14%);
+  --theme-accent: #ffd43b;
+  --theme-accent-soft: rgb(255 212 59 / 24%);
+  --theme-accent-contrast: #383a42;
+  --theme-focus: #356fdc;
   --theme-shadow: rgb(56 58 66 / 18%);
 }
 
@@ -20,8 +22,10 @@
     --theme-fg: #a9b1d6;
     --theme-muted: #9aa5ce;
     --theme-border: #292e42;
-    --theme-accent: #7aa2f7;
-    --theme-accent-soft: rgb(61 89 161 / 36%);
+    --theme-accent: #f6c445;
+    --theme-accent-soft: rgb(246 196 69 / 28%);
+    --theme-accent-contrast: #1a1b26;
+    --theme-focus: #7aa2f7;
     --theme-shadow: rgb(0 0 0 / 42%);
   }
 
@@ -52,7 +56,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--theme-accent);
+    outline: 2px solid var(--theme-focus);
     outline-offset: 3px;
   }
 
@@ -73,8 +77,8 @@
 
   .theme-title {
     border-radius: 0.5rem;
-    background-color: var(--theme-accent-soft);
-    color: var(--theme-accent);
+    background-color: var(--theme-accent);
+    color: var(--theme-accent-contrast);
     padding: 0.25rem 0.75rem;
     font-weight: 600;
   }
@@ -86,7 +90,6 @@
 
   .theme-nav-link:hover {
     border-color: var(--theme-accent);
-    color: var(--theme-accent);
   }
 
   .theme-entry,
