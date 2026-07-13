@@ -101,11 +101,10 @@ const friends = [
     <div class="markdown-body">
         <Content/>
     </div>
-    <div class="flex justify-center items-center">
-        <div class="flex flex-wrap justify-center items-center gap-2 m-6 w-auto md:max-w-[720px]">
+    <div class="friends-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-6">
             {
                 friends.map(friend =>
-                        <div class="theme-friend-card flex items-center gap-2 h-24 p-3 rounded-xl w-[260px]">
+                        <div class="theme-friend-card flex min-w-0 items-center gap-2 h-24 p-3 rounded-xl w-full">
                             <img
                                 alt={friend.name}
                                 src={friend.avatar}
@@ -116,15 +115,14 @@ const friends = [
                                 referrerpolicy="no-referrer"
                                 class="h-16 rounded-full"
                             />
-                            <div class="flex flex-col">
+                            <div class="friend-card-content flex min-w-0 flex-col">
                                 <a href={friend.link} class="font-bold">
                                     {friend.name}
                                 </a>
-                                <span>{friend.about}</span>
+                                <span class="friend-card-description">{friend.about}</span>
                             </div>
                         </div>
                 )
             }
-        </div>
     </div>
 </BaseLayout>

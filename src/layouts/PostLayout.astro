@@ -14,19 +14,19 @@ const {title, post = false} = Astro.props as {title: string, post?: boolean}
         <Meta title={title}/>
     </head>
     <body>
-        <div class="min-h-lvh w-full">
-            <header class={`p-16 pb-0${post ? ' post-page-header' : ''}`}>
+        <div class="min-h-lvh w-full site-page-shell">
+            <header class={`site-page-header${post ? ' post-page-header' : ''}`}>
                 <Header/>
             </header>
-            <nav class={`p-2${post ? ' post-page-navigation' : ''}`} aria-label="主导航">
+            <nav class={`site-page-navigation${post ? ' post-page-navigation' : ''}`} aria-label="主导航">
                 <Navigation/>
             </nav>
-            <main class="p-6 flex justify-center items-center">
+            <main class={`site-page-main${post ? ' post-page-main' : ''}`}>
                 <article class="w-full max-w-[720px] flex flex-col gap-4">
                     <slot/>
                 </article>
             </main>
-            <footer class="p-6">
+            <footer class="site-page-footer">
                 <Footer/>
             </footer>
         </div>

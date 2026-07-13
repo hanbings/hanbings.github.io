@@ -1,7 +1,7 @@
 ---
 import {getCollection} from "astro:content"
 import {convertDateFormat} from "../../utils/date"
-import BaseLayout from "../../layouts/BaseLayout.astro"
+import PostLayout from "../../layouts/PostLayout.astro"
 
 export async function getStaticPaths() {
     const allPosts = await getCollection('posts', ({ data }) => !data.draft)
@@ -20,11 +20,10 @@ export async function getStaticPaths() {
 const {tag} = Astro.params
 const {posts} = Astro.props
 ---
-<BaseLayout title={tag}>
-    <div class="flex justify-center items-center">
-        <div class="flex flex-col items-center">
-            <h1 class="text-xl font-bold">包含「{tag}」标签的文章</h1>
-            <div class="flex flex-col gap-0">
+<PostLayout title={tag}>
+    <div class="flex flex-col">
+        <h2 class="page-title">包含「{tag}」标签的文章</h2>
+        <div class="flex flex-col gap-0">
                 {
                     posts.map(
                         post =>
@@ -36,7 +35,6 @@ const {posts} = Astro.props
                                 </div>
                     )
                 }
-            </div>
         </div>
     </div>
-</BaseLayout>
+</PostLayout>

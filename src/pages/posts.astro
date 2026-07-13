@@ -1,44 +1,33 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
-import Content from "../content/specs/posts.md"
+import PostLayout from "../layouts/PostLayout.astro"
 import {getCollection} from "astro:content"
 import {convertDateFormat} from "../utils/date"
-import "../styles/github-markdown.css"
 
 const allPosts =
     (await getCollection('posts', ({ data }) => !data.draft))
         .sort((a, b) =>
             new Date(b.data.date.replace(" ", "T")).getTime() -
             new Date(a.data.date.replace(" ", "T")).getTime())
-const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))]
 ---
-<BaseLayout title="文章">
-    <div class="markdown-body">
-        <Content/>
-    </div>
-    <div class="flex justify-center items-center">
-        <div class="flex flex-col">
-            <h2 class="text-xl font-bold">标签</h2>
-            <div class="flex flex-row m-2 gap-2">
-                {
-                    allTags.map(tag => <a href={`/tags/${tag}`}
-                                          class="theme-muted-link">{`#${tag}`}</a>)
-                }
-            </div>
-            <h2 class="text-xl font-bold mt-6">文章</h2>
-            <div class="flex flex-col m-2 gap-0">
-                {
-                    allPosts.map(
-                        post =>
-                                <div class="theme-entry flex flex-row gap-3 items-center">
-                                    {convertDateFormat(post.data.date)}
-                                    <a href={`/posts/${post.id}`}>
-                                        {post.data.title}
-                                    </a>
-                                </div>
-                    )
-                }
-            </div>
+<PostLayout title="文章">
+    <section aria-labelledby="posts-title">
+        <h2 id="posts-title" class="page-title">文章</h2>
+        <div class="home-post-list flex flex-col gap-0">
+            {
+                allPosts.map(post => (
+                    <article class="home-post flex flex-row flex-wrap gap-3 items-center">
+                        <time datetime={post.data.date.replace(" ", "T")}>{convertDateFormat(post.data.date)}</time>
+                        <a class="home-post-title" href={`/posts/${post.id}`}>{post.data.title}</a>
+                        <div class="home-post-tags" aria-label="标签">
+                            {
+                                post.data.tags.map(tag => (
+                                    <a class="theme-muted-link" href={`/tags/${tag}`}>{`#${tag}`}</a>
+                                ))
+                            }
+                        </div>
+                    </article>
+                ))
+            }
         </div>
-    </div>
-</BaseLayout>
+    </section>
+</PostLayout>

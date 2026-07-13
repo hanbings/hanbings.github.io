@@ -1,9 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
-import Content from "../content/specs/home.md"
 import {convertDateFormat} from "../utils/date"
 import {getCollection} from "astro:content"
-import "../styles/github-markdown.css"
 
 const allPosts =
     (await getCollection('posts', ({ data }) => !data.draft))
@@ -12,25 +10,24 @@ const allPosts =
             new Date(a.data.date.replace(" ", "T")).getTime())
 ---
 <BaseLayout title="主页">
-    <div class="markdown-body">
-        <Content/>
-    </div>
-    <div class="flex justify-center items-center">
-        <div class="flex flex-col w-auto md:w-[720px]">
-            <h2 class="text-xl font-bold mt-6">近期文章</h2>
-            <div class="flex flex-col m-2 gap-0">
-                {
-                    allPosts.map(
-                        post =>
-                                <div class="theme-entry flex flex-row gap-3 items-center">
-                                    {convertDateFormat(post.data.date)}
-                                    <a href={`/posts/${post.id}`}>
-                                        {post.data.title}
-                                    </a>
-                                </div>
-                    )
-                }
-            </div>
+    <section class="home-recent" aria-labelledby="recent-posts-title">
+        <h2 id="recent-posts-title" class="page-title">近期文章</h2>
+        <div class="home-post-list flex flex-col gap-0">
+            {
+                allPosts.map(post => (
+                    <article class="home-post flex flex-row flex-wrap gap-3 items-center">
+                        <time datetime={post.data.date.replace(" ", "T")}>{convertDateFormat(post.data.date)}</time>
+                        <a class="home-post-title" href={`/posts/${post.id}`}>{post.data.title}</a>
+                        <div class="home-post-tags" aria-label="标签">
+                            {
+                                post.data.tags.map(tag => (
+                                    <a class="theme-muted-link" href={`/tags/${tag}`}>{`#${tag}`}</a>
+                                ))
+                            }
+                        </div>
+                    </article>
+                ))
+            }
         </div>
-    </div>
+    </section>
 </BaseLayout>
