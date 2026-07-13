@@ -1,6 +1,7 @@
 ---
 import {getCollection, render} from 'astro:content'
 import PostLayout from "../../layouts/PostLayout.astro"
+import PostSidebar from "../../components/PostSidebar.astro"
 import TableOfContents from "../../components/TableOfContents.astro"
 import "../../styles/github-markdown.css"
 
@@ -15,7 +16,8 @@ const {entry} = Astro.props
 const {Content, headings} = await render(entry)
 const tags = [...entry.data['tags']]
 ---
-<PostLayout title={entry.data['title']}>
+<PostLayout title={entry.data['title']} post>
+    <PostSidebar headings={headings}/>
     <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
     <div class="flex flex-col">
         <div class="flex flex-row gap-2">
@@ -32,7 +34,9 @@ const tags = [...entry.data['tags']]
             }
         </div>
     </div>
-    <TableOfContents headings={headings}/>
+    <div class="post-toc-mobile">
+        <TableOfContents headings={headings}/>
+    </div>
     <div class="markdown-body">
         <Content/>
     </div>
