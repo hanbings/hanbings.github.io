@@ -30,7 +30,7 @@ const {posts} = Astro.props
             {
                 posts.map(post => (
                     <article class="flex flex-row flex-wrap items-center gap-3 text-[var(--theme-muted)]">
-                        <time datetime={post.data.date.replace(" ", "T")}>{convertDateFormat(post.data.date)}</time>
+                        <time class="tabular-nums" datetime={post.data.date.replace(" ", "T")}>{convertDateFormat(post.data.date)}</time>
                         <a
                             class="text-inherit no-underline hover:underline hover:decoration-2 hover:decoration-[var(--theme-accent)] hover:underline-offset-[3px]"
                             href={`/posts/${post.id}`}

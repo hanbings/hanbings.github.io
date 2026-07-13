@@ -19,7 +19,7 @@ const allEvents = await getCollection('events', ({ data }) => !data.draft)
                     allEvents.map(
                         events =>
                                 <div class="theme-entry flex flex-row gap-3 items-center">
-                                    {convertDateFormat(events.data.date)}
+                                    <time class="tabular-nums" datetime={events.data.date.replace(" ", "T")}>{convertDateFormat(events.data.date)}</time>
                                     <a href={`/events/${events.id}`}>
                                         {events.data.title}
                                     </a>
