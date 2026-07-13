@@ -129,14 +129,6 @@
   }
 }
 
-.friend-card-description {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-height: 1.25;
-}
-
 html {
   scrollbar-width: none;
 }
@@ -187,48 +179,6 @@ html::-webkit-scrollbar {
   padding-left: 0.75rem;
 }
 
-.site-page-header,
-.site-page-navigation,
-.site-page-main,
-.site-page-footer {
-  width: min(720px, calc(100% - 3rem));
-  margin-inline: auto;
-}
-
-.site-page-header {
-  padding-top: 25dvh;
-}
-
-.site-page-header .site-header-content {
-  align-items: flex-start;
-}
-
-.site-page-navigation {
-  padding: 0.5rem 0;
-}
-
-.site-page-navigation .site-navigation {
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
-.site-page-main {
-  padding: 0.75rem 0;
-}
-
-.site-page-footer {
-  padding: 0.5rem 0 1.5rem;
-}
-
-.site-page-footer > div {
-  justify-content: flex-start;
-}
-
-.home-recent {
-  margin-top: 0;
-}
-
-.page-title,
 .about-page.markdown-body > h2:first-child {
   margin: 0;
   padding-bottom: 0;
@@ -239,46 +189,8 @@ html::-webkit-scrollbar {
   line-height: 1.4;
 }
 
-.home-post-list {
-  margin-top: 0.75rem;
-}
-
-.home-post {
-  color: var(--theme-muted);
-}
-
-.home-post-title {
-  color: inherit;
-  text-decoration: none;
-}
-
-.home-post-title:hover {
-  text-decoration-line: underline;
-  text-decoration-color: var(--theme-accent);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
-}
-
-.home-post-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-}
-
 .post-sidebar {
   display: none;
-}
-
-.post-page-navigation {
-  display: none;
-}
-
-.post-page-header .theme-title {
-  padding: 0;
-  background-color: transparent;
-  color: var(--theme-fg);
-  font-size: 1.5rem;
 }
 
 @media (min-width: 1160px) {
@@ -303,33 +215,6 @@ html::-webkit-scrollbar {
     gap: 0.75rem;
     overflow-y: auto;
     transform: translateY(-50%);
-  }
-
-  .post-sidebar .site-header-content {
-    align-items: flex-start;
-  }
-
-  .post-sidebar .theme-title {
-    padding: 0;
-    background-color: transparent;
-    color: var(--theme-fg);
-    font-size: 1.5rem;
-  }
-
-  .post-sidebar-home {
-    align-self: stretch;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background-color: transparent;
-    color: var(--theme-muted);
-    text-align: left;
-    text-decoration: none;
-  }
-
-  .post-sidebar-home:hover {
-    background-color: transparent;
-    color: var(--theme-fg);
   }
 
   .post-sidebar .post-toc {

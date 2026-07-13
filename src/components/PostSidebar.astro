@@ -11,8 +11,14 @@ interface Heading {
 const {headings} = Astro.props as {headings: Heading[]}
 ---
 
-<aside class="post-sidebar" aria-label="文章导航">
+<aside
+    class="post-sidebar [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-[var(--theme-fg)]"
+    aria-label="文章导航"
+>
     <Header/>
-    <a class="post-sidebar-home" href="/">返回主页</a>
+    <a
+        class="self-stretch rounded-none border-0 bg-transparent p-0 text-left text-[var(--theme-muted)] no-underline hover:bg-transparent hover:text-[var(--theme-fg)]"
+        href="/"
+    >返回主页</a>
     <TableOfContents headings={headings}/>
 </aside>

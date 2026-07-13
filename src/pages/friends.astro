@@ -101,7 +101,7 @@ const friends = [
     <div class="markdown-body">
         <Content/>
     </div>
-    <div class="friends-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-6">
+    <div class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
             {
                 friends.map(friend =>
                         <div class="theme-friend-card flex min-w-0 items-center gap-2 h-24 p-3 rounded-xl w-full">
@@ -115,11 +115,11 @@ const friends = [
                                 referrerpolicy="no-referrer"
                                 class="h-16 rounded-full"
                             />
-                            <div class="friend-card-content flex min-w-0 flex-col">
+                            <div class="flex min-w-0 flex-col">
                                 <a href={friend.link} class="font-bold">
                                     {friend.name}
                                 </a>
-                                <span class="friend-card-description">{friend.about}</span>
+                                <span class="line-clamp-2 leading-tight">{friend.about}</span>
                             </div>
                         </div>
                 )

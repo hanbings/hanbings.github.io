@@ -6,10 +6,10 @@ const pages = [
     { page: '朋友们', to: '/friends'},
 ]
 ---
-<div class="site-navigation flex flex-row justify-center items-center gap-2">
+<div class="flex flex-row flex-wrap items-center justify-start gap-2">
     {
         pages.map(page =>
-                <a class="theme-nav-link" href={page.to}>
+                <a class="theme-nav-link no-underline" href={page.to}>
                     {page.page}
                 </a>
         )

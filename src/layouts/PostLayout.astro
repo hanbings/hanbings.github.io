@@ -14,19 +14,28 @@ const {title, post = false} = Astro.props as {title: string, post?: boolean}
         <Meta title={title}/>
     </head>
     <body>
-        <div class="min-h-lvh w-full site-page-shell">
-            <header class={`site-page-header${post ? ' post-page-header' : ''}`}>
+        <div class="min-h-lvh w-full">
+            <header class:list={[
+                "mx-auto w-[min(720px,calc(100%_-_3rem))] pt-[25dvh]",
+                post && "post-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-[var(--theme-fg)]",
+            ]}>
                 <Header/>
             </header>
-            <nav class={`site-page-navigation${post ? ' post-page-navigation' : ''}`} aria-label="主导航">
+            <nav class:list={[
+                "mx-auto w-[min(720px,calc(100%_-_3rem))] py-2",
+                post && "hidden",
+            ]} aria-label="主导航">
                 <Navigation/>
             </nav>
-            <main class={`site-page-main${post ? ' post-page-main' : ''}`}>
+            <main class:list={[
+                "mx-auto w-[min(720px,calc(100%_-_3rem))] py-3",
+                post && "post-page-main",
+            ]}>
                 <article class="w-full max-w-[720px] flex flex-col gap-4">
                     <slot/>
                 </article>
             </main>
-            <footer class="site-page-footer">
+            <footer class="mx-auto w-[min(720px,calc(100%_-_3rem))] pt-2 pb-6">
                 <Footer/>
             </footer>
         </div>
