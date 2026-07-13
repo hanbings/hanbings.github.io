@@ -1,10 +1,28 @@
 <dialog class="image-lightbox" aria-label="图片预览">
-    <button class="image-lightbox-close" type="button" aria-label="关闭图片预览">
+    <div class="image-lightbox-content">
+        <img class="image-lightbox-preview" alt="" />
+        <button class="image-lightbox-close" type="button" aria-label="关闭图片预览">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18"></path>
+            </svg>
+        </button>
+    </div>
+</dialog>
+
+<dialog class="code-lightbox" aria-label="代码预览">
+    <button class="code-lightbox-close" type="button" aria-label="关闭代码预览">
         <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18"></path>
         </svg>
     </button>
-    <img class="image-lightbox-preview" alt="" />
+    <button class="code-lightbox-copy" type="button" aria-label="复制代码">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+            <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <span class="copy-button-status" role="status" aria-atomic="true"></span>
+    </button>
+    <div class="code-lightbox-content"></div>
 </dialog>
 
 <script>
@@ -21,6 +39,7 @@
         success: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4 4L19 7"></path></svg>',
         error: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>',
     }
+    const expandButtonIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5"></path><path d="M3 8l6-6M15 9l6-6M21 16l-6 5M9 15l-6 6"></path></svg>'
 
     const setCopyButtonState = (
         button: HTMLButtonElement,
@@ -45,60 +64,30 @@
         button.title = labels[state]
     }
 
-    const enhanceCodeBlocks = () => {
-        if (!navigator.clipboard) return
+    const setupCopyButton = (button: HTMLButtonElement, getText: () => string) => {
+        setCopyButtonState(button, 'copy')
 
-        document.querySelectorAll<HTMLPreElement>('.markdown-body .astro-code').forEach((block) => {
-            if (block.dataset.copyReady) return
+        let resetTimer: number | undefined
+        button.addEventListener('click', async () => {
+            window.clearTimeout(resetTimer)
+            button.disabled = true
 
-            const code = block.querySelector('code')
-            if (!code) return
+            try {
+                await copyText(getText())
+                setCopyButtonState(button, 'success')
+            } catch {
+                setCopyButtonState(button, 'error')
+            } finally {
+                button.disabled = false
+            }
 
-            const button = document.createElement('button')
-            button.type = 'button'
-            button.className = 'code-copy-button'
-
-            const status = document.createElement('span')
-            status.className = 'copy-button-status'
-            status.setAttribute('role', 'status')
-            status.setAttribute('aria-atomic', 'true')
-            button.append(status)
-            setCopyButtonState(button, 'copy')
-
-            let resetTimer: number | undefined
-            button.addEventListener('click', async () => {
-                window.clearTimeout(resetTimer)
-                button.disabled = true
-
-                try {
-                    await copyText(code.textContent ?? '')
-                    setCopyButtonState(button, 'success')
-                } catch {
-                    setCopyButtonState(button, 'error')
-                } finally {
-                    button.disabled = false
-                }
-
-                resetTimer = window.setTimeout(() => {
-                    setCopyButtonState(button, 'copy')
-                }, 1800)
-            })
-
-            const wrapper = document.createElement('div')
-            wrapper.className = 'code-block-wrapper'
-            block.dataset.copyReady = 'true'
-            block.before(wrapper)
-            wrapper.append(block, button)
+            resetTimer = window.setTimeout(() => {
+                setCopyButtonState(button, 'copy')
+            }, 1800)
         })
     }
 
-    const enhanceImages = () => {
-        const dialog = document.querySelector<HTMLDialogElement>('.image-lightbox')
-        const preview = dialog?.querySelector<HTMLImageElement>('.image-lightbox-preview')
-        const closeButton = dialog?.querySelector<HTMLButtonElement>('.image-lightbox-close')
-        if (!dialog || !preview || !closeButton) return
-
-        let trigger: HTMLImageElement | undefined
+    const createScrollLock = () => {
         let scrollX = 0
         let scrollY = 0
         let scrollLocked = false
@@ -110,8 +99,10 @@
             overflow: '',
         }
 
-        const lockScroll = () => {
+        const lock = () => {
             const { style } = document.body
+            scrollX = window.scrollX
+            scrollY = window.scrollY
             bodyStyleBeforeLock.position = style.position
             bodyStyleBeforeLock.top = style.top
             bodyStyleBeforeLock.left = style.left
@@ -125,7 +116,7 @@
             scrollLocked = true
         }
 
-        const restoreScroll = () => {
+        const restore = () => {
             if (!scrollLocked) return
 
             const { style } = document.body
@@ -138,26 +129,133 @@
             window.scrollTo(scrollX, scrollY)
         }
 
+        return {lock, restore}
+    }
+
+    const enhanceCodeBlocks = () => {
+        const dialog = document.querySelector<HTMLDialogElement>('.code-lightbox')
+        const preview = dialog?.querySelector<HTMLElement>('.code-lightbox-content')
+        const closeButton = dialog?.querySelector<HTMLButtonElement>('.code-lightbox-close')
+        const copyButton = dialog?.querySelector<HTMLButtonElement>('.code-lightbox-copy')
+        const canExpand = Boolean(dialog && preview && closeButton && typeof dialog.showModal === 'function')
+        const scrollLock = createScrollLock()
+        let trigger: HTMLButtonElement | undefined
+        let codeText = ''
+
+        const closeDialog = () => {
+            if (dialog?.open) dialog.close()
+        }
+
+        const openCode = (block: HTMLPreElement, button: HTMLButtonElement) => {
+            if (!dialog || !preview || !closeButton) return
+
+            trigger = button
+            codeText = block.querySelector('code')?.textContent ?? ''
+            const clone = block.cloneNode(true) as HTMLPreElement
+            clone.classList.add('code-lightbox-code')
+            clone.removeAttribute('data-copy-ready')
+            clone.removeAttribute('data-code-ready')
+            clone.removeAttribute('tabindex')
+            preview.replaceChildren(clone)
+            dialog.setAttribute('aria-label', `代码预览：${block.dataset.language || '代码'}`)
+
+            try {
+                dialog.showModal()
+                scrollLock.lock()
+                closeButton.focus({preventScroll: true})
+            } catch {
+                preview.replaceChildren()
+            }
+        }
+
+        if (canExpand && dialog && preview && closeButton) {
+            if (copyButton && navigator.clipboard) setupCopyButton(copyButton, () => codeText)
+            else if (copyButton) copyButton.hidden = true
+
+            closeButton.addEventListener('click', closeDialog)
+            dialog.addEventListener('click', (event) => {
+                if (event.target === dialog) closeDialog()
+            })
+            dialog.addEventListener('close', () => {
+                preview.replaceChildren()
+                scrollLock.restore()
+                trigger?.focus({preventScroll: true})
+            })
+        }
+
+        document.querySelectorAll<HTMLPreElement>('.markdown-body .astro-code').forEach((block) => {
+            if (block.dataset.codeReady) return
+
+            const code = block.querySelector('code')
+            if (!code) return
+
+            const existingWrapper = block.parentElement?.classList.contains('code-block-wrapper')
+                ? block.parentElement
+                : undefined
+            const wrapper = existingWrapper ?? document.createElement('div')
+            if (!existingWrapper) {
+                wrapper.className = 'code-block-wrapper'
+                block.before(wrapper)
+                wrapper.append(block)
+            }
+
+            if (navigator.clipboard && !wrapper.querySelector('.code-copy-button')) {
+                const button = document.createElement('button')
+                button.type = 'button'
+                button.className = 'code-copy-button'
+
+                const status = document.createElement('span')
+                status.className = 'copy-button-status'
+                status.setAttribute('role', 'status')
+                status.setAttribute('aria-atomic', 'true')
+                button.append(status)
+                setupCopyButton(button, () => code.textContent ?? '')
+                wrapper.append(button)
+            }
+
+            if (canExpand && !wrapper.querySelector('.code-expand-button')) {
+                const button = document.createElement('button')
+                button.type = 'button'
+                button.className = 'code-expand-button'
+                button.setAttribute('aria-label', '放大代码')
+                button.title = '放大代码'
+                button.setAttribute('aria-haspopup', 'dialog')
+                button.innerHTML = expandButtonIcon
+                button.addEventListener('click', () => openCode(block, button))
+                wrapper.append(button)
+            }
+
+            block.dataset.codeReady = 'true'
+        })
+    }
+
+    const enhanceImages = () => {
+        const dialog = document.querySelector<HTMLDialogElement>('.image-lightbox')
+        const preview = dialog?.querySelector<HTMLImageElement>('.image-lightbox-preview')
+        const closeButton = dialog?.querySelector<HTMLButtonElement>('.image-lightbox-close')
+        if (!dialog || !preview || !closeButton) return
+
+        let trigger: HTMLElement | undefined
+        const scrollLock = createScrollLock()
+
         const closeDialog = () => {
             if (dialog.open) dialog.close()
         }
 
-        const openImage = (image: HTMLImageElement) => {
+        const openImage = (image: HTMLImageElement, focusTarget: HTMLElement = image) => {
             const source = image.currentSrc || image.src
             if (typeof dialog.showModal !== 'function') {
                 window.open(source, '_blank', 'noopener,noreferrer')
                 return
             }
 
-            trigger = image
-            scrollX = window.scrollX
-            scrollY = window.scrollY
+            trigger = focusTarget
             preview.src = source
             dialog.setAttribute('aria-label', `图片预览：${image.alt}`)
 
             try {
                 dialog.showModal()
-                lockScroll()
+                scrollLock.lock()
             } catch {
                 preview.removeAttribute('src')
                 window.open(source, '_blank', 'noopener,noreferrer')
@@ -165,7 +263,31 @@
         }
 
         document.querySelectorAll<HTMLImageElement>('.markdown-body img').forEach((image) => {
-            if (!image.alt.trim() || image.closest('a') || image.dataset.lightboxReady) return
+            if (!image.alt.trim() || image.closest('a')) return
+
+            const existingWrapper = image.parentElement?.classList.contains('image-preview-wrapper')
+                ? image.parentElement
+                : undefined
+            const wrapper = existingWrapper ?? document.createElement('span')
+            if (!existingWrapper) {
+                wrapper.className = 'image-preview-wrapper'
+                image.before(wrapper)
+                wrapper.append(image)
+            }
+
+            if (!wrapper.querySelector('.image-expand-button')) {
+                const button = document.createElement('button')
+                button.type = 'button'
+                button.className = 'image-expand-button'
+                button.setAttribute('aria-label', `放大图片：${image.alt}`)
+                button.title = '放大图片'
+                button.setAttribute('aria-haspopup', 'dialog')
+                button.innerHTML = expandButtonIcon
+                button.addEventListener('click', () => openImage(image, button))
+                wrapper.append(button)
+            }
+
+            if (image.dataset.lightboxReady) return
 
             image.dataset.lightboxReady = 'true'
             image.classList.add('zoomable-image')
@@ -187,9 +309,8 @@
         })
         dialog.addEventListener('close', () => {
             preview.removeAttribute('src')
-            restoreScroll()
-            trigger?.focus({ preventScroll: true })
-            window.requestAnimationFrame(() => window.scrollTo(scrollX, scrollY))
+            scrollLock.restore()
+            trigger?.focus({preventScroll: true})
         })
     }
 
