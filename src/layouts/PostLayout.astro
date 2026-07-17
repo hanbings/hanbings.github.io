@@ -6,7 +6,11 @@ import Footer from "../components/Footer.astro"
 import ContentEnhancements from "../components/ContentEnhancements.astro"
 import "../styles/global.css"
 
-const {title, post = false} = Astro.props as {title: string, post?: boolean}
+const {title, post = false, background} = Astro.props as {
+    title: string
+    post?: boolean
+    background?: string
+}
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -14,28 +18,38 @@ const {title, post = false} = Astro.props as {title: string, post?: boolean}
         <Meta title={title}/>
     </head>
     <body>
-        <div class="min-h-lvh w-full">
+        {
+            background && (
+                <div class="page-background" aria-hidden="true">
+                    <img src={background} alt="" decoding="async"/>
+                </div>
+            )
+        }
+        <div class:list={[
+            "relative z-1 min-h-lvh w-full",
+            background && "has-page-background",
+        ]}>
             <header class:list={[
-                "mx-auto w-[min(720px,calc(100%_-_3rem))] pt-[25dvh]",
-                post && "post-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-[var(--theme-fg)]",
+                "mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]",
+                post && "post-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)",
             ]}>
                 <Header/>
             </header>
             <nav class:list={[
-                "mx-auto w-[min(720px,calc(100%_-_3rem))] py-2",
+                "mx-auto w-[min(720px,calc(100%-3rem))] py-2",
                 post && "hidden",
             ]} aria-label="主导航">
                 <Navigation/>
             </nav>
             <main class:list={[
-                "mx-auto w-[min(720px,calc(100%_-_3rem))] py-3",
+                "mx-auto w-[min(720px,calc(100%-3rem))] py-3",
                 post && "post-page-main",
             ]}>
-                <article class="w-full max-w-[720px] flex flex-col gap-4">
+                <article class="w-full max-w-180 flex flex-col gap-4">
                     <slot/>
                 </article>
             </main>
-            <footer class="mx-auto w-[min(720px,calc(100%_-_3rem))] pt-2 pb-6">
+            <footer class="mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6">
                 <Footer/>
             </footer>
         </div>

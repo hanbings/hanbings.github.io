@@ -10,7 +10,7 @@ const postsCollection = defineCollection({
         date: z.string(),
         tags: z.array(z.string()),
         draft: z.boolean().optional(),
-        image: z.string().optional(),
+        background: z.string().optional(),
         author: z.string().optional()
     })
 })
@@ -22,7 +22,7 @@ const eventsCollection = defineCollection({
         description: z.string(),
         date: z.string(),
         draft: z.boolean().optional(),
-        image: z.string().optional(),
+        background: z.string().optional(),
         author: z.string().optional()
     })
 })
