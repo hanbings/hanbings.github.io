@@ -254,6 +254,23 @@ html::-webkit-scrollbar {
   }
 }
 
+.markdown-body a[href] {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(to bottom, transparent 75%, var(--theme-accent) 75%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.markdown-body a[href]:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.markdown-body a[href]:has(img) {
+  background-image: none;
+}
+
 .markdown-body blockquote {
   position: relative;
   padding: 1.25rem 1.5rem 1.25rem 3.25rem !important;
