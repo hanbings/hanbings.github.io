@@ -11,9 +11,7 @@ const sanitizeOptions = {
   },
   exclusiveFilter: (frame) => {
     const classes = frame.attribs.class?.split(/\s+/) ?? []
-    return frame.tag === 'button' ||
-      classes.includes('piano-keyboard-scroll') ||
-      classes.includes('piano-hint')
+    return frame.tag === 'button' || classes.includes('piano-keyboard-scroll')
   },
 }
 

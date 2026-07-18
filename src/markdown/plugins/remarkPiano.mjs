@@ -217,12 +217,6 @@ export default function remarkPiano() {
         createElement('piano-keyboard-scroll', 'div', {className: ['piano-keyboard-scroll']}, [
           createKeyboard(startOctave, octaveCount, selectedNotes, title),
         ]),
-        createTextElement(
-          'piano-hint',
-          'span',
-          {className: ['piano-hint']},
-          '点击琴键，或聚焦后按 Enter / 空格键切换状态',
-        ),
       ]
     })
   }
