@@ -1,6 +1,6 @@
 ---
 import {getCollection, render} from 'astro:content'
-import PostLayout from "../../layouts/PostLayout.astro"
+import BaseLayout from "../../layouts/BaseLayout.astro"
 import "../../styles/github-markdown.css"
 
 export async function getStaticPaths() {
@@ -13,12 +13,14 @@ export async function getStaticPaths() {
 const {entry} = Astro.props
 const {Content} = await render(entry)
 ---
-<PostLayout
+<BaseLayout
     title={entry.data['title']}
     background={entry.data['background']}
 >
-    <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
-    <div class="markdown-body">
-        <Content/>
-    </div>
-</PostLayout>
+    <article class="flex flex-col gap-4">
+        <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
+        <div class="markdown-body">
+            <Content/>
+        </div>
+    </article>
+</BaseLayout>

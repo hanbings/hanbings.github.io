@@ -12,12 +12,12 @@ const {headings} = Astro.props as {headings: Heading[]}
 ---
 
 <aside
-    class="document-sidebar flex flex-col gap-3 [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)"
+    class="post-sidebar flex flex-col gap-3 [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)"
     aria-label="文章导航"
 >
     <Header/>
     <a
-        class="self-stretch rounded-none border-0 bg-transparent p-0 text-left text-(--theme-muted) no-underline hover:bg-transparent hover:text-(--theme-fg)"
+        class="theme-entry self-stretch text-left"
         href="/"
     >返回主页</a>
     <TableOfContents headings={headings}/>

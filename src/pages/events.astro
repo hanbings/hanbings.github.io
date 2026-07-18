@@ -1,32 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
-import Content from "../content/specs/posts.md"
+import EntryList from "../components/EntryList.astro"
 import {getCollection} from "astro:content"
-import {convertDateFormat} from "../utils/date"
-import "../styles/github-markdown.css"
 
-const allEvents = await getCollection('events', ({ data }) => !data.draft)
+const allEvents =
+    (await getCollection('events', ({ data }) => !data.draft))
+        .sort((a, b) =>
+            new Date(b.data.date.replace(" ", "T")).getTime() -
+            new Date(a.data.date.replace(" ", "T")).getTime())
 ---
 <BaseLayout title="Events">
-    <div class="markdown-body">
-        <Content/>
-    </div>
-    <div class="flex justify-center items-center">
-        <div class="flex flex-col">
-            <h2 class="text-xl font-bold mt-6">Events</h2>
-            <div class="flex flex-col m-2 gap-0">
-                {
-                    allEvents.map(
-                        events =>
-                                <div class="theme-entry flex flex-row gap-3 items-center">
-                                    <time class="tabular-nums" datetime={events.data.date.replace(" ", "T")}>{convertDateFormat(events.data.date)}</time>
-                                    <a href={`/events/${events.id}`}>
-                                        {events.data.title}
-                                    </a>
-                                </div>
-                    )
-                }
-            </div>
-        </div>
-    </div>
+    <EntryList
+        heading="Events"
+        headingId="events-title"
+        items={allEvents.map(event => ({
+            title: event.data.title,
+            href: `/events/${event.id}`,
+            date: event.data.date,
+        }))}
+    />
 </BaseLayout>

@@ -1,10 +1,8 @@
 ---
 import SiteLayout from "./SiteLayout.astro"
-import DocumentLayout from "./DocumentLayout.astro"
 
-const {title, post = false, background} = Astro.props as {
+const {title, background} = Astro.props as {
     title: string
-    post?: boolean
     background?: string
 }
 
@@ -17,7 +15,7 @@ const siteFooterSlot = Astro.slots.has("site-footer")
 <SiteLayout
     title={title}
     background={background}
-    document={post}
+    markdownRender
     headerBackgroundSlot={headerBackgroundSlot}
     backfillBackgroundSlot={backfillBackgroundSlot}
     siteHeaderSlot={siteHeaderSlot}
@@ -29,19 +27,15 @@ const siteFooterSlot = Astro.slots.has("site-footer")
     <slot name="site-header" slot="site-header"/>
     <slot name="site-navigation" slot="site-navigation"/>
     <slot name="site-footer" slot="site-footer"/>
-    {
-        post ? (
-            <DocumentLayout label={title}>
-                <slot/>
-                <slot name="left" slot="left"/>
-                <slot name="right" slot="right"/>
-            </DocumentLayout>
-        ) : (
-            <main class="site-main mx-auto w-[min(720px,calc(100%-3rem))] py-3">
-                <article class="w-full max-w-180 flex flex-col gap-4">
-                    <slot/>
-                </article>
-            </main>
-        )
-    }
+    <main class="markdown-render" aria-label={title}>
+        <article class="markdown-render-main w-full max-w-180 flex flex-col gap-4">
+            <slot/>
+        </article>
+        <div class="markdown-render-region markdown-render-left">
+            <slot name="left"/>
+        </div>
+        <div class="markdown-render-region markdown-render-right">
+            <slot name="right"/>
+        </div>
+    </main>
 </SiteLayout>

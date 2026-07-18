@@ -10,7 +10,7 @@ import "../styles/global.css"
 const {
     title,
     background,
-    document = false,
+    markdownRender = false,
     headerBackgroundSlot,
     backfillBackgroundSlot,
     siteHeaderSlot,
@@ -19,7 +19,7 @@ const {
 } = Astro.props as {
     title: string
     background?: string
-    document?: boolean
+    markdownRender?: boolean
     headerBackgroundSlot?: boolean
     backfillBackgroundSlot?: boolean
     siteHeaderSlot?: boolean
@@ -60,13 +60,13 @@ const hasPageBackground = Boolean(background || hasHeaderBackground || hasBackfi
             </div>
             <header class:list={[
                 "site-header mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]",
-                document && "document-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)",
+                markdownRender && "markdown-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)",
             ]}>
                 {hasSiteHeader ? <slot name="site-header"/> : <Header/>}
             </header>
             <nav class:list={[
                 "site-navigation mx-auto w-[min(720px,calc(100%-3rem))] py-2",
-                document && "hidden",
+                markdownRender && "hidden",
             ]} aria-label="主导航">
                 {hasSiteNavigation ? <slot name="site-navigation"/> : <Navigation/>}
             </nav>

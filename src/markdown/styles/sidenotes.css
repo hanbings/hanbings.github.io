@@ -60,7 +60,7 @@
 
 @media (min-width: 1160px) {
   .markdown-body .sidenote {
-    --sidenote-gap: var(--document-gutter, 2rem);
+    --sidenote-gap: var(--markdown-render-gutter, 2rem);
     --sidenote-width: min(18rem, calc((100vw - 720px) / 2 - var(--sidenote-gap) - 1.5rem));
     float: right;
     clear: right;
@@ -69,7 +69,7 @@
     padding: 1rem 1.125rem;
   }
 
-  .document-layout:has(> .document-region-right:not(:empty)) .markdown-body .sidenote {
+  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote {
     float: none;
     clear: none;
     width: auto;
