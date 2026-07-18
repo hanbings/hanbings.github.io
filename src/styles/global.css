@@ -105,12 +105,17 @@
   }
 
   .theme-entry {
+    background-image: linear-gradient(var(--theme-accent), var(--theme-accent));
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-size: 0% 25%;
     text-decoration: none;
-    transition: color 150ms ease;
+    transition: color 150ms ease, background-size 180ms ease;
   }
 
   .theme-entry:hover,
   .theme-entry:focus-visible {
+    background-size: 100% 25%;
     color: var(--theme-fg);
     text-decoration: none;
   }
@@ -312,14 +317,26 @@ html::-webkit-scrollbar {
 }
 
 .markdown-body a[href] {
-  color: var(--theme-muted);
+  color: inherit;
   text-decoration: none;
-  transition: color 150ms ease;
 }
 
-.markdown-body a[href]:hover,
-.markdown-body a[href]:focus-visible {
-  color: var(--theme-fg);
+.markdown-body a[href]:not(:has(img)) {
+  background-image:
+    linear-gradient(var(--theme-accent), var(--theme-accent)),
+    linear-gradient(var(--theme-accent-soft), var(--theme-accent-soft));
+  background-position: left bottom, left bottom;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 0% 25%, 100% 25%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 180ms ease;
+}
+
+.markdown-body a[href]:not(:has(img)):hover,
+.markdown-body a[href]:not(:has(img)):focus-visible {
+  background-size: 100% 25%, 100% 25%;
+  color: inherit;
   text-decoration: none;
 }
 
@@ -620,7 +637,9 @@ html::-webkit-scrollbar {
 @media (prefers-reduced-motion: reduce) {
   body,
   .theme-nav-link,
+  .theme-entry,
   .theme-friend-card,
+  .markdown-body a[href],
   .code-copy-button,
   .code-expand-button,
   .image-expand-button,
