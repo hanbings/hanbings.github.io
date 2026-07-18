@@ -1,6 +1,6 @@
 import { visit } from 'unist-util-visit'
 
-const colorCount = 8
+const colorCount = 64
 const labelProperties = {className: ['sidenote-label']}
 
 const createLabel = (block) => ({
@@ -27,8 +27,15 @@ const applyLabel = (node) => {
   }
 }
 
-const selectColor = (node) => {
-  const key = JSON.stringify(node, (property, value) =>
+const getText = (node) => {
+  if (typeof node.value === 'string') return node.value
+  if (typeof node.alt === 'string') return node.alt
+  return node.children?.map(getText).join('') ?? ''
+}
+
+const createColorStyle = (node) => {
+  const text = getText(node).trim()
+  const key = text || JSON.stringify(node, (property, value) =>
     property === 'data' || property === 'position' ? undefined : value)
   let hash = 2166136261
 
@@ -37,10 +44,14 @@ const selectColor = (node) => {
     hash = Math.imul(hash, 16777619)
   }
 
-  return `sidenote-color-${(hash >>> 0) % colorCount}`
+  const colorIndex = (hash >>> 0) % colorCount
+  const hue = (colorIndex * 360) / colorCount
+  const saturation = 48 + ((colorIndex * 7) % 4) * 4
+  const lightness = 88 + ((colorIndex * 11) % 3) * 2
+  return `--sidenote-color: hsl(${hue} ${saturation}% ${lightness}%);`
 }
 
-const applyAnchor = (index, parent, color, file, node) => {
+const applyAnchor = (index, parent, colorStyle, file, node) => {
   const anchor = typeof index === 'number' ? parent?.children[index + 1] : undefined
   if (anchor?.type !== 'paragraph') {
     file.fail(
@@ -58,7 +69,8 @@ const applyAnchor = (index, parent, color, file, node) => {
     data: {
       hName: 'span',
       hProperties: {
-        className: ['sidenote-anchor-text', color],
+        className: ['sidenote-anchor-text'],
+        style: colorStyle,
         tabIndex: 0,
       },
     },
@@ -83,16 +95,17 @@ export default function remarkSidenotes() {
         )
       }
 
-      const color = selectColor(node)
+      const colorStyle = createColorStyle(node)
       const data = node.data || (node.data = {})
       data.hName = 'aside'
       data.hProperties = {
-        className: ['sidenote', color],
+        className: ['sidenote'],
+        style: colorStyle,
         role: 'note',
         tabIndex: 0,
       }
       applyLabel(node)
-      applyAnchor(index, parent, color, file, node)
+      applyAnchor(index, parent, colorStyle, file, node)
     })
   }
 }

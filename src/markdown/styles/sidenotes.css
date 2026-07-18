@@ -1,35 +1,3 @@
-.markdown-body .sidenote-color-0 {
-  --sidenote-color: #ffd966;
-}
-
-.markdown-body .sidenote-color-1 {
-  --sidenote-color: #ffb4a2;
-}
-
-.markdown-body .sidenote-color-2 {
-  --sidenote-color: #a8dadc;
-}
-
-.markdown-body .sidenote-color-3 {
-  --sidenote-color: #bde0fe;
-}
-
-.markdown-body .sidenote-color-4 {
-  --sidenote-color: #caffbf;
-}
-
-.markdown-body .sidenote-color-5 {
-  --sidenote-color: #e4c1f9;
-}
-
-.markdown-body .sidenote-color-6 {
-  --sidenote-color: #ffc8dd;
-}
-
-.markdown-body .sidenote-color-7 {
-  --sidenote-color: #fdffb6;
-}
-
 .markdown-body .sidenote {
   --sidenote-ink: #30323b;
   display: block;
@@ -92,11 +60,12 @@
 
 @media (min-width: 1160px) {
   .markdown-body .sidenote {
+    --sidenote-width: min(18rem, calc((100vw - 720px) / 2 - 3rem));
     float: right;
     clear: right;
-    width: min(12rem, calc((100vw - 720px) / 2 - 3rem));
-    margin: 0 calc((720px - 100vw) / 2 + 1.5rem) 1.25rem 1.5rem;
-    padding: 0.75rem 1rem;
+    width: var(--sidenote-width);
+    margin: 0 calc(0px - var(--sidenote-width) - 2rem) 1.25rem 2rem;
+    padding: 1rem 1.125rem;
   }
 }
 
