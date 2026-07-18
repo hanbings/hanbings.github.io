@@ -16,8 +16,12 @@ const {entry} = Astro.props
 const {Content, headings} = await render(entry)
 const tags = [...entry.data['tags']]
 ---
-<PostLayout title={entry.data['title']} background={entry.data['background']} post>
-    <PostSidebar headings={headings}/>
+<PostLayout
+    title={entry.data['title']}
+    background={entry.data['background']}
+    post
+>
+    <PostSidebar slot="left" headings={headings}/>
     <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
     <div class="flex flex-col">
         <div class="flex flex-row items-center gap-2">

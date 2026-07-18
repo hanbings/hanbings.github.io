@@ -1,11 +1,12 @@
 import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
+import mdx from '@astrojs/mdx'
 import tailwindcss from '@tailwindcss/vite'
 import { markdownProcessor } from './src/markdown/index.mjs'
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [sitemap()],
+  integrations: [sitemap(), mdx()],
   site: 'https://blog.hanbings.io',
 
   markdown: {

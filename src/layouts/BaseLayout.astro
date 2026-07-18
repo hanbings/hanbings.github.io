@@ -1,48 +1,34 @@
 ---
-import Header from "../components/Header.astro"
-import Footer from "../components/Footer.astro"
-import Navigation from "../components/Navigation.astro"
-import Meta from "../components/Meta.astro"
-import ContentEnhancements from "../components/ContentEnhancements.astro"
-import "../styles/global.css"
+import SiteLayout from "./SiteLayout.astro"
 
 const {title, background} = Astro.props as {
     title: string
     background?: string
 }
+
+const headerBackgroundSlot = Astro.slots.has("header-background")
+const backfillBackgroundSlot = Astro.slots.has("backfill-background")
+const siteHeaderSlot = Astro.slots.has("site-header")
+const siteNavigationSlot = Astro.slots.has("site-navigation")
+const siteFooterSlot = Astro.slots.has("site-footer")
 ---
-<!doctype html>
-<html lang="zh-CN">
-    <head>
-        <Meta title={title}/>
-    </head>
-    <body>
-        {
-            background && (
-                <div class="page-background" aria-hidden="true">
-                    <img src={background} alt="" decoding="async"/>
-                </div>
-            )
-        }
-        <div class:list={[
-            "relative z-1 min-h-lvh w-full",
-            background && "has-page-background",
-        ]}>
-            <header class="mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]">
-                <Header/>
-            </header>
-            <nav class="mx-auto w-[min(720px,calc(100%-3rem))] py-2" aria-label="主导航">
-                <Navigation/>
-            </nav>
-            <main class="mx-auto w-[min(720px,calc(100%-3rem))] py-3">
-                <div class="w-full max-w-180">
-                    <slot/>
-                </div>
-            </main>
-            <footer class="mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6">
-                <Footer/>
-            </footer>
+<SiteLayout
+    title={title}
+    background={background}
+    headerBackgroundSlot={headerBackgroundSlot}
+    backfillBackgroundSlot={backfillBackgroundSlot}
+    siteHeaderSlot={siteHeaderSlot}
+    siteNavigationSlot={siteNavigationSlot}
+    siteFooterSlot={siteFooterSlot}
+>
+    <slot name="header-background" slot="header-background"/>
+    <slot name="backfill-background" slot="backfill-background"/>
+    <slot name="site-header" slot="site-header"/>
+    <slot name="site-navigation" slot="site-navigation"/>
+    <slot name="site-footer" slot="site-footer"/>
+    <main class="site-main mx-auto w-[min(720px,calc(100%-3rem))] py-3">
+        <div class="w-full max-w-180">
+            <slot/>
         </div>
-        <ContentEnhancements/>
-    </body>
-</html>
+    </main>
+</SiteLayout>

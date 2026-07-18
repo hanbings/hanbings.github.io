@@ -60,12 +60,21 @@
 
 @media (min-width: 1160px) {
   .markdown-body .sidenote {
-    --sidenote-width: min(18rem, calc((100vw - 720px) / 2 - 3rem));
+    --sidenote-gap: var(--document-gutter, 2rem);
+    --sidenote-width: min(18rem, calc((100vw - 720px) / 2 - var(--sidenote-gap) - 1.5rem));
     float: right;
     clear: right;
     width: var(--sidenote-width);
-    margin: 0 calc(0px - var(--sidenote-width) - 2rem) 1.25rem 2rem;
+    margin: 0 calc(0px - var(--sidenote-width) - var(--sidenote-gap)) 1.25rem var(--sidenote-gap);
     padding: 1rem 1.125rem;
+  }
+
+  .document-layout:has(> .document-region-right:not(:empty)) .markdown-body .sidenote {
+    float: none;
+    clear: none;
+    width: auto;
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem;
   }
 }
 

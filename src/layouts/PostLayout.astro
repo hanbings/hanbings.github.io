@@ -1,58 +1,47 @@
 ---
-import Meta from "../components/Meta.astro"
-import Header from "../components/Header.astro"
-import Navigation from "../components/Navigation.astro"
-import Footer from "../components/Footer.astro"
-import ContentEnhancements from "../components/ContentEnhancements.astro"
-import "../styles/global.css"
+import SiteLayout from "./SiteLayout.astro"
+import DocumentLayout from "./DocumentLayout.astro"
 
 const {title, post = false, background} = Astro.props as {
     title: string
     post?: boolean
     background?: string
 }
+
+const headerBackgroundSlot = Astro.slots.has("header-background")
+const backfillBackgroundSlot = Astro.slots.has("backfill-background")
+const siteHeaderSlot = Astro.slots.has("site-header")
+const siteNavigationSlot = Astro.slots.has("site-navigation")
+const siteFooterSlot = Astro.slots.has("site-footer")
 ---
-<!doctype html>
-<html lang="zh-CN">
-    <head>
-        <Meta title={title}/>
-    </head>
-    <body>
-        {
-            background && (
-                <div class="page-background" aria-hidden="true">
-                    <img src={background} alt="" decoding="async"/>
-                </div>
-            )
-        }
-        <div class:list={[
-            "relative z-1 min-h-lvh w-full",
-            background && "has-page-background",
-        ]}>
-            <header class:list={[
-                "mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]",
-                post && "post-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)",
-            ]}>
-                <Header/>
-            </header>
-            <nav class:list={[
-                "mx-auto w-[min(720px,calc(100%-3rem))] py-2",
-                post && "hidden",
-            ]} aria-label="主导航">
-                <Navigation/>
-            </nav>
-            <main class:list={[
-                "mx-auto w-[min(720px,calc(100%-3rem))] py-3",
-                post && "post-page-main",
-            ]}>
+<SiteLayout
+    title={title}
+    background={background}
+    document={post}
+    headerBackgroundSlot={headerBackgroundSlot}
+    backfillBackgroundSlot={backfillBackgroundSlot}
+    siteHeaderSlot={siteHeaderSlot}
+    siteNavigationSlot={siteNavigationSlot}
+    siteFooterSlot={siteFooterSlot}
+>
+    <slot name="header-background" slot="header-background"/>
+    <slot name="backfill-background" slot="backfill-background"/>
+    <slot name="site-header" slot="site-header"/>
+    <slot name="site-navigation" slot="site-navigation"/>
+    <slot name="site-footer" slot="site-footer"/>
+    {
+        post ? (
+            <DocumentLayout label={title}>
+                <slot/>
+                <slot name="left" slot="left"/>
+                <slot name="right" slot="right"/>
+            </DocumentLayout>
+        ) : (
+            <main class="site-main mx-auto w-[min(720px,calc(100%-3rem))] py-3">
                 <article class="w-full max-w-180 flex flex-col gap-4">
                     <slot/>
                 </article>
             </main>
-            <footer class="mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6">
-                <Footer/>
-            </footer>
-        </div>
-        <ContentEnhancements/>
-    </body>
-</html>
+        )
+    }
+</SiteLayout>

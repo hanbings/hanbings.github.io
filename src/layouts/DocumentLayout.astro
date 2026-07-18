@@ -1,0 +1,14 @@
+---
+const {label = "文档内容"} = Astro.props as {label?: string}
+---
+<main class="document-layout" aria-label={label}>
+    <article class="document-region-main w-full max-w-180 flex flex-col gap-4">
+        <slot/>
+    </article>
+    <div class="document-region document-region-left">
+        <slot name="left"/>
+    </div>
+    <div class="document-region document-region-right">
+        <slot name="right"/>
+    </div>
+</main>

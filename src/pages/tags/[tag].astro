@@ -24,18 +24,18 @@ const {posts} = Astro.props
     <section class="mt-0" aria-labelledby="tag-posts-title">
         <h2
             id="tag-posts-title"
-            class="m-0 border-b-0 pb-0 text-xl font-bold leading-[1.4] text-[var(--theme-fg)]"
+            class="m-0 border-b-0 pb-0 text-xl font-bold leading-[1.4] text-(--theme-fg)"
         >包含「{tag}」标签的文章</h2>
         <div class="mt-3 flex flex-col gap-0">
             {
                 posts.map(post => (
-                    <article class="flex flex-row flex-wrap items-center gap-3 text-[var(--theme-muted)]">
+                    <article class="flex flex-row flex-wrap items-center gap-3 text-(--theme-muted)">
                         <time class="tabular-nums" datetime={post.data.date.replace(" ", "T")}>{convertDateFormat(post.data.date)}</time>
                         <a
-                            class="text-inherit no-underline hover:underline hover:decoration-2 hover:decoration-[var(--theme-accent)] hover:underline-offset-[3px]"
+                            class="text-inherit no-underline hover:underline hover:decoration-2 hover:decoration-(--theme-accent) hover:underline-offset-[3px]"
                             href={`/posts/${post.id}`}
                         >{post.data.title}</a>
-                        <div class="flex flex-wrap gap-1 [font-size:0.75rem]" aria-label="标签">
+                        <div class="flex flex-wrap gap-1 text-[0.75rem]" aria-label="标签">
                             {
                                 post.data.tags.map(postTag => (
                                     <a class="theme-muted-link" href={`/tags/${postTag}`}>{`#${postTag}`}</a>
