@@ -26,6 +26,8 @@
 </dialog>
 
 <script>
+    import { enhancePianos } from '../markdown/piano'
+
     const copyText = async (text: string) => {
         if (!navigator.clipboard) {
             throw new Error('Clipboard API is unavailable')
@@ -316,4 +318,5 @@
 
     enhanceCodeBlocks()
     enhanceImages()
+    enhancePianos()
 </script>

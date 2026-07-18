@@ -1,8 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import sanitizeHtml from 'sanitize-html';
-import MarkdownIt from 'markdown-it';
-const parser = new MarkdownIt();
+import { createMarkdownRenderer } from '../markdown/index.mjs';
+import { sanitizeMarkdownForRss } from '../markdown/sanitizeRss.mjs';
 
 export async function GET(context) {
     const allPosts =
@@ -11,18 +10,23 @@ export async function GET(context) {
                 new Date(b.data.date.replace(" ", "T")).getTime() -
                 new Date(a.data.date.replace(" ", "T")).getTime())
 
-    return rss({
-        title: '🐱 寒冰是喵喵的 blog',
-        description: '欢迎来到我的小世界~',
-        site: context.site,
-        items: allPosts.map((post) => ({
+    const renderer = await createMarkdownRenderer({syntaxHighlight: false})
+    const items = await Promise.all(allPosts.map(async (post) => {
+        const {code} = await renderer.render(post.body)
+
+        return {
             title: post.data.title,
             pubDate: post.data.date,
             description: post.data.description,
             link: `/posts/${post.id}/`,
-            content: sanitizeHtml(parser.render(post.body), {
-                allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img'])
-            }),
-        })),
+            content: sanitizeMarkdownForRss(code),
+        }
+    }))
+
+    return rss({
+        title: '🐱 寒冰是喵喵的 blog',
+        description: '欢迎来到我的小世界~',
+        site: context.site,
+        items,
     });
 }

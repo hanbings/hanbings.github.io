@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@import '../markdown/styles/piano.css';
+@import '../markdown/styles/sidenotes.css';
+@import '../markdown/styles/terms.css';
 
 :root {
   color-scheme: light;

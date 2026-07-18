@@ -1,0 +1,107 @@
+.markdown-body .sidenote-color-0 {
+  --sidenote-color: #ffd966;
+}
+
+.markdown-body .sidenote-color-1 {
+  --sidenote-color: #ffb4a2;
+}
+
+.markdown-body .sidenote-color-2 {
+  --sidenote-color: #a8dadc;
+}
+
+.markdown-body .sidenote-color-3 {
+  --sidenote-color: #bde0fe;
+}
+
+.markdown-body .sidenote-color-4 {
+  --sidenote-color: #caffbf;
+}
+
+.markdown-body .sidenote-color-5 {
+  --sidenote-color: #e4c1f9;
+}
+
+.markdown-body .sidenote-color-6 {
+  --sidenote-color: #ffc8dd;
+}
+
+.markdown-body .sidenote-color-7 {
+  --sidenote-color: #fdffb6;
+}
+
+.markdown-body .sidenote {
+  --sidenote-ink: #30323b;
+  display: block;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.125rem;
+  background-color: var(--sidenote-color);
+  box-shadow: 0 0.75rem 1.5rem -1rem var(--theme-shadow);
+  color: var(--sidenote-ink);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.markdown-body .sidenote :where(*) {
+  color: var(--sidenote-ink) !important;
+}
+
+.markdown-body .sidenote-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  color: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.markdown-body .sidenote > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body .sidenote-anchor-text {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  border-radius: 0.125rem;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.markdown-body .sidenote:hover + p > .sidenote-anchor-text,
+.markdown-body .sidenote:focus-within + p > .sidenote-anchor-text,
+.markdown-body .sidenote-anchor-text:hover,
+.markdown-body .sidenote-anchor-text:focus-within {
+  background-color: var(--sidenote-color);
+  color: #30323b;
+}
+
+.markdown-body .sidenote:hover + p > .sidenote-anchor-text :where(*),
+.markdown-body .sidenote:focus-within + p > .sidenote-anchor-text :where(*),
+.markdown-body .sidenote-anchor-text:hover :where(*),
+.markdown-body .sidenote-anchor-text:focus-within :where(*) {
+  color: #30323b !important;
+}
+
+.markdown-body .sidenote:focus-visible,
+.markdown-body .sidenote :focus-visible,
+.markdown-body .sidenote-anchor-text:focus-visible,
+.markdown-body .sidenote-anchor-text :focus-visible {
+  outline-color: #30323b;
+}
+
+@media (min-width: 1160px) {
+  .markdown-body .sidenote {
+    float: right;
+    clear: right;
+    width: min(12rem, calc((100vw - 720px) / 2 - 3rem));
+    margin: 0 calc((720px - 100vw) / 2 + 1.5rem) 1.25rem 1.5rem;
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown-body .sidenote-anchor-text {
+    transition: none;
+  }
+}

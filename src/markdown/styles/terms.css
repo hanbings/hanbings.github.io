@@ -1,0 +1,16 @@
+.markdown-body .term-with-original {
+  ruby-align: center;
+  ruby-position: over;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--theme-muted);
+  text-underline-offset: 0.2em;
+}
+
+.markdown-body .term-with-original rt {
+  color: var(--theme-muted);
+  font-size: 0.625em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}

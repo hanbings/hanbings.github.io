@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
+import { markdownProcessor } from './src/markdown/index.mjs'
 
 // https://astro.build/config
 export default defineConfig({
@@ -8,6 +9,7 @@ export default defineConfig({
   site: 'https://blog.hanbings.io',
 
   markdown: {
+    processor: markdownProcessor,
     shikiConfig: {
       themes: {
         light: 'one-light',
