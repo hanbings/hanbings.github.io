@@ -18,4 +18,5 @@ export interface RoughNotationProps {
 
 export interface BracketProps extends RoughNotationProps {
   brackets?: RoughNotationBracket | RoughNotationBracket[]
+  gap?: number | string
 }

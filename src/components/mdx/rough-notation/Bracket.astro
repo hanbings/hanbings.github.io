@@ -5,8 +5,9 @@ import type {BracketProps} from './types'
 interface Props extends BracketProps {}
 
 const multiline = Astro.props.multiline ?? false
+const gap = Astro.props.gap ?? '0.75em'
 ---
 
-<RoughNotation {...Astro.props} type="bracket" multiline={multiline}>
+<RoughNotation {...Astro.props} type="bracket" multiline={multiline} gap={gap}>
     <slot />
 </RoughNotation>

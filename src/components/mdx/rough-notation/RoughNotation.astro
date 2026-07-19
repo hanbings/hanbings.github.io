@@ -4,6 +4,7 @@ import type {RoughNotationBracket, RoughNotationProps, RoughNotationType} from '
 interface Props extends RoughNotationProps {
     type: RoughNotationType
     brackets?: RoughNotationBracket | RoughNotationBracket[]
+    gap?: number | string
 }
 
 const {
@@ -17,15 +18,23 @@ const {
     multiline = true,
     rtl = false,
     brackets,
+    gap = 0,
     class: className,
 } = Astro.props
 const serializedPadding = JSON.stringify(padding)
+const resolvedGap = typeof gap === 'number' ? `${gap}px` : gap
 const serializedBrackets = brackets ? JSON.stringify(brackets) : undefined
+const renderedContent = (await Astro.slots.render('default')).trim()
+const hasSingleParagraph =
+    renderedContent.startsWith('<p>') &&
+    renderedContent.endsWith('</p>') &&
+    !renderedContent.slice(3, -4).includes('</p>')
+const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : renderedContent
 ---
 
 <rough-notation
     class:list={['rough-notation', `rough-notation-${type}`, className]}
-    style={`--rough-notation-color: ${color};`}
+    style={`--rough-notation-color: ${color}; --rough-notation-gap: ${resolvedGap};`}
     data-rough-notation-type={type}
     data-rough-notation-color={color}
     data-rough-notation-stroke-width={strokeWidth}
@@ -35,8 +44,9 @@ const serializedBrackets = brackets ? JSON.stringify(brackets) : undefined
     data-rough-notation-animate={String(animate)}
     data-rough-notation-multiline={String(multiline)}
     data-rough-notation-rtl={String(rtl)}
-    data-rough-notation-brackets={serializedBrackets}><slot /></rough-notation
->
+    data-rough-notation-brackets={serializedBrackets}
+    set:html={inlineContent}
+/>
 
 <script>
     import {annotate} from 'rough-notation'
@@ -191,6 +201,7 @@ const serializedBrackets = brackets ? JSON.stringify(brackets) : undefined
     }
 
     .rough-notation-bracket {
+        margin-inline: var(--rough-notation-gap);
         box-shadow: inset -0.12em 0 var(--rough-notation-color);
     }
 

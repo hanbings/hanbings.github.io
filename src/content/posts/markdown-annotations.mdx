@@ -25,36 +25,56 @@ Rough Notation 的七种效果分别封装为 `<Underline>`、`<Box>`、`<Circle
 <Highlight>高亮</Highlight>
 <StrikeThrough>删除线</StrikeThrough>
 <CrossedOff>交叉划除</CrossedOff>
-<Bracket brackets={['left', 'right']}>括号</Bracket>
+这句话中，<Bracket brackets={['left', 'right']}>只有这一小部分</Bracket> 会被标注。
+
+段落前文 <Bracket class="inline-block w-52 align-middle" brackets={['left', 'right']}>这段较长的内容会自然换行，并由同一组括号包围</Bracket> 段落后文。
+
+<Bracket class="block" brackets={['left', 'right']}>
+  这是一整个被括号包裹的段落。它可以自然换行，并始终只绘制一组左右括号。
+</Bracket>
 ```
 
-<ul className="grid gap-6 py-2">
-  <li>
+<div className="grid gap-6 py-5">
+  <div>
     <Underline>这是手绘下划线</Underline>
-  </li>
-  <li>
+  </div>
+  <div>
     <Box color="#78a9ff">这是方框</Box>
-  </li>
-  <li>
+  </div>
+  <div>
     <Circle color="#e88c9a">这是圆圈</Circle>
-  </li>
-  <li>
+  </div>
+  <div>
     <Highlight color="#ffe08a">这是高亮</Highlight>
-  </li>
-  <li>
+  </div>
+  <div>
     <StrikeThrough color="#9c6ade">这是删除线</StrikeThrough>
-  </li>
-  <li>
+  </div>
+  <div>
     <CrossedOff color="#e06c75">这是交叉划除</CrossedOff>
-  </li>
-  <li>
-    <Bracket class="inline-block" color="#4f9d69" brackets={['left', 'right']}>
-      这是双侧括号
+  </div>
+  <div>
+    {'这是一整句话，其中 '}
+    <Bracket color="#ffe08a" brackets={['left', 'right']}>
+      {'只有这一小部分'}
     </Bracket>
-  </li>
-</ul>
+    {' 会被标注。'}
+  </div>
+  <div>
+    {'段落前文 '}
+    <Bracket class="inline-block w-52 align-middle" color="#ffe08a" brackets={['left', 'right']}>
+      {'这段较长的内容会自然换行，并由同一组括号包围'}
+    </Bracket>
+    {' 段落后文。'}
+  </div>
+  <div>
+    <Bracket class="mt-3 block" color="#ffe08a" brackets={['left', 'right']}>
+      {'这是一整个被括号包裹的段落。它使用可用的正文宽度自然换行，并始终只绘制一组左右括号。'}
+    </Bracket>
+  </div>
+</div>
 
-所有组件都支持 `color`、`strokeWidth`、`iterations`、`padding`、`animationDuration`、`animate`、`multiline`、`rtl` 和 `class`。`<Bracket>` 额外支持 `brackets`，可选择 `left`、`right`、`top` 和 `bottom`；它默认将多行内容视为一个整体，避免为每一行重复绘制括号。无 JavaScript 时会保留对应的 CSS 降级效果；减少动态效果模式下会自动关闭绘制动画。
+所有组件都支持 `color`、`strokeWidth`、`iterations`、`padding`、`animationDuration`、`animate`、`multiline`、`rtl` 和 `class`。`<Bracket>` 额外支持 `brackets` 和 `gap`：`brackets` 可选择 `left`、`right`、`top` 和 `bottom`；`gap` 默认是 `0.75em`，用于为句内括号预留左右空间，可传入像素数字、任意 CSS 长度，或用 `gap={0}` 关闭。它默认将多行内容视为一个整体，避免为每一行重复绘制括号。无 JavaScript 时会保留对应的 CSS 降级效果；减少动态效果模式下会自动关闭绘制动画。
 
 ## 术语原文
 
