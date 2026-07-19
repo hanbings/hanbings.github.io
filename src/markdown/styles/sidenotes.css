@@ -29,6 +29,39 @@
   margin-bottom: 0;
 }
 
+.markdown-body .sidenote-stack {
+  --sidenote-ink: #30323b;
+  position: relative;
+  isolation: isolate;
+  margin: 0 0 calc(1rem + var(--sidenote-stack-overhang, 0rem));
+}
+
+.markdown-body .sidenote-stack > .sidenote {
+  float: none;
+  clear: none;
+  width: auto;
+  margin: 0;
+  z-index: var(--sidenote-stack-layer);
+  transform: translate(
+    var(--sidenote-stack-x, 0),
+    var(--sidenote-stack-y, 0)
+  ) rotate(var(--sidenote-stack-rotation, 0deg));
+  transform-origin: center;
+  transition: transform 180ms ease;
+}
+
+.markdown-body .sidenote-stack > .sidenote.is-active {
+  position: relative;
+  cursor: pointer;
+}
+
+.markdown-body .sidenote-stack > .sidenote:not(.is-active) {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .markdown-body .sidenote-anchor-text {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
@@ -36,18 +69,18 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 
-.markdown-body .sidenote:hover + p > .sidenote-anchor-text,
-.markdown-body .sidenote:focus-within + p > .sidenote-anchor-text,
-.markdown-body .sidenote-anchor-text:hover,
-.markdown-body .sidenote-anchor-text:focus-within {
+.markdown-body :is(.sidenote, .sidenote-stack):hover + p .sidenote-anchor-text.is-active,
+.markdown-body :is(.sidenote, .sidenote-stack):focus-within + p .sidenote-anchor-text.is-active,
+.markdown-body .sidenote-anchor-text.is-active:hover,
+.markdown-body .sidenote-anchor-text.is-active:focus-within {
   background-color: var(--sidenote-color);
   color: #30323b;
 }
 
-.markdown-body .sidenote:hover + p > .sidenote-anchor-text :where(*),
-.markdown-body .sidenote:focus-within + p > .sidenote-anchor-text :where(*),
-.markdown-body .sidenote-anchor-text:hover :where(*),
-.markdown-body .sidenote-anchor-text:focus-within :where(*) {
+.markdown-body :is(.sidenote, .sidenote-stack):hover + p .sidenote-anchor-text.is-active :where(*),
+.markdown-body :is(.sidenote, .sidenote-stack):focus-within + p .sidenote-anchor-text.is-active :where(*),
+.markdown-body .sidenote-anchor-text.is-active:hover :where(*),
+.markdown-body .sidenote-anchor-text.is-active:focus-within :where(*) {
   color: #30323b !important;
 }
 
@@ -59,9 +92,12 @@
 }
 
 @media (min-width: 1160px) {
-  .markdown-body .sidenote {
+  .markdown-body :is(.sidenote, .sidenote-stack) {
     --sidenote-gap: var(--markdown-render-gutter, 2rem);
     --sidenote-width: min(18rem, calc((100vw - 720px) / 2 - var(--sidenote-gap) - 1.5rem));
+  }
+
+  .markdown-body .sidenote {
     float: right;
     clear: right;
     width: var(--sidenote-width);
@@ -69,17 +105,45 @@
     padding: 1rem 1.125rem;
   }
 
-  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote {
+  .markdown-body .sidenote-stack {
+    float: right;
+    clear: right;
+    width: var(--sidenote-width);
+    margin: 0 calc(0px - var(--sidenote-width) - var(--sidenote-gap)) calc(1.25rem + var(--sidenote-stack-overhang, 0rem)) var(--sidenote-gap);
+  }
+
+  .markdown-body .sidenote-stack > .sidenote {
+    float: none;
+    clear: none;
+    width: auto;
+    margin: 0;
+    padding: 1rem 1.125rem;
+  }
+
+  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote:not(.sidenote-stack-card),
+  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote-stack {
     float: none;
     clear: none;
     width: auto;
     margin: 0 0 1rem;
+  }
+
+  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote:not(.sidenote-stack-card) {
+    padding: 0.75rem 1rem;
+  }
+
+  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote-stack {
+    margin-bottom: calc(1rem + var(--sidenote-stack-overhang, 0rem));
+  }
+
+  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote-stack > .sidenote {
     padding: 0.75rem 1rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .markdown-body .sidenote-anchor-text {
+  .markdown-body .sidenote-anchor-text,
+  .markdown-body .sidenote-stack > .sidenote {
     transition: none;
   }
 }

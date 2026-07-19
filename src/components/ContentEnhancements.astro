@@ -27,6 +27,7 @@
 
 <script>
     import { enhancePianos } from '../markdown/piano'
+    import { enhanceSidenoteStacks } from '../markdown/sidenotes'
 
     const copyText = async (text: string) => {
         if (!navigator.clipboard) {
@@ -319,4 +320,5 @@
     enhanceCodeBlocks()
     enhanceImages()
     enhancePianos()
+    enhanceSidenoteStacks()
 </script>
