@@ -1,6 +1,6 @@
 ---
 import {getCollection, render} from 'astro:content'
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import EventLayout from '../../layouts/EventLayout.astro'
 import {mdxComponents} from '../../components/mdx'
 import '../../styles/markdown/github.css'
 
@@ -16,11 +16,6 @@ const {entry} = Astro.props
 const {Content} = await render(entry)
 ---
 
-<BaseLayout title={entry.data['title']} background={entry.data['background']}>
-    <article class="flex flex-col gap-4">
-        <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
-        <div class="markdown-body">
-            <Content components={mdxComponents} />
-        </div>
-    </article>
-</BaseLayout>
+<EventLayout title={entry.data['title']} background={entry.data['background']}>
+    <Content components={mdxComponents} />
+</EventLayout>

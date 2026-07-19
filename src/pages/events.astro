@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
-import EntryList from '../components/EntryList.astro'
+import IndexLayout from '../layouts/IndexLayout.astro'
+import EntryList from '../components/index/EntryList.astro'
 import {getCollection} from 'astro:content'
 
 const allEvents = (await getCollection('events', ({data}) => !data.draft)).sort(
@@ -10,7 +10,7 @@ const allEvents = (await getCollection('events', ({data}) => !data.draft)).sort(
 )
 ---
 
-<BaseLayout title="Events">
+<IndexLayout title="Events">
     <EntryList
         heading="Events"
         headingId="events-title"
@@ -20,4 +20,4 @@ const allEvents = (await getCollection('events', ({data}) => !data.draft)).sort(
             date: event.data.date,
         }))}
     />
-</BaseLayout>
+</IndexLayout>

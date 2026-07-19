@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import IndexLayout from '../layouts/IndexLayout.astro'
 import Content from '../content/specs/friends.md'
 import '../styles/markdown/github.css'
 
@@ -115,7 +115,7 @@ const friends = [
 ]
 ---
 
-<BaseLayout title="朋友们">
+<IndexLayout title="朋友们">
     <div class="markdown-body">
         <Content />
     </div>
@@ -143,4 +143,4 @@ const friends = [
             ))
         }
     </div>
-</BaseLayout>
+</IndexLayout>

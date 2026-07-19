@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
-import EntryList from '../components/EntryList.astro'
+import IndexLayout from '../layouts/IndexLayout.astro'
+import EntryList from '../components/index/EntryList.astro'
 import Content, {frontmatter} from '../content/specs/home.md'
 import {getCollection} from 'astro:content'
 import '../styles/markdown/github.css'
@@ -12,7 +12,7 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft)).sort(
 )
 ---
 
-<BaseLayout title="主页" background={frontmatter.background}>
+<IndexLayout title="主页" background={frontmatter.background}>
     <div class="markdown-body">
         <Content />
     </div>
@@ -27,4 +27,4 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft)).sort(
             tags: post.data.tags,
         }))}
     />
-</BaseLayout>
+</IndexLayout>
