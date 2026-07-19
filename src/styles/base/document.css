@@ -1,0 +1,31 @@
+@layer base {
+  html,
+  body {
+    min-height: 100%;
+    background-color: var(--theme-bg);
+    color: var(--theme-fg);
+  }
+
+  body {
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+
+  ::selection {
+    background-color: var(--theme-accent-soft);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--theme-focus);
+    outline-offset: 3px;
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--theme-border);
+  }
+}

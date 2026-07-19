@@ -1,0 +1,10 @@
+@import './github/theme.css';
+@import './github/elements.css';
+@import './github/content.css';
+@import './github/lists.css';
+@import './github/media.css';
+@import './github/code.css';
+@import './github/footnotes.css';
+@import './github/syntax.css';
+@import './github/tasks.css';
+@import './github/alerts.css';

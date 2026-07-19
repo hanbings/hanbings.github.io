@@ -2,7 +2,7 @@
 import {getCollection, render} from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import {mdxComponents} from '../../components/mdx'
-import '../../styles/code/github-markdown.css'
+import '../../styles/markdown/github.css'
 
 export async function getStaticPaths() {
     const blogEntries = await getCollection('events', ({data}) => !data.draft)

@@ -1,0 +1,9 @@
+.about-page.markdown-body > h2:first-child {
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+  color: var(--theme-fg);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+}

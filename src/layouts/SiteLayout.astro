@@ -15,6 +15,7 @@ const {
     siteHeaderSlot,
     siteNavigationSlot,
     siteFooterSlot,
+    siteOverlaySlot,
 } = Astro.props as {
     title: string
     background?: string
@@ -24,6 +25,7 @@ const {
     siteHeaderSlot?: boolean
     siteNavigationSlot?: boolean
     siteFooterSlot?: boolean
+    siteOverlaySlot?: boolean
 }
 
 const hasHeaderBackground = headerBackgroundSlot ?? Astro.slots.has('header-background')
@@ -31,6 +33,7 @@ const hasBackfillBackground = backfillBackgroundSlot ?? Astro.slots.has('backfil
 const hasSiteHeader = siteHeaderSlot ?? Astro.slots.has('site-header')
 const hasSiteNavigation = siteNavigationSlot ?? Astro.slots.has('site-navigation')
 const hasSiteFooter = siteFooterSlot ?? Astro.slots.has('site-footer')
+const hasSiteOverlay = siteOverlaySlot ?? Astro.slots.has('site-overlay')
 const hasPageBackground = Boolean(background || hasHeaderBackground || hasBackfillBackground)
 ---
 
@@ -64,28 +67,37 @@ const hasPageBackground = Boolean(background || hasHeaderBackground || hasBackfi
                     }
                 </div>
             </div>
-            <header
-                class:list={[
-                    'site-header mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]',
-                    markdownRender &&
-                        'markdown-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)',
-                ]}
-            >
-                {hasSiteHeader ? <slot name="site-header" /> : <Header />}
-            </header>
-            <nav
-                class:list={[
-                    'site-navigation mx-auto w-[min(720px,calc(100%-3rem))] py-2',
-                    markdownRender && 'hidden',
-                ]}
-                aria-label="主导航"
-            >
-                {hasSiteNavigation ? <slot name="site-navigation" /> : <Navigation />}
-            </nav>
-            <slot />
-            <footer class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6">
-                {hasSiteFooter ? <slot name="site-footer" /> : <Footer />}
-            </footer>
+            <div class="site-content">
+                <header
+                    class:list={[
+                        'site-header mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]',
+                        markdownRender &&
+                            'markdown-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)',
+                    ]}
+                >
+                    {hasSiteHeader ? <slot name="site-header" /> : <Header />}
+                </header>
+                <nav
+                    class:list={[
+                        'site-navigation mx-auto w-[min(720px,calc(100%-3rem))] py-2',
+                        markdownRender && 'hidden',
+                    ]}
+                    aria-label="主导航"
+                >
+                    {hasSiteNavigation ? <slot name="site-navigation" /> : <Navigation />}
+                </nav>
+                <slot />
+                <footer class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6">
+                    {hasSiteFooter ? <slot name="site-footer" /> : <Footer />}
+                </footer>
+            </div>
+            {
+                hasSiteOverlay && (
+                    <div class="site-overlay">
+                        <slot name="site-overlay" />
+                    </div>
+                )
+            }
         </div>
     </body>
 </html>

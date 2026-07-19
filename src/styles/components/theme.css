@@ -1,0 +1,68 @@
+@layer components {
+  .theme-title {
+    border-radius: 0.5rem;
+    background-color: var(--theme-accent);
+    color: var(--theme-accent-contrast);
+    padding: 0.25rem 0.75rem;
+    font-weight: 600;
+  }
+
+  .theme-nav-link {
+    border-color: var(--theme-border);
+    transition:
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .theme-nav-link:hover {
+    border-color: var(--theme-accent);
+  }
+
+  .theme-entry,
+  .theme-muted-link {
+    color: var(--theme-muted);
+  }
+
+  .theme-entry {
+    background-image: linear-gradient(var(--theme-accent), var(--theme-accent));
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-size: 0% 25%;
+    border-radius: 0.125rem;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    text-decoration: none;
+    transition:
+      color 150ms ease,
+      background-size 180ms ease;
+  }
+
+  .theme-entry:hover,
+  .theme-entry:focus-visible {
+    background-size: 100% 25%;
+    color: var(--theme-fg);
+    text-decoration: none;
+  }
+
+  .theme-muted-link {
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+  }
+
+  .theme-muted-link:hover {
+    background-color: var(--theme-accent-soft);
+    color: var(--theme-fg);
+  }
+
+  .theme-friend-card {
+    transition:
+      background-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .theme-friend-card:hover {
+    background-color: var(--theme-surface-muted);
+    box-shadow: 0 20px 30px -16px var(--theme-shadow);
+  }
+}

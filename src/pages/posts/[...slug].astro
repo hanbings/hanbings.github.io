@@ -4,7 +4,7 @@ import PostLayout from '../../layouts/PostLayout.astro'
 import PostSidebar from '../../components/PostSidebar.astro'
 import TableOfContents from '../../components/TableOfContents.astro'
 import {mdxComponents} from '../../components/mdx'
-import '../../styles/code/github-markdown.css'
+import '../../styles/markdown/github.css'
 
 export async function getStaticPaths() {
     const blogEntries = await getCollection('posts', ({data}) => !data.draft)

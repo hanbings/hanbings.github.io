@@ -1,0 +1,9 @@
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .theme-nav-link,
+  .theme-entry,
+  .theme-friend-card,
+  .markdown-body a[href] {
+    transition: none;
+  }
+}

@@ -11,6 +11,7 @@ const backfillBackgroundSlot = Astro.slots.has('backfill-background')
 const siteHeaderSlot = Astro.slots.has('site-header')
 const siteNavigationSlot = Astro.slots.has('site-navigation')
 const siteFooterSlot = Astro.slots.has('site-footer')
+const siteOverlaySlot = Astro.slots.has('site-overlay')
 ---
 
 <SiteLayout
@@ -21,12 +22,14 @@ const siteFooterSlot = Astro.slots.has('site-footer')
     siteHeaderSlot={siteHeaderSlot}
     siteNavigationSlot={siteNavigationSlot}
     siteFooterSlot={siteFooterSlot}
+    siteOverlaySlot={siteOverlaySlot}
 >
     <slot name="header-background" slot="header-background" />
     <slot name="backfill-background" slot="backfill-background" />
     <slot name="site-header" slot="site-header" />
     <slot name="site-navigation" slot="site-navigation" />
     <slot name="site-footer" slot="site-footer" />
+    <slot name="site-overlay" slot="site-overlay" />
     <main class="site-main mx-auto w-[min(720px,calc(100%-3rem))] py-3">
         <div class="w-full max-w-180">
             <slot />
