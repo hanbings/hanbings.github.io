@@ -1,0 +1,12 @@
+---
+import RoughNotation from './RoughNotation.astro'
+import type {RoughNotationProps} from './types'
+
+interface Props extends RoughNotationProps {}
+
+const padding = Astro.props.padding ?? [0, 0, 1, 0]
+---
+
+<RoughNotation {...Astro.props} type="underline" padding={padding}>
+    <slot />
+</RoughNotation>

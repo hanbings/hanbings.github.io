@@ -1,6 +1,6 @@
 ---
 title: 'Markdown 边注、术语与钢琴窗测试'
-description: 'Markdown 自定义指令的使用说明与渲染测试，包括文章边注、术语原文和交互式钢琴窗。'
+description: 'MDX 富文本组件的使用说明与渲染测试，包括手绘标注、文章边注、术语原文和交互式钢琴窗。'
 date: '2026-07-18 14:00:00'
 tags: ['markdown', '排版']
 author: '寒冰'
@@ -12,20 +12,49 @@ export const contentFormat = 'MDX'
 
 ## MDX 组件
 
-本站将复杂的富文本能力注册为全局 MDX 组件。文章可以直接使用 `<Underline>`、`<Term>`、`<Sidenote>`、`<SidenoteText>` 和 `<Piano>`，无需在每篇文章中重复导入。普通 Markdown 继续使用 Astro 默认渲染器，适合不需要组件的内容。
+本站将复杂的富文本能力注册为全局 MDX 组件。文章可以直接使用手绘标注、术语、边注和钢琴窗组件，无需在每篇文章中重复导入。普通 Markdown 继续使用 Astro 默认渲染器，适合不需要组件的内容。
 
-## MDX 手绘下划线
+## MDX 手绘标注
 
-MDX 页面可以直接使用全局注册的 `<Underline>` 组件。默认使用站点强调色，也可以传入任意 CSS 颜色：
+Rough Notation 的七种效果分别封装为 `<Underline>`、`<Box>`、`<Circle>`、`<Highlight>`、`<StrikeThrough>`、`<CrossedOff>` 和 `<Bracket>`：
 
 ```mdx
-<Underline>默认黄色手绘下划线</Underline>
-<Underline color="#e88c9a" strokeWidth={2.5}>
-  自定义颜色
-</Underline>
+<Underline>下划线</Underline>
+<Box>方框</Box>
+<Circle>圆圈</Circle>
+<Highlight>高亮</Highlight>
+<StrikeThrough>删除线</StrikeThrough>
+<CrossedOff>交叉划除</CrossedOff>
+<Bracket brackets={['left', 'right']}>括号</Bracket>
 ```
 
-例如，<Underline>这段文字使用默认的黄色手绘下划线</Underline>；而 <Underline color="#e88c9a" strokeWidth={2.5}>这段文字使用柔和的红色</Underline>。组件支持多行文字，并在减少动态效果模式下自动关闭绘制动画。
+<ul className="grid gap-6 py-2">
+  <li>
+    <Underline>这是手绘下划线</Underline>
+  </li>
+  <li>
+    <Box color="#78a9ff">这是方框</Box>
+  </li>
+  <li>
+    <Circle color="#e88c9a">这是圆圈</Circle>
+  </li>
+  <li>
+    <Highlight color="#ffe08a">这是高亮</Highlight>
+  </li>
+  <li>
+    <StrikeThrough color="#9c6ade">这是删除线</StrikeThrough>
+  </li>
+  <li>
+    <CrossedOff color="#e06c75">这是交叉划除</CrossedOff>
+  </li>
+  <li>
+    <Bracket class="inline-block" color="#4f9d69" brackets={['left', 'right']}>
+      这是双侧括号
+    </Bracket>
+  </li>
+</ul>
+
+所有组件都支持 `color`、`strokeWidth`、`iterations`、`padding`、`animationDuration`、`animate`、`multiline`、`rtl` 和 `class`。`<Bracket>` 额外支持 `brackets`，可选择 `left`、`right`、`top` 和 `bottom`；它默认将多行内容视为一个整体，避免为每一行重复绘制括号。无 JavaScript 时会保留对应的 CSS 降级效果；减少动态效果模式下会自动关闭绘制动画。
 
 ## 术语原文
 

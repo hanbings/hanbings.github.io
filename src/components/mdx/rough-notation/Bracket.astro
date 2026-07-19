@@ -1,0 +1,12 @@
+---
+import RoughNotation from './RoughNotation.astro'
+import type {BracketProps} from './types'
+
+interface Props extends BracketProps {}
+
+const multiline = Astro.props.multiline ?? false
+---
+
+<RoughNotation {...Astro.props} type="bracket" multiline={multiline}>
+    <slot />
+</RoughNotation>

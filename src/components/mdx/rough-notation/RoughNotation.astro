@@ -1,0 +1,203 @@
+---
+import type {RoughNotationBracket, RoughNotationProps, RoughNotationType} from './types'
+
+interface Props extends RoughNotationProps {
+    type: RoughNotationType
+    brackets?: RoughNotationBracket | RoughNotationBracket[]
+}
+
+const {
+    type,
+    color = 'var(--theme-accent)',
+    strokeWidth = 2,
+    iterations = 2,
+    padding = 5,
+    animationDuration = 500,
+    animate = true,
+    multiline = true,
+    rtl = false,
+    brackets,
+    class: className,
+} = Astro.props
+const serializedPadding = JSON.stringify(padding)
+const serializedBrackets = brackets ? JSON.stringify(brackets) : undefined
+---
+
+<rough-notation
+    class:list={['rough-notation', `rough-notation-${type}`, className]}
+    style={`--rough-notation-color: ${color};`}
+    data-rough-notation-type={type}
+    data-rough-notation-color={color}
+    data-rough-notation-stroke-width={strokeWidth}
+    data-rough-notation-iterations={iterations}
+    data-rough-notation-padding={serializedPadding}
+    data-rough-notation-duration={animationDuration}
+    data-rough-notation-animate={String(animate)}
+    data-rough-notation-multiline={String(multiline)}
+    data-rough-notation-rtl={String(rtl)}
+    data-rough-notation-brackets={serializedBrackets}><slot /></rough-notation
+>
+
+<script>
+    import {annotate} from 'rough-notation'
+    import type {RoughNotationBracket, RoughNotationPadding, RoughNotationType} from './types'
+
+    const notationTypes = new Set<RoughNotationType>([
+        'underline',
+        'box',
+        'circle',
+        'highlight',
+        'strike-through',
+        'crossed-off',
+        'bracket',
+    ])
+    const bracketTypes = new Set<RoughNotationBracket>(['left', 'right', 'top', 'bottom'])
+
+    const parseNumber = (value: string | undefined, fallback: number, minimum = 0) => {
+        const parsed = Number(value)
+        return Number.isFinite(parsed) ? Math.max(minimum, parsed) : fallback
+    }
+
+    const parsePadding = (value: string | undefined): RoughNotationPadding => {
+        if (!value) return 5
+
+        try {
+            const parsed: unknown = JSON.parse(value)
+            if (typeof parsed === 'number' && Number.isFinite(parsed)) return parsed
+            if (!Array.isArray(parsed) || (parsed.length !== 2 && parsed.length !== 4)) return 5
+            if (!parsed.every((item) => typeof item === 'number' && Number.isFinite(item))) return 5
+            return parsed as RoughNotationPadding
+        } catch {
+            return 5
+        }
+    }
+
+    const parseBrackets = (value: string | undefined) => {
+        if (!value) return undefined
+
+        try {
+            const parsed: unknown = JSON.parse(value)
+            const values = Array.isArray(parsed) ? parsed : [parsed]
+            const brackets = values.filter(
+                (item): item is RoughNotationBracket =>
+                    typeof item === 'string' && bracketTypes.has(item as RoughNotationBracket),
+            )
+            return brackets.length === 1 ? brackets[0] : brackets.length > 1 ? brackets : undefined
+        } catch {
+            return undefined
+        }
+    }
+
+    const parseType = (value: string | undefined): RoughNotationType =>
+        notationTypes.has(value as RoughNotationType) ? (value as RoughNotationType) : 'underline'
+
+    class RoughNotationElement extends HTMLElement {
+        private annotation?: ReturnType<typeof annotate>
+
+        connectedCallback() {
+            if (this.annotation) return
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            this.annotation = annotate(this, {
+                type: parseType(this.dataset.roughNotationType),
+                color: this.dataset.roughNotationColor || 'var(--theme-accent)',
+                strokeWidth: parseNumber(this.dataset.roughNotationStrokeWidth, 2, 0.5),
+                iterations: Math.round(parseNumber(this.dataset.roughNotationIterations, 2, 1)),
+                padding: parsePadding(this.dataset.roughNotationPadding),
+                animationDuration: parseNumber(this.dataset.roughNotationDuration, 500),
+                multiline: this.dataset.roughNotationMultiline !== 'false',
+                rtl: this.dataset.roughNotationRtl === 'true',
+                brackets: parseBrackets(this.dataset.roughNotationBrackets),
+                animate: !reduceMotion && this.dataset.roughNotationAnimate !== 'false',
+            })
+
+            const annotationSvg =
+                this.dataset.roughNotationType === 'highlight'
+                    ? this.previousElementSibling
+                    : this.nextElementSibling
+            if (annotationSvg?.classList.contains('rough-annotation')) {
+                annotationSvg.setAttribute('aria-hidden', 'true')
+                annotationSvg.setAttribute('focusable', 'false')
+            }
+
+            this.annotation.show()
+            this.dataset.roughNotationReady = 'true'
+        }
+
+        disconnectedCallback() {
+            this.annotation?.remove()
+            this.annotation = undefined
+            delete this.dataset.roughNotationReady
+        }
+    }
+
+    if (!customElements.get('rough-notation')) {
+        customElements.define('rough-notation', RoughNotationElement)
+    }
+</script>
+
+<style>
+    .rough-notation {
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+    }
+
+    .rough-notation-underline {
+        text-decoration-line: underline;
+        text-decoration-color: var(--rough-notation-color);
+        text-decoration-thickness: 0.12em;
+        text-underline-offset: 0.15em;
+    }
+
+    .rough-notation-box,
+    .rough-notation-circle {
+        outline: 0.12em solid var(--rough-notation-color);
+        outline-offset: 0.1em;
+    }
+
+    .rough-notation-circle {
+        border-radius: 50%;
+    }
+
+    .rough-notation-highlight {
+        background-image: linear-gradient(
+            transparent 45%,
+            var(--rough-notation-color) 45%,
+            var(--rough-notation-color) 90%,
+            transparent 90%
+        );
+    }
+
+    .rough-notation-strike-through {
+        text-decoration-line: line-through;
+        text-decoration-color: var(--rough-notation-color);
+        text-decoration-thickness: 0.12em;
+    }
+
+    .rough-notation-crossed-off {
+        background-image:
+            linear-gradient(
+                to top right,
+                transparent calc(50% - 0.06em),
+                var(--rough-notation-color) 50%,
+                transparent calc(50% + 0.06em)
+            ),
+            linear-gradient(
+                to bottom right,
+                transparent calc(50% - 0.06em),
+                var(--rough-notation-color) 50%,
+                transparent calc(50% + 0.06em)
+            );
+    }
+
+    .rough-notation-bracket {
+        box-shadow: inset -0.12em 0 var(--rough-notation-color);
+    }
+
+    .rough-notation[data-rough-notation-ready] {
+        outline: 0;
+        background-image: none;
+        box-shadow: none;
+        text-decoration: none;
+    }
+</style>
