@@ -109,6 +109,9 @@
     background-position: left bottom;
     background-repeat: no-repeat;
     background-size: 0% 25%;
+    border-radius: 0.125rem;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
     text-decoration: none;
     transition: color 150ms ease, background-size 180ms ease;
   }
@@ -328,6 +331,7 @@ html::-webkit-scrollbar {
   background-position: left bottom, left bottom;
   background-repeat: no-repeat, no-repeat;
   background-size: 0% 25%, 100% 25%;
+  border-radius: 0.125rem;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: background-size 180ms ease;
