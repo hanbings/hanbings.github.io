@@ -1,6 +1,6 @@
 ---
-import Header from "./Header.astro"
-import TableOfContents from "./TableOfContents.astro"
+import Header from './Header.astro'
+import TableOfContents from './TableOfContents.astro'
 
 interface Heading {
     depth: number
@@ -15,10 +15,7 @@ const {headings} = Astro.props as {headings: Heading[]}
     class="post-sidebar flex flex-col gap-3 [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)"
     aria-label="文章导航"
 >
-    <Header/>
-    <a
-        class="theme-entry self-start text-left"
-        href="/"
-    >返回主页</a>
-    <TableOfContents headings={headings}/>
+    <Header />
+    <a class="theme-entry self-start text-left" href="/">返回主页</a>
+    <TableOfContents headings={headings} />
 </aside>

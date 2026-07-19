@@ -1,128 +1,146 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
-import Content from "../content/specs/friends.md"
-import "../styles/code/github-markdown.css"
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Content from '../content/specs/friends.md'
+import '../styles/code/github-markdown.css'
 
 const friends = [
     {
-        avatar: "https://q1.qlogo.cn/g?b=qq&nk=3244654700&s=640",
-        name: "碎冰",
-        link: "https://blog.krysztal.dev",
-        about: "BreakIced 的小柜子"
-    }, {
-        avatar: "https://q1.qlogo.cn/g?b=qq&nk=1440239038&s=640",
-        name: "社会易姐QwQ",
-        link: "https://shakaianee.top",
-        about: "小易酱～"
-    }, {
-        avatar: "https://img.fzf404.art/avatar.webp",
-        name: "fzf404",
-        link: "https://blog.fzf404.art",
-        about: "是小f哥哥！"
-    }, {
-        avatar: "https://imfurry.com/images/zebwq-furry.jpg",
-        name: "中二病晚期の物語",
-        link: "https://imfurry.com",
-        about: "一只狐狸敲出的一个奇迹"
-    }, {
-        avatar: "https://assets.hikarilan.life/avatar.png",
+        avatar: 'https://q1.qlogo.cn/g?b=qq&nk=3244654700&s=640',
+        name: '碎冰',
+        link: 'https://blog.krysztal.dev',
+        about: 'BreakIced 的小柜子',
+    },
+    {
+        avatar: 'https://q1.qlogo.cn/g?b=qq&nk=1440239038&s=640',
+        name: '社会易姐QwQ',
+        link: 'https://shakaianee.top',
+        about: '小易酱～',
+    },
+    {
+        avatar: 'https://img.fzf404.art/avatar.webp',
+        name: 'fzf404',
+        link: 'https://blog.fzf404.art',
+        about: '是小f哥哥！',
+    },
+    {
+        avatar: 'https://imfurry.com/images/zebwq-furry.jpg',
+        name: '中二病晚期の物語',
+        link: 'https://imfurry.com',
+        about: '一只狐狸敲出的一个奇迹',
+    },
+    {
+        avatar: 'https://assets.hikarilan.life/avatar.png',
         name: "HikariLan's blog",
-        link: "https://hikarilan.life",
-        about: "半栈工程师"
-    }, {
-        avatar: "https://rehtt.com/img/rehtt.jpg",
-        name: "Rehtt",
-        link: "https://rehtt.com",
-        about: "一只 Furry"
-    }, {
-        avatar: "https://static.requarks.io/logo/wikijs-butterfly.svg",
-        name: "ICBrochure",
-        link: "https://www.icwiki.tech",
-        about: "白熊哥哥的集成电路交流平台"
-    }, {
-        avatar: "https://static.glassfoxowo.com/img/starsky.avif",
-        name: "GF Notebook",
-        link: "https://note.glassfoxowo.com",
-        about: "玻狸的笔记本，简称GFNB"
-    }, {
-        avatar: "https://q1.qlogo.cn/g?b=qq&nk=1499874170&s=640",
-        name: "plasma 酱",
-        link: "https://neospeaking.blogspot.com",
-        about: "是可爱的 plasma！"
-    }, {
-        avatar: "https://nyan.best/avatar.png",
-        name: "Unknown Blog",
-        link: "https://nyan.best",
-        about: "tdtdtdtdtdtd ww"
-    }, {
-        avatar: "https://photos.cn-nb1.rains3.com/9B7F803A70555EB20AFDC6955616574D.jpeg",
-        name: "Karina 琳琳的小窝- KROS",
-        link: "https://karina.xin",
-        about: "https://karina.xin"
-    }, {
-        avatar: "https://www.mduo.cloud/elaina_q.jpg",
-        name: "Duo 云站",
-        link: "https://www.mduo.cloud",
-        about: "MathForest官方🌲|程序及数学可视化✨|屑魔女游世界🔮"
-    }, {
-        avatar: "https://assets.sov710.org/images/meta/avatar.png",
-        name: "SOV710",
-        link: "https://blog.sov710.org",
-        about: "新生的鼓动啊，回响吧。少女此刻，开启青色的魔法。"
-    }, {
-        avatar: "https://kawayww.com/images/blog/avatar.avif",
-        name: "柳上川",
-        link: "https://kawayww.com",
-        about: "宁可清贫自乐, 不作浊富多忧"
-    }, {
-        avatar: "https://avatars.githubusercontent.com/u/176664901?v=4",
-        name: "LunaRain_079",
-        link: "https://www.lunarain.top",
-        about: "暂伴月将影，行乐须及春"
-    }, {
-        avatar: "https://q1.qlogo.cn/g?b=qq&nk=2796747392&s=640",
-        name: "NolanHo",
-        link: "https://axi.moe",
-        about: "踏星穷极真理，长夜孤征，璀璨星河失色"
-    }, {
-        avatar: "https://caicaiis.cc/assets/images/photo.jpg",
-        name: "CAICAIIs",
-        link: "https://caicaiis.cc",
-        about: "相信的心就是你的魔法！"
-    }, {
-        avatar: "https://q1.qlogo.cn/g?b=qq&nk=2120267978&s=640",
-        name: "折鸦夜明け前",
-        link: "https://zheya.cc",
-        about: "我们的同志在困难的时候，要看到成绩，要看到光明，要提高我们的勇气。"
-    }
+        link: 'https://hikarilan.life',
+        about: '半栈工程师',
+    },
+    {
+        avatar: 'https://rehtt.com/img/rehtt.jpg',
+        name: 'Rehtt',
+        link: 'https://rehtt.com',
+        about: '一只 Furry',
+    },
+    {
+        avatar: 'https://static.requarks.io/logo/wikijs-butterfly.svg',
+        name: 'ICBrochure',
+        link: 'https://www.icwiki.tech',
+        about: '白熊哥哥的集成电路交流平台',
+    },
+    {
+        avatar: 'https://static.glassfoxowo.com/img/starsky.avif',
+        name: 'GF Notebook',
+        link: 'https://note.glassfoxowo.com',
+        about: '玻狸的笔记本，简称GFNB',
+    },
+    {
+        avatar: 'https://q1.qlogo.cn/g?b=qq&nk=1499874170&s=640',
+        name: 'plasma 酱',
+        link: 'https://neospeaking.blogspot.com',
+        about: '是可爱的 plasma！',
+    },
+    {
+        avatar: 'https://nyan.best/avatar.png',
+        name: 'Unknown Blog',
+        link: 'https://nyan.best',
+        about: 'tdtdtdtdtdtd ww',
+    },
+    {
+        avatar: 'https://photos.cn-nb1.rains3.com/9B7F803A70555EB20AFDC6955616574D.jpeg',
+        name: 'Karina 琳琳的小窝- KROS',
+        link: 'https://karina.xin',
+        about: 'https://karina.xin',
+    },
+    {
+        avatar: 'https://www.mduo.cloud/elaina_q.jpg',
+        name: 'Duo 云站',
+        link: 'https://www.mduo.cloud',
+        about: 'MathForest官方🌲|程序及数学可视化✨|屑魔女游世界🔮',
+    },
+    {
+        avatar: 'https://assets.sov710.org/images/meta/avatar.png',
+        name: 'SOV710',
+        link: 'https://blog.sov710.org',
+        about: '新生的鼓动啊，回响吧。少女此刻，开启青色的魔法。',
+    },
+    {
+        avatar: 'https://kawayww.com/images/blog/avatar.avif',
+        name: '柳上川',
+        link: 'https://kawayww.com',
+        about: '宁可清贫自乐, 不作浊富多忧',
+    },
+    {
+        avatar: 'https://avatars.githubusercontent.com/u/176664901?v=4',
+        name: 'LunaRain_079',
+        link: 'https://www.lunarain.top',
+        about: '暂伴月将影，行乐须及春',
+    },
+    {
+        avatar: 'https://q1.qlogo.cn/g?b=qq&nk=2796747392&s=640',
+        name: 'NolanHo',
+        link: 'https://axi.moe',
+        about: '踏星穷极真理，长夜孤征，璀璨星河失色',
+    },
+    {
+        avatar: 'https://caicaiis.cc/assets/images/photo.jpg',
+        name: 'CAICAIIs',
+        link: 'https://caicaiis.cc',
+        about: '相信的心就是你的魔法！',
+    },
+    {
+        avatar: 'https://q1.qlogo.cn/g?b=qq&nk=2120267978&s=640',
+        name: '折鸦夜明け前',
+        link: 'https://zheya.cc',
+        about: '我们的同志在困难的时候，要看到成绩，要看到光明，要提高我们的勇气。',
+    },
 ]
 ---
+
 <BaseLayout title="朋友们">
     <div class="markdown-body">
-        <Content/>
+        <Content />
     </div>
     <div class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-            {
-                friends.map(friend =>
-                        <div class="theme-friend-card flex min-w-0 items-center gap-2 h-24 p-3 rounded-xl w-full">
-                            <img
-                                alt={friend.name}
-                                src={friend.avatar}
-                                width="64"
-                                height="64"
-                                loading="lazy"
-                                decoding="async"
-                                referrerpolicy="no-referrer"
-                                class="h-16 rounded-full"
-                            />
-                            <div class="flex min-w-0 flex-col">
-                                <a href={friend.link} class="font-bold">
-                                    {friend.name}
-                                </a>
-                                <span class="line-clamp-2 leading-tight">{friend.about}</span>
-                            </div>
-                        </div>
-                )
-            }
+        {
+            friends.map((friend) => (
+                <div class="theme-friend-card flex min-w-0 items-center gap-2 h-24 p-3 rounded-xl w-full">
+                    <img
+                        alt={friend.name}
+                        src={friend.avatar}
+                        width="64"
+                        height="64"
+                        loading="lazy"
+                        decoding="async"
+                        referrerpolicy="no-referrer"
+                        class="h-16 rounded-full"
+                    />
+                    <div class="flex min-w-0 flex-col">
+                        <a href={friend.link} class="font-bold">
+                            {friend.name}
+                        </a>
+                        <span class="line-clamp-2 leading-tight">{friend.about}</span>
+                    </div>
+                </div>
+            ))
+        }
     </div>
 </BaseLayout>

@@ -1,17 +1,18 @@
 ---
 const pages = [
-    { page: '主页', to: '/' },
-    { page: '文章', to: '/posts'},
-    { page: '关于', to: '/about'},
-    { page: '朋友们', to: '/friends'},
+    {page: '主页', to: '/'},
+    {page: '文章', to: '/posts'},
+    {page: '关于', to: '/about'},
+    {page: '朋友们', to: '/friends'},
 ]
 ---
+
 <div class="flex flex-row flex-wrap items-center justify-start gap-2">
     {
-        pages.map(page =>
-                <a class="theme-nav-link no-underline" href={page.to}>
-                    {page.page}
-                </a>
-        )
+        pages.map((page) => (
+            <a class="theme-nav-link no-underline" href={page.to}>
+                {page.page}
+            </a>
+        ))
     }
 </div>

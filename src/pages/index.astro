@@ -1,25 +1,26 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
-import EntryList from "../components/EntryList.astro"
-import Content, {frontmatter} from "../content/specs/home.md"
-import {getCollection} from "astro:content"
-import "../styles/code/github-markdown.css"
+import BaseLayout from '../layouts/BaseLayout.astro'
+import EntryList from '../components/EntryList.astro'
+import Content, {frontmatter} from '../content/specs/home.md'
+import {getCollection} from 'astro:content'
+import '../styles/code/github-markdown.css'
 
-const allPosts =
-    (await getCollection('posts', ({ data }) => !data.draft))
-        .sort((a, b) =>
-            new Date(b.data.date.replace(" ", "T")).getTime() -
-            new Date(a.data.date.replace(" ", "T")).getTime())
+const allPosts = (await getCollection('posts', ({data}) => !data.draft)).sort(
+    (a, b) =>
+        new Date(b.data.date.replace(' ', 'T')).getTime() -
+        new Date(a.data.date.replace(' ', 'T')).getTime(),
+)
 ---
+
 <BaseLayout title="主页" background={frontmatter.background}>
     <div class="markdown-body">
-        <Content/>
+        <Content />
     </div>
     <EntryList
         class="mt-6"
         heading="近期文章"
         headingId="recent-posts-title"
-        items={allPosts.map(post => ({
+        items={allPosts.map((post) => ({
             title: post.data.title,
             href: `/posts/${post.id}`,
             date: post.data.date,

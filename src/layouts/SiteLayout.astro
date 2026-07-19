@@ -1,10 +1,10 @@
 ---
-import Meta from "../components/Meta.astro"
-import Header from "../components/Header.astro"
-import Navigation from "../components/Navigation.astro"
-import Footer from "../components/Footer.astro"
-import BackfillBackground from "../components/BackfillBackground.astro"
-import "../styles/global.css"
+import Meta from '../components/Meta.astro'
+import Header from '../components/Header.astro'
+import Navigation from '../components/Navigation.astro'
+import Footer from '../components/Footer.astro'
+import BackfillBackground from '../components/BackfillBackground.astro'
+import '../styles/global.css'
 
 const {
     title,
@@ -26,52 +26,65 @@ const {
     siteFooterSlot?: boolean
 }
 
-const hasHeaderBackground = headerBackgroundSlot ?? Astro.slots.has("header-background")
-const hasBackfillBackground = backfillBackgroundSlot ?? Astro.slots.has("backfill-background")
-const hasSiteHeader = siteHeaderSlot ?? Astro.slots.has("site-header")
-const hasSiteNavigation = siteNavigationSlot ?? Astro.slots.has("site-navigation")
-const hasSiteFooter = siteFooterSlot ?? Astro.slots.has("site-footer")
+const hasHeaderBackground = headerBackgroundSlot ?? Astro.slots.has('header-background')
+const hasBackfillBackground = backfillBackgroundSlot ?? Astro.slots.has('backfill-background')
+const hasSiteHeader = siteHeaderSlot ?? Astro.slots.has('site-header')
+const hasSiteNavigation = siteNavigationSlot ?? Astro.slots.has('site-navigation')
+const hasSiteFooter = siteFooterSlot ?? Astro.slots.has('site-footer')
 const hasPageBackground = Boolean(background || hasHeaderBackground || hasBackfillBackground)
 ---
+
 <!doctype html>
 <html lang="zh-CN">
     <head>
-        <Meta title={title}/>
+        <Meta title={title} />
     </head>
     <body>
-        <div class:list={[
-            "site-foreground relative z-1 min-h-lvh w-full",
-            hasPageBackground && "has-page-background",
-        ]}>
+        <div
+            class:list={[
+                'site-foreground relative z-1 min-h-lvh w-full',
+                hasPageBackground && 'has-page-background',
+            ]}
+        >
             <div class="site-background" aria-hidden="true">
                 {
-                    hasBackfillBackground
-                        ? <slot name="backfill-background"/>
-                        : <BackfillBackground/>
+                    hasBackfillBackground ? (
+                        <slot name="backfill-background" />
+                    ) : (
+                        <BackfillBackground />
+                    )
                 }
                 <div class="site-background-header">
                     {
-                        hasHeaderBackground
-                            ? <slot name="header-background"/>
-                            : background && <img src={background} alt="" decoding="async"/>
+                        hasHeaderBackground ? (
+                            <slot name="header-background" />
+                        ) : (
+                            background && <img src={background} alt="" decoding="async" />
+                        )
                     }
                 </div>
             </div>
-            <header class:list={[
-                "site-header mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]",
-                markdownRender && "markdown-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)",
-            ]}>
-                {hasSiteHeader ? <slot name="site-header"/> : <Header/>}
+            <header
+                class:list={[
+                    'site-header mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]',
+                    markdownRender &&
+                        'markdown-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)',
+                ]}
+            >
+                {hasSiteHeader ? <slot name="site-header" /> : <Header />}
             </header>
-            <nav class:list={[
-                "site-navigation mx-auto w-[min(720px,calc(100%-3rem))] py-2",
-                markdownRender && "hidden",
-            ]} aria-label="主导航">
-                {hasSiteNavigation ? <slot name="site-navigation"/> : <Navigation/>}
+            <nav
+                class:list={[
+                    'site-navigation mx-auto w-[min(720px,calc(100%-3rem))] py-2',
+                    markdownRender && 'hidden',
+                ]}
+                aria-label="主导航"
+            >
+                {hasSiteNavigation ? <slot name="site-navigation" /> : <Navigation />}
             </nav>
-            <slot/>
+            <slot />
             <footer class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6">
-                {hasSiteFooter ? <slot name="site-footer"/> : <Footer/>}
+                {hasSiteFooter ? <slot name="site-footer" /> : <Footer />}
             </footer>
         </div>
     </body>

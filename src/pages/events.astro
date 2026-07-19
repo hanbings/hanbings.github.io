@@ -1,19 +1,20 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
-import EntryList from "../components/EntryList.astro"
-import {getCollection} from "astro:content"
+import BaseLayout from '../layouts/BaseLayout.astro'
+import EntryList from '../components/EntryList.astro'
+import {getCollection} from 'astro:content'
 
-const allEvents =
-    (await getCollection('events', ({ data }) => !data.draft))
-        .sort((a, b) =>
-            new Date(b.data.date.replace(" ", "T")).getTime() -
-            new Date(a.data.date.replace(" ", "T")).getTime())
+const allEvents = (await getCollection('events', ({data}) => !data.draft)).sort(
+    (a, b) =>
+        new Date(b.data.date.replace(' ', 'T')).getTime() -
+        new Date(a.data.date.replace(' ', 'T')).getTime(),
+)
 ---
+
 <BaseLayout title="Events">
     <EntryList
         heading="Events"
         headingId="events-title"
-        items={allEvents.map(event => ({
+        items={allEvents.map((event) => ({
             title: event.data.title,
             href: `/events/${event.id}`,
             date: event.data.date,

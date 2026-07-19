@@ -1,10 +1,10 @@
 ---
-import {getCollection} from "astro:content"
-import BaseLayout from "../../layouts/BaseLayout.astro"
-import EntryList from "../../components/EntryList.astro"
+import {getCollection} from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import EntryList from '../../components/EntryList.astro'
 
 export async function getStaticPaths() {
-    const allPosts = await getCollection('posts', ({ data }) => !data.draft)
+    const allPosts = await getCollection('posts', ({data}) => !data.draft)
 
     const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))]
 
@@ -13,21 +13,24 @@ export async function getStaticPaths() {
         return {
             params: {tag},
             props: {posts: filteredPosts},
-        };
-    });
+        }
+    })
 }
 
 const {tag} = Astro.params
 const {posts} = Astro.props
-posts.sort((a, b) =>
-    new Date(b.data.date.replace(" ", "T")).getTime() -
-    new Date(a.data.date.replace(" ", "T")).getTime())
+posts.sort(
+    (a, b) =>
+        new Date(b.data.date.replace(' ', 'T')).getTime() -
+        new Date(a.data.date.replace(' ', 'T')).getTime(),
+)
 ---
+
 <BaseLayout title={tag}>
     <EntryList
         heading={`包含「${tag}」标签的文章`}
         headingId="tag-posts-title"
-        items={posts.map(post => ({
+        items={posts.map((post) => ({
             title: post.data.title,
             href: `/posts/${post.id}`,
             date: post.data.date,

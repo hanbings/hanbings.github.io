@@ -1,5 +1,5 @@
 ---
-import {convertDateFormat} from "../utils/date"
+import {convertDateFormat} from '../utils/date'
 
 export interface EntryListItem {
     title: string
@@ -15,40 +15,33 @@ interface Props {
     class?: string
 }
 
-const {
-    heading,
-    headingId,
-    items,
-    class: className,
-} = Astro.props
+const {heading, headingId, items, class: className} = Astro.props
 ---
+
 <section class={className} aria-labelledby={headingId}>
     <h2
         id={headingId}
         class="m-0 border-b-0 pb-0 text-xl font-bold leading-[1.4] text-(--theme-fg)"
-    >{heading}</h2>
+    >
+        {heading}
+    </h2>
     <div class="mt-3 flex flex-col gap-0">
         {
-            items.map(item => (
+            items.map((item) => (
                 <article class="flex flex-row flex-wrap items-center gap-3 text-(--theme-muted)">
-                    <time class="tabular-nums" datetime={item.date.replace(" ", "T")}>
+                    <time class="tabular-nums" datetime={item.date.replace(' ', 'T')}>
                         {convertDateFormat(item.date)}
                     </time>
-                    <a
-                        class="theme-entry"
-                        href={item.href}
-                    >{item.title}</a>
-                    {
-                        item.tags && item.tags.length > 0 && (
-                            <div class="flex flex-wrap gap-1 text-[0.75rem]" aria-label="标签">
-                                {
-                                    item.tags.map(tag => (
-                                        <a class="theme-muted-link" href={`/tags/${tag}`}>{`#${tag}`}</a>
-                                    ))
-                                }
-                            </div>
-                        )
-                    }
+                    <a class="theme-entry" href={item.href}>
+                        {item.title}
+                    </a>
+                    {item.tags && item.tags.length > 0 && (
+                        <div class="flex flex-wrap gap-1 text-[0.75rem]" aria-label="标签">
+                            {item.tags.map((tag) => (
+                                <a class="theme-muted-link" href={`/tags/${tag}`}>{`#${tag}`}</a>
+                            ))}
+                        </div>
+                    )}
                 </article>
             ))
         }

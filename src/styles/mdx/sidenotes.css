@@ -51,10 +51,8 @@
   width: auto;
   margin: 0;
   z-index: var(--sidenote-stack-layer);
-  transform: translate(
-    var(--sidenote-stack-x, 0),
-    var(--sidenote-stack-y, 0)
-  ) rotate(var(--sidenote-stack-rotation, 0deg));
+  transform: translate(var(--sidenote-stack-x, 0), var(--sidenote-stack-y, 0))
+    rotate(var(--sidenote-stack-rotation, 0deg));
   transform-origin: center;
   transition: transform 180ms ease;
 }
@@ -80,7 +78,9 @@
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   border-radius: 0.125rem;
-  transition: background-color 150ms ease, color 150ms ease;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
 }
 
 .markdown-body :is(.sidenote, .sidenote-stack):hover + p .sidenote-anchor-text.is-active,
@@ -92,7 +92,11 @@
 }
 
 .markdown-body :is(.sidenote, .sidenote-stack):hover + p .sidenote-anchor-text.is-active :where(*),
-.markdown-body :is(.sidenote, .sidenote-stack):focus-within + p .sidenote-anchor-text.is-active :where(*),
+.markdown-body
+  :is(.sidenote, .sidenote-stack):focus-within
+  + p
+  .sidenote-anchor-text.is-active
+  :where(*),
 .markdown-body .sidenote-anchor-text.is-active:hover :where(*),
 .markdown-body .sidenote-anchor-text.is-active:focus-within :where(*) {
   color: #30323b !important;
@@ -123,7 +127,8 @@
     float: right;
     clear: right;
     width: var(--sidenote-width);
-    margin: 0 calc(0px - var(--sidenote-width) - var(--sidenote-gap)) calc(1.25rem + var(--sidenote-stack-overhang, 0rem)) var(--sidenote-gap);
+    margin: 0 calc(0px - var(--sidenote-width) - var(--sidenote-gap))
+      calc(1.25rem + var(--sidenote-stack-overhang, 0rem)) var(--sidenote-gap);
   }
 
   .markdown-body .sidenote-stack > .sidenote {
@@ -142,7 +147,9 @@
     padding: 0.75rem 1rem;
   }
 
-  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote:not(.sidenote-stack-card),
+  .markdown-render:has(> .markdown-render-right:not(:empty))
+    .markdown-body
+    .sidenote:not(.sidenote-stack-card),
   .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote-stack {
     float: none;
     clear: none;
@@ -150,7 +157,9 @@
     margin: 0 0 1rem;
   }
 
-  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote:not(.sidenote-stack-card) {
+  .markdown-render:has(> .markdown-render-right:not(:empty))
+    .markdown-body
+    .sidenote:not(.sidenote-stack-card) {
     padding: 0.75rem 1rem;
   }
 
@@ -158,7 +167,10 @@
     margin-bottom: calc(1rem + var(--sidenote-stack-overhang, 0rem));
   }
 
-  .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote-stack > .sidenote {
+  .markdown-render:has(> .markdown-render-right:not(:empty))
+    .markdown-body
+    .sidenote-stack
+    > .sidenote {
     padding: 0.75rem 1rem;
   }
 }
