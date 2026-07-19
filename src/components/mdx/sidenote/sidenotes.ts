@@ -1,4 +1,4 @@
-import {createSidenoteColor, sidenoteColorCount} from './sidenoteColor'
+import {createSidenoteColor, sidenoteColorCount} from './colors'
 
 const interactiveSelector = 'a, button, input, select, textarea, summary, [role="button"]'
 const groupSelector = '[data-sidenote-group]'
