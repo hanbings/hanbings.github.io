@@ -1,26 +1,26 @@
 ---
 import {getCollection, render} from 'astro:content'
-import BaseLayout from "../../layouts/BaseLayout.astro"
-import "../../styles/github-markdown.css"
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import {mdxComponents} from '../../components/mdx'
+import '../../styles/code/github-markdown.css'
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection('events', ({ data }) => !data.draft)
-    return blogEntries.map(entry => ({
-        params: {slug: entry.id}, props: {entry},
+    const blogEntries = await getCollection('events', ({data}) => !data.draft)
+    return blogEntries.map((entry) => ({
+        params: {slug: entry.id},
+        props: {entry},
     }))
 }
 
 const {entry} = Astro.props
 const {Content} = await render(entry)
 ---
-<BaseLayout
-    title={entry.data['title']}
-    background={entry.data['background']}
->
+
+<BaseLayout title={entry.data['title']} background={entry.data['background']}>
     <article class="flex flex-col gap-4">
         <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
         <div class="markdown-body">
-            <Content/>
+            <Content components={mdxComponents} />
         </div>
     </article>
 </BaseLayout>

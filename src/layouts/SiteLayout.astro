@@ -3,7 +3,6 @@ import Meta from "../components/Meta.astro"
 import Header from "../components/Header.astro"
 import Navigation from "../components/Navigation.astro"
 import Footer from "../components/Footer.astro"
-import ContentEnhancements from "../components/ContentEnhancements.astro"
 import BackfillBackground from "../components/BackfillBackground.astro"
 import "../styles/global.css"
 
@@ -75,6 +74,5 @@ const hasPageBackground = Boolean(background || hasHeaderBackground || hasBackfi
                 {hasSiteFooter ? <slot name="site-footer"/> : <Footer/>}
             </footer>
         </div>
-        <ContentEnhancements/>
     </body>
 </html>

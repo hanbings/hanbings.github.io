@@ -1,0 +1,67 @@
+---
+type Padding = number | [number, number] | [number, number, number, number]
+
+interface Props {
+    color?: string
+    strokeWidth?: number
+    iterations?: number
+    padding?: Padding
+    animationDuration?: number
+    animate?: boolean
+    multiline?: boolean
+    class?: string
+}
+
+const {
+    color = 'var(--theme-accent)',
+    strokeWidth = 2,
+    iterations = 2,
+    padding = [0, 0, 1, 0],
+    animationDuration = 500,
+    animate = true,
+    multiline = true,
+    class: className,
+} = Astro.props
+---
+
+<rough-underline
+    class:list={['rough-underline', className]}
+    style={`--rough-underline-color: ${color};`}
+    data-rough-underline
+    data-rough-underline-color={color}
+    data-rough-underline-stroke-width={strokeWidth}
+    data-rough-underline-iterations={iterations}
+    data-rough-underline-padding={JSON.stringify(padding)}
+    data-rough-underline-duration={animationDuration}
+    data-rough-underline-animate={String(animate)}
+    data-rough-underline-multiline={String(multiline)}><slot /></rough-underline
+>
+
+<script>
+    import {enhanceRoughUnderline} from './rough'
+
+    class RoughUnderline extends HTMLElement {
+        connectedCallback() {
+            enhanceRoughUnderline(this)
+        }
+    }
+
+    if (!customElements.get('rough-underline')) {
+        customElements.define('rough-underline', RoughUnderline)
+    }
+</script>
+
+<style>
+    .rough-underline {
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        text-decoration-line: underline;
+        text-decoration-color: var(--rough-underline-color);
+        text-decoration-thickness: 0.12em;
+        text-underline-offset: 0.15em;
+    }
+
+    .rough-underline[data-rough-underline-ready] {
+        text-decoration: none;
+    }
+</style>

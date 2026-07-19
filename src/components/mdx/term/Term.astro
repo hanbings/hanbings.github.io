@@ -1,0 +1,14 @@
+---
+interface Props {
+    original: string
+    lang?: string
+    class?: string
+}
+
+const {original, lang, class: className} = Astro.props
+---
+
+<ruby class:list={['term-with-original', className]} title={`原文：${original}`}>
+    <slot />
+    <rt lang={lang}>{original}</rt>
+</ruby>

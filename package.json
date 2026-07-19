@@ -9,7 +9,6 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "test": "node --test src/markdown/plugins/*.test.mjs",
     "format": "prettier --write .",
     "preview": "astro preview",
     "astro": "astro"

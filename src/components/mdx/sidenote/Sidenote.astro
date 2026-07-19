@@ -1,0 +1,43 @@
+---
+import {createSidenoteColor, createSidenoteColorIndex} from './sidenoteColor'
+
+interface Props {
+    title?: string
+    color?: string
+    class?: string
+}
+
+const {title = '附记', color, class: className} = Astro.props
+const renderedContent = await Astro.slots.render('default')
+const colorIndex = createSidenoteColorIndex(`${title}\n${renderedContent}`)
+const resolvedColor = color || createSidenoteColor(colorIndex)
+---
+
+<mdx-sidenote class:list={['sidenote-group', className]} data-sidenote-group>
+    <aside
+        class="sidenote sidenote-stack-card"
+        style={`--sidenote-color: ${resolvedColor};`}
+        role="note"
+        tabindex="0"
+        data-sidenote-stack-card
+        data-sidenote-color-index={color ? undefined : colorIndex}
+        data-sidenote-custom-color={color ? 'true' : undefined}
+    >
+        <span class="sidenote-label">{title}</span>
+        <Fragment set:html={renderedContent} />
+    </aside>
+</mdx-sidenote>
+
+<script>
+    import {enhanceSidenote} from './sidenotes'
+
+    class MdxSidenote extends HTMLElement {
+        connectedCallback() {
+            enhanceSidenote(this)
+        }
+    }
+
+    if (!customElements.get('mdx-sidenote')) {
+        customElements.define('mdx-sidenote', MdxSidenote)
+    }
+</script>

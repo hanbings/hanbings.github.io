@@ -29,7 +29,16 @@
   margin-bottom: 0;
 }
 
+.markdown-body .sidenote-group {
+  display: contents;
+}
+
+.markdown-body .sidenote-group .sidenote-group {
+  display: block;
+}
+
 .markdown-body .sidenote-stack {
+  display: block;
   --sidenote-ink: #30323b;
   position: relative;
   isolation: isolate;
@@ -50,12 +59,17 @@
   transition: transform 180ms ease;
 }
 
-.markdown-body .sidenote-stack > .sidenote.is-active {
+.markdown-body .sidenote-stack:not([data-sidenote-ready]) > .sidenote {
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body .sidenote-stack[data-sidenote-ready] > .sidenote.is-active {
   position: relative;
   cursor: pointer;
 }
 
-.markdown-body .sidenote-stack > .sidenote:not(.is-active) {
+.markdown-body .sidenote-stack[data-sidenote-ready] > .sidenote:not(.is-active) {
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -118,6 +132,14 @@
     width: auto;
     margin: 0;
     padding: 1rem 1.125rem;
+  }
+
+  .markdown-body .sidenote-group .sidenote-group > .sidenote {
+    float: none;
+    clear: none;
+    width: auto;
+    margin: 0.75rem 0 0;
+    padding: 0.75rem 1rem;
   }
 
   .markdown-render:has(> .markdown-render-right:not(:empty)) .markdown-body .sidenote:not(.sidenote-stack-card),

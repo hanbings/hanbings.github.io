@@ -1,14 +1,16 @@
 ---
 import {getCollection, render} from 'astro:content'
-import PostLayout from "../../layouts/PostLayout.astro"
-import PostSidebar from "../../components/PostSidebar.astro"
-import TableOfContents from "../../components/TableOfContents.astro"
-import "../../styles/github-markdown.css"
+import PostLayout from '../../layouts/PostLayout.astro'
+import PostSidebar from '../../components/PostSidebar.astro'
+import TableOfContents from '../../components/TableOfContents.astro'
+import {mdxComponents} from '../../components/mdx'
+import '../../styles/code/github-markdown.css'
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection('posts', ({ data }) => !data.draft)
-    return blogEntries.map(entry => ({
-        params: {slug: entry.id}, props: {entry},
+    const blogEntries = await getCollection('posts', ({data}) => !data.draft)
+    return blogEntries.map((entry) => ({
+        params: {slug: entry.id},
+        props: {entry},
     }))
 }
 
@@ -16,11 +18,9 @@ const {entry} = Astro.props
 const {Content, headings} = await render(entry)
 const tags = [...entry.data['tags']]
 ---
-<PostLayout
-    title={entry.data['title']}
-    background={entry.data['background']}
->
-    <PostSidebar slot="left" headings={headings}/>
+
+<PostLayout title={entry.data['title']} background={entry.data['background']}>
+    <PostSidebar slot="left" headings={headings} />
     <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
     <div class="flex flex-col">
         <div class="flex flex-row items-center gap-2">
@@ -29,16 +29,13 @@ const tags = [...entry.data['tags']]
         </div>
         <div class="flex flex-row flex-wrap items-center gap-2">
             <span aria-hidden="true" class="leading-none">🏷</span>
-            {
-                tags.map(tag => <a href={`/tags/${tag}`}
-                                   class="theme-muted-link">{`#${tag}`}</a>)
-            }
+            {tags.map((tag) => <a href={`/tags/${tag}`} class="theme-muted-link">{`#${tag}`}</a>)}
         </div>
     </div>
     <div class="post-toc-mobile">
-        <TableOfContents headings={headings}/>
+        <TableOfContents headings={headings} />
     </div>
     <div class="markdown-body">
-        <Content/>
+        <Content components={mdxComponents} />
     </div>
 </PostLayout>

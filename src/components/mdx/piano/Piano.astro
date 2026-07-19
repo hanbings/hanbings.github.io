@@ -1,0 +1,111 @@
+---
+import {createPianoModel} from './piano'
+
+interface Props {
+    title?: string
+    notes?: string | string[]
+    octave?: number
+    octaves?: number
+    class?: string
+}
+
+const {title, notes, octave, octaves, class: className} = Astro.props
+const model = createPianoModel({title, notes, octave, octaves})
+---
+
+<mdx-piano>
+    <figure class:list={['piano-window', className]}>
+        <figcaption class="piano-caption">{model.title}</figcaption>
+        <div class="piano-toolbar">
+            <output class="piano-status" aria-live="polite" aria-atomic="true">
+                {model.status}
+            </output>
+            <button type="button" class="piano-reset" disabled={!model.hasSelectedNotes}
+                >清空</button
+            >
+        </div>
+        <div class="piano-keyboard-scroll">
+            <div class="piano-keyboard" role="group" aria-label={`${model.title}琴键`}>
+                {
+                    model.slots.map((slot) => (
+                        <div class="piano-key-slot">
+                            {slot.keys.map((key) => (
+                                <button
+                                    type="button"
+                                    class={`piano-key piano-key-${key.kind}`}
+                                    data-note={key.note}
+                                    data-note-label={key.label}
+                                    aria-label={`${key.label} 琴键`}
+                                    aria-pressed={key.pressed}
+                                >
+                                    {key.label}
+                                </button>
+                            ))}
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </figure>
+</mdx-piano>
+
+<script>
+    class MdxPiano extends HTMLElement {
+        private keys: HTMLButtonElement[] = []
+        private status?: HTMLOutputElement
+        private reset?: HTMLButtonElement
+        private initialized = false
+
+        connectedCallback() {
+            if (this.initialized) return
+
+            this.keys = Array.from(this.querySelectorAll<HTMLButtonElement>('.piano-key'))
+            this.status = this.querySelector<HTMLOutputElement>('.piano-status') ?? undefined
+            this.reset = this.querySelector<HTMLButtonElement>('.piano-reset') ?? undefined
+            if (!this.status || !this.reset || this.keys.length === 0) return
+
+            this.initialized = true
+            this.addEventListener('click', this)
+        }
+
+        handleEvent(event: Event) {
+            const target = event.target
+            if (!(target instanceof Element) || !this.status || !this.reset) return
+
+            const key = target.closest<HTMLButtonElement>('.piano-key')
+            if (key && this.contains(key)) {
+                key.setAttribute(
+                    'aria-pressed',
+                    String(key.getAttribute('aria-pressed') !== 'true'),
+                )
+                this.update()
+                return
+            }
+
+            if (!target.closest('.piano-reset')) return
+            this.keys.forEach((item) => item.setAttribute('aria-pressed', 'false'))
+            this.update()
+            this.keys[0]?.focus()
+        }
+
+        private update() {
+            if (!this.status || !this.reset) return
+
+            const labels = this.keys
+                .filter((key) => key.getAttribute('aria-pressed') === 'true')
+                .map((key) => key.dataset.noteLabel)
+                .filter((label): label is string => Boolean(label))
+            this.status.textContent =
+                labels.length > 0 ? `按下：${labels.join('、')}` : '尚未按下音符'
+            this.reset.disabled = labels.length === 0
+        }
+    }
+
+    if (!customElements.get('mdx-piano')) customElements.define('mdx-piano', MdxPiano)
+</script>
+
+<style>
+    mdx-piano {
+        display: block;
+    }
+</style>

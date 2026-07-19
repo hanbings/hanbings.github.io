@@ -10,34 +10,41 @@ export const contentFormat = 'MDX'
 
 这篇文章既是本站 Markdown 扩展的使用说明，也是文章边注、术语原文与钢琴窗的渲染测试，当前由 **{contentFormat}** 渲染。
 
-## 语法基础
+## MDX 组件
 
-本站通过 `@astrojs/markdown-remark` 的 `unified()` processor 接入 Remark 插件。页面与 RSS 共用 `src/markdown/index.mjs` 中的插件列表，避免两套渲染结果不一致。
+本站将复杂的富文本能力注册为全局 MDX 组件。文章可以直接使用 `<Underline>`、`<Term>`、`<Sidenote>`、`<SidenoteText>` 和 `<Piano>`，无需在每篇文章中重复导入。普通 Markdown 继续使用 Astro 默认渲染器，适合不需要组件的内容。
 
-这里使用 [`remark-directive`](https://github.com/remarkjs/remark-directive) 实现 [Generic Directives 提案](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444)：
+## MDX 手绘下划线
 
-- `:name[label]{attributes}`：行内 text directive。
-- `::name[label]{attributes}`：块级 leaf directive。
-- `:::name ... :::`：块级 container directive。
+MDX 页面可以直接使用全局注册的 `<Underline>` 组件。默认使用站点强调色，也可以传入任意 CSS 颜色：
 
-Generic Directives 是 Unified/Remark 生态中的通用扩展方式，但不是 CommonMark 核心规范。它适合本站这种能够同时控制作者、解析器和输出端的场景；其他 Markdown 渲染器可能只会显示原始语法。
+```mdx
+<Underline>默认黄色手绘下划线</Underline>
+<Underline color="#e88c9a" strokeWidth={2.5}>
+  自定义颜色
+</Underline>
+```
 
-`src/markdown/plugins/remarkValidateDirectives.mjs` 会拒绝未知指令以及不正确的行内或块级写法，避免拼写错误静默生成无效 HTML。
+例如，<Underline>这段文字使用默认的黄色手绘下划线</Underline>；而 <Underline color="#e88c9a" strokeWidth={2.5}>这段文字使用柔和的红色</Underline>。组件支持多行文字，并在减少动态效果模式下自动关闭绘制动画。
 
 ## 术语原文
 
-术语由 `src/markdown/plugins/remarkTerms.mjs` 处理，可以用 `:term[译名]{original="原文" lang="语言"}` 保留术语的原始写法：
+MDX 页面可以使用全局注册的 `<Term>` 组件，通过 `original` 保留术语原文，并用 `lang` 标记原文语言：
 
-```markdown
-:term[虚拟内存]{original="virtual memory" lang="en"}
-:term[context switch]{original="上下文切换" lang="zh-CN"}
+```mdx
+<Term original="virtual memory" lang="en">
+  虚拟内存
+</Term>
+<Term original="上下文切换" lang="zh-CN">
+  context switch
+</Term>
 ```
 
-例如，操作系统中的 :term[虚拟内存]{original="virtual memory" lang="en"} 并不等同于物理内存；Rust 的 :term[借用检查器]{original="borrow checker" lang="en"} 则会在编译期检查引用是否有效。
+例如，操作系统中的 <Term original="virtual memory" lang="en">虚拟内存</Term> 并不等同于物理内存；Rust 的 <Term original="borrow checker" lang="en">借用检查器</Term> 则会在编译期检查引用是否有效。
 
-标注也可以反过来使用。例如在英文段落中，:term[context switch]{original="上下文切换" lang="zh-CN"} 上方显示的是中文原词。`lang` 可以省略，但在中英文混排时建议保留。
+标注也可以反过来使用。例如在英文段落中，<Term original="上下文切换" lang="zh-CN">context switch</Term> 上方显示的是中文原词。`lang` 可以省略，但在中英文混排时建议保留。
 
-插件生成标准 HTML `<ruby>` 和 `<rt>` 元素。`<rt>` 可用于发音、翻译、音译或短注释。若内容需要离开本站的 Markdown pipeline，也可以直接使用标准 HTML，前提是目标渲染器允许 Markdown 中的 raw HTML：
+`<Term>` 生成标准 HTML `<ruby>` 和 `<rt>` 元素。`<rt>` 可用于发音、翻译、音译或短注释。若内容需要离开本站的 Markdown pipeline，也可以直接使用标准 HTML，前提是目标渲染器允许 Markdown 中的 raw HTML：
 
 ```html
 <ruby>虚拟内存<rt lang="en">virtual memory</rt></ruby>
@@ -45,128 +52,115 @@ Generic Directives 是 Unified/Remark 生态中的通用扩展方式，但不是
 
 ## 文章附记
 
-附记由 `src/markdown/plugins/remarkSidenotes.mjs` 处理。每条附记对应它后面紧跟的正文段落，因此需要把指令放在相关段落之前：
+`<Sidenote>` 的内容就是卡片正文，紧跟其后的段落用 `<SidenoteText>` 标记对应文字。不再需要额外的卡片组、ID 或配对名称：
 
-```markdown
-:::sidenote
-这里是附记，也支持普通的 **Markdown**。
-:::
+```mdx
+<Sidenote>这里是附记，也支持普通的 **Markdown**。</Sidenote>
 
-这里是与附记相关的正文。
+<p>
+  <SidenoteText>这里是与附记相关的正文。</SidenoteText>
+</p>
 ```
 
-:::sidenote
-这是一条附记。宽屏浏览时，它位于文章右侧；可用空间不足时，它会回到正文中，因而不会挤压主要内容。
-:::
+<Sidenote>
+  这是一条附记。宽屏浏览时，它位于文章右侧；可用空间不足时，它会回到正文中，因而不会挤压主要内容。
+</Sidenote>
 
-这段正文用来观察附记的位置和颜色关系。便签会根据自身文字稳定映射到 64 种浅色之一；鼠标停在便签或这段文字上时，文字背景会显示相同颜色。边注适合补充背景、出处或不影响主线的细节；如果内容是理解文章所必需的，就不应该藏在边注里。
+<p>
+  <SidenoteText>
+    这段正文用来观察附记的位置和颜色关系。鼠标停在便签或这段文字上时，文字背景会显示相同颜色。边注适合补充背景、出处或不影响主线的细节；如果内容是理解文章所必需的，就不应该藏在边注里。
+  </SidenoteText>
+</p>
 
-### 自定义标题与简短附记
+### 自定义标题与 Markdown
 
-容器可以使用自定义标题：
+`title` 可以修改卡片标题；组件内容支持强调、代码、链接和多个段落：
 
-```markdown
-:::sidenote[背景]
-这里是补充背景。
-:::
-```
-
-:::sidenote[背景]
-自定义标题会替代默认的“附记”标签。
-:::
-
-这段正文用于观察带有自定义标题的附记。
-
-简短附记也可以使用 leaf directive：
-
-```markdown
-::sidenote[这里是简短附记。]
-```
-
-::sidenote[这是一条使用 leaf directive 编写的简短附记。]
-
-这段正文用于观察简短附记。
-
-### 附记中的 Markdown
-
-:::sidenote
-附记可以包含 **强调**、`inline code` 和[链接](https://www.markdownguide.org/)，也可以写成多个段落。
+<Sidenote title="背景">
+  附记可以包含 **强调**、`inline code` 和[链接](https://www.markdownguide.org/)，也可以写成多个段落。
 
 不过，它仍然应该尽量简短。
-:::
 
-这条附记用于检查富文本和多段内容。
+</Sidenote>
 
-### 同一句的多条附记
+<p>
+  <SidenoteText>这段正文用于检查自定义标题、富文本和多段内容。</SidenoteText>
+</p>
 
-连续写下两条或更多附记，并让它们共同紧贴一个正文段落时，这些附记会自动组成一叠卡片。正文中的 `:sidenote[]` 行内标记按出现顺序与卡片配对；标记可以嵌套，因此一张卡片可以对应整句，另一张只对应句中的一部分：
+### 嵌套为卡片堆
 
-```markdown
-:::sidenote[整句]
-第一条附记对应整句话。
-:::
+在一条 `<Sidenote>` 中继续嵌套 `<Sidenote>`，就会按出现顺序组成卡片堆。对应的 `<SidenoteText>` 使用相同顺序嵌套：第一张卡片对应外层文字，后面的卡片对应内层文字。
 
-:::sidenote[局部]
-第二条附记只对应其中一部分。
-:::
+```mdx
+<Sidenote title="整句">
+  第一张附记对应整句话。
 
-:sidenote[这是一整句话，其中 :sidenote[这一部分] 另有一条附记。]
+  <Sidenote title="局部">第二张附记只对应其中一部分。</Sidenote>
+</Sidenote>
+
+<p>
+  <SidenoteText>
+    这是整句话，其中<SidenoteText>这一部分</SidenoteText>另有一张附记。
+  </SidenoteText>
+</p>
 ```
 
-:::sidenote[背景]
-这是第一张卡片，用来补充这句话的背景信息。
-:::
+<Sidenote title="背景">
+  这是第一张卡片，用来补充整句话的背景信息。
 
-:::sidenote[出处]
-这是第二张卡片，用来记录这句话的资料出处。
-:::
+  <Sidenote title="出处">这是第二张卡片，用来记录局部文字的资料出处。</Sidenote>
+  <Sidenote title="延伸">这是第三张卡片，提供一个可以继续阅读的方向。</Sidenote>
+</Sidenote>
 
-:::sidenote[延伸]
-这是第三张卡片，提供一个可以继续阅读的方向。
-:::
+<p>
+  <SidenoteText>
+    这句话同时关联了 <SidenoteText>背景和出处</SidenoteText>，也包含{' '}
+    <SidenoteText>延伸阅读</SidenoteText>。
+  </SidenoteText>
+</p>
 
-:sidenote[这句话同时关联了 :sidenote[背景和出处]，也包含 :sidenote[延伸阅读]。] 每张卡片保留自己的颜色和文字范围；点击当前卡片可以切换到下一张，把鼠标移到对应文字上也会切换到那张卡片。
+每张卡片保留自己的颜色和文字范围；点击当前卡片可以切换到下一张，把鼠标移到对应文字上也会切换到那张卡片。
 
 ## 钢琴窗
 
-钢琴窗由 `src/markdown/plugins/remarkPiano.mjs` 处理。它使用科学音高记号描述按下的琴键，例如中央 C 是 `C4`，升 C 可以写成 `C#4` 或 `C♯4`，降 D 也可以写成 `Db4`：
+MDX 页面可以使用全局注册的 `<Piano>` 组件。它使用科学音高记号描述按下的琴键，例如中央 C 是 `C4`，升 C 可以写成 `C#4` 或 `C♯4`，降 D 也可以写成 `Db4`：
 
-```markdown
-::piano[C 大调和弦]{notes="C4 E4 G4"}
+```mdx
+<Piano title="C 大调和弦" notes="C4 E4 G4" />
 ```
 
-::piano[C 大调和弦]{notes="C4 E4 G4"}
+<Piano title="C 大调和弦" notes="C4 E4 G4" />
 
-`notes` 可以使用空格、逗号或顿号分隔。浏览者可以点击琴键切换按下状态，钢琴窗会实时列出当前音符；“清空”按钮会释放全部琴键。
+`notes` 可以传入字符串或字符串数组，并使用空格、逗号或顿号分隔。浏览者可以点击琴键切换按下状态，钢琴窗会实时列出当前音符；“清空”按钮会释放全部琴键。
 
 钢琴窗默认从 `C4` 开始显示两个八度。可以用 `octave` 指定起始八度，用 `octaves` 指定一到四个八度：
 
-```markdown
-::piano[低音区的 F 小调和弦]{notes="F2 Ab2 C3" octave="2" octaves="2"}
+```mdx
+<Piano title="低音区的 F 小调和弦" notes="F2 Ab2 C3" octave={2} octaves={2} />
 ```
 
-::piano[低音区的 F 小调和弦]{notes="F2 Ab2 C3" octave="2" octaves="2"}
+<Piano title="低音区的 F 小调和弦" notes="F2 Ab2 C3" octave={2} octaves={2} />
 
 降号会被规范到对应的升号琴键，因此上例中的 `Ab2` 显示为 `G♯2`。如果音名无法识别，或音符不在当前琴窗的音域内，构建会直接报错。省略 `notes` 则会生成一架没有预先按下琴键的钢琴：
 
-```markdown
-::piano[试着按下几个音]
+```mdx
+<Piano title="试着按下几个音" />
 ```
 
-::piano[试着按下几个音]
+<Piano title="试着按下几个音" />
 
 ## 窄屏、RSS 与无障碍
 
-插件生成 `<aside role="note">`，并把它后面紧跟的段落标记为对应正文；连续附记会共享同一个正文段落并组成卡片叠。行内标记数量必须与卡片数量一致；如果省略全部行内标记，则兼容旧语法，让所有卡片共享整段正文。如果最后一条附记后没有正文段落，构建会直接报错。在手机或较窄的窗口中，单条附记会成为带有标题的正文块，多条附记仍可逐张切换；术语原文则继续显示在术语上方。
+`<Sidenote>` 生成 `<aside role="note">`；嵌套卡片与嵌套正文按出现顺序配对。在手机或较窄的窗口中，单条附记会成为带有标题的正文块，多条附记仍可逐张切换；术语原文则继续显示在术语上方。
 
 钢琴窗中的每个琴键都是带有按下状态的按钮，可以通过键盘聚焦并操作。琴键较多或屏幕较窄时，键盘区域可以横向滚动；RSS 中则保留标题与初始音符文字，不依赖交互脚本。
 
-RSS 使用同一套 Markdown renderer，并保留每一张卡片对应的 `<aside>`、`<ruby>` 与 `<rt>` 语义；所有附记内容都会依次出现，因此不会依赖卡片切换脚本或泄漏未解析的 directive 源码。
+RSS 使用同一套内容组件，并保留每一张卡片对应的 `<aside>`、`<ruby>` 与 `<rt>` 语义；所有附记内容都会依次出现，因此不会依赖客户端交互脚本。
 
 ## 相关规范与文档
 
 - [CommonMark](https://spec.commonmark.org/)
 - [Astro Markdown](https://docs.astro.build/en/guides/markdown-content/)
-- [Generic Directives](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444)
-- [remark-directive](https://github.com/remarkjs/remark-directive)
+- [Astro MDX](https://docs.astro.build/en/guides/integrations-guide/mdx/)
+- [Rough Notation](https://roughnotation.com/)
 - [HTML `<rt>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/rt)

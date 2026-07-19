@@ -1,0 +1,20 @@
+---
+interface Props {
+    class?: string
+}
+
+const {class: className} = Astro.props
+const renderedContent = (await Astro.slots.render('default')).trim()
+const hasSingleParagraph =
+    renderedContent.startsWith('<p>') &&
+    renderedContent.endsWith('</p>') &&
+    !renderedContent.slice(3, -4).includes('</p>')
+const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : renderedContent
+---
+
+<span
+    class:list={['sidenote-anchor-text', className]}
+    tabindex="0"
+    data-sidenote-text
+    set:html={inlineContent}
+/>
