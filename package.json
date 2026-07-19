@@ -22,6 +22,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.1",
     "remark-directive": "^4.0.0",
+    "rough-notation": "^0.5.1",
     "sanitize-html": "^2.17.6",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
