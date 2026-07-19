@@ -10,6 +10,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "test": "node --test src/markdown/plugins/*.test.mjs",
+    "format": "prettier --write .",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -28,5 +29,9 @@
     "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
     "vite": "^8.1.5"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.5",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }
