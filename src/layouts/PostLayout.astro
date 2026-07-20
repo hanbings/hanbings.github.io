@@ -5,40 +5,23 @@ const {title, background} = Astro.props as {
     title: string
     background?: string
 }
-
-const headerBackgroundSlot = Astro.slots.has('header-background')
-const backfillBackgroundSlot = Astro.slots.has('backfill-background')
-const siteHeaderSlot = Astro.slots.has('site-header')
-const siteNavigationSlot = Astro.slots.has('site-navigation')
-const siteFooterSlot = Astro.slots.has('site-footer')
-const siteOverlaySlot = Astro.slots.has('site-overlay')
 ---
 
-<SiteLayout
-    title={title}
-    background={background}
-    markdownRender
-    headerBackgroundSlot={headerBackgroundSlot}
-    backfillBackgroundSlot={backfillBackgroundSlot}
-    siteHeaderSlot={siteHeaderSlot}
-    siteNavigationSlot={siteNavigationSlot}
-    siteFooterSlot={siteFooterSlot}
-    siteOverlaySlot={siteOverlaySlot}
->
-    <slot name="header-background" slot="header-background" />
+<SiteLayout title={title} background={background} markdownRender>
     <slot name="backfill-background" slot="backfill-background" />
-    <slot name="site-header" slot="site-header" />
-    <slot name="site-navigation" slot="site-navigation" />
-    <slot name="site-footer" slot="site-footer" />
+    <slot name="header-background" slot="header-background" />
     <slot name="site-overlay" slot="site-overlay" />
-    <main class="markdown-render" aria-label={title}>
-        <article class="markdown-render-main w-full max-w-180 flex flex-col gap-4">
+    <main class="markdown-render" data-site-region="main" aria-label={title}>
+        <article
+            class="markdown-render-main w-full max-w-180 flex flex-col gap-4"
+            data-site-region="article"
+        >
             <slot />
         </article>
-        <div class="markdown-render-region markdown-render-left">
+        <div class="markdown-render-region markdown-render-left" data-site-region="left">
             <slot name="left" />
         </div>
-        <div class="markdown-render-region markdown-render-right">
+        <div class="markdown-render-region markdown-render-right" data-site-region="right">
             <slot name="right" />
         </div>
     </main>

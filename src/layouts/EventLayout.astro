@@ -5,32 +5,13 @@ const {title, background} = Astro.props as {
     title: string
     background?: string
 }
-
-const headerBackgroundSlot = Astro.slots.has('header-background')
-const backfillBackgroundSlot = Astro.slots.has('backfill-background')
-const siteHeaderSlot = Astro.slots.has('site-header')
-const siteNavigationSlot = Astro.slots.has('site-navigation')
-const siteFooterSlot = Astro.slots.has('site-footer')
-const siteOverlaySlot = Astro.slots.has('site-overlay')
 ---
 
-<IndexLayout
-    title={title}
-    background={background}
-    headerBackgroundSlot={headerBackgroundSlot}
-    backfillBackgroundSlot={backfillBackgroundSlot}
-    siteHeaderSlot={siteHeaderSlot}
-    siteNavigationSlot={siteNavigationSlot}
-    siteFooterSlot={siteFooterSlot}
-    siteOverlaySlot={siteOverlaySlot}
->
-    <slot name="header-background" slot="header-background" />
+<IndexLayout title={title} background={background}>
     <slot name="backfill-background" slot="backfill-background" />
-    <slot name="site-header" slot="site-header" />
-    <slot name="site-navigation" slot="site-navigation" />
-    <slot name="site-footer" slot="site-footer" />
+    <slot name="header-background" slot="header-background" />
     <slot name="site-overlay" slot="site-overlay" />
-    <article class="flex flex-col gap-4">
+    <article class="flex flex-col gap-4" data-site-region="article">
         <h1 class="text-2xl font-bold">{title}</h1>
         <div class="markdown-body">
             <slot />

@@ -10,31 +10,11 @@ const {
     title,
     background,
     markdownRender = false,
-    headerBackgroundSlot,
-    backfillBackgroundSlot,
-    siteHeaderSlot,
-    siteNavigationSlot,
-    siteFooterSlot,
-    siteOverlaySlot,
 } = Astro.props as {
     title: string
     background?: string
     markdownRender?: boolean
-    headerBackgroundSlot?: boolean
-    backfillBackgroundSlot?: boolean
-    siteHeaderSlot?: boolean
-    siteNavigationSlot?: boolean
-    siteFooterSlot?: boolean
-    siteOverlaySlot?: boolean
 }
-
-const hasHeaderBackground = headerBackgroundSlot ?? Astro.slots.has('header-background')
-const hasBackfillBackground = backfillBackgroundSlot ?? Astro.slots.has('backfill-background')
-const hasSiteHeader = siteHeaderSlot ?? Astro.slots.has('site-header')
-const hasSiteNavigation = siteNavigationSlot ?? Astro.slots.has('site-navigation')
-const hasSiteFooter = siteFooterSlot ?? Astro.slots.has('site-footer')
-const hasSiteOverlay = siteOverlaySlot ?? Astro.slots.has('site-overlay')
-const hasPageBackground = Boolean(background || hasHeaderBackground || hasBackfillBackground)
 ---
 
 <!doctype html>
@@ -43,61 +23,54 @@ const hasPageBackground = Boolean(background || hasHeaderBackground || hasBackfi
         <Meta title={title} />
     </head>
     <body>
-        <div
-            class:list={[
-                'site-foreground relative z-1 min-h-lvh w-full',
-                hasPageBackground && 'has-page-background',
-            ]}
-        >
-            <div class="site-background" aria-hidden="true">
-                {
-                    hasBackfillBackground ? (
-                        <slot name="backfill-background" />
-                    ) : (
-                        <BackfillBackground />
-                    )
-                }
-                <div class="site-background-header">
-                    {
-                        hasHeaderBackground ? (
-                            <slot name="header-background" />
-                        ) : (
-                            background && <img src={background} alt="" decoding="async" />
-                        )
-                    }
+        <div class="site-foreground relative min-h-lvh w-full isolate" data-site-root>
+            <div
+                class="site-background pointer-events-none absolute inset-0 z-0 min-h-full overflow-hidden"
+                data-site-region="background"
+                aria-hidden="true"
+            >
+                <BackfillBackground />
+                <slot name="backfill-background" />
+                <div class="site-background-header" data-site-region="header-background">
+                    {background && <img src={background} alt="" decoding="async" />}
+                    <slot name="header-background" />
                 </div>
             </div>
-            <div class="site-content">
+            <div class="site-content relative z-1" data-site-region="content">
                 <header
+                    data-site-region="header"
                     class:list={[
                         'site-header mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]',
                         markdownRender &&
                             'markdown-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)',
                     ]}
                 >
-                    {hasSiteHeader ? <slot name="site-header" /> : <Header />}
+                    <Header />
                 </header>
                 <nav
+                    data-site-region="navigation"
                     class:list={[
                         'site-navigation mx-auto w-[min(720px,calc(100%-3rem))] py-2',
                         markdownRender && 'hidden',
                     ]}
                     aria-label="主导航"
                 >
-                    {hasSiteNavigation ? <slot name="site-navigation" /> : <Navigation />}
+                    <Navigation />
                 </nav>
                 <slot />
-                <footer class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6">
-                    {hasSiteFooter ? <slot name="site-footer" /> : <Footer />}
+                <footer
+                    class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6"
+                    data-site-region="footer"
+                >
+                    <Footer />
                 </footer>
             </div>
-            {
-                hasSiteOverlay && (
-                    <div class="site-overlay">
-                        <slot name="site-overlay" />
-                    </div>
-                )
-            }
+            <div
+                class="site-overlay pointer-events-none absolute inset-0 z-2"
+                data-site-region="overlay"
+            >
+                <slot name="site-overlay" />
+            </div>
         </div>
     </body>
 </html>
