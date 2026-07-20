@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './markdown/mdx/piano.css';
+@import './markdown/mdx/shader-box.css';
 @import './markdown/mdx/sidenotes.css';
 @import './markdown/mdx/terms.css';
 @import './base/theme.css';

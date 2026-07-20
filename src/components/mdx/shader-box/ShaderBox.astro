@@ -1,0 +1,80 @@
+---
+interface Props {
+    overlay?: boolean
+}
+
+const {overlay = false} = Astro.props
+---
+
+<mdx-shader-box class="shader-box" data-overlay={String(overlay)}>
+    <div class="shader-box-window" data-shader-window>
+        {
+            overlay && (
+                <div class="shader-box-header">
+                    <svg class="shader-box-header-icon" viewBox="0 0 16 16" aria-hidden="true">
+                        <circle
+                            cx="8"
+                            cy="8"
+                            r="5.75"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.25"
+                        />
+                        <path
+                            d="M2.5 8h11M8 2.25c1.55 1.55 2.25 3.48 2.25 5.75S9.55 12.2 8 13.75C6.45 12.2 5.75 10.27 5.75 8S6.45 3.8 8 2.25Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.1"
+                        />
+                    </svg>
+                    <strong class="shader-box-header-title">全局 Shader</strong>
+                    <span class="shader-box-header-description">可应用到整个页面</span>
+                </div>
+            )
+        }
+        <div class="shader-box-source" data-shader-source>
+            <slot />
+        </div>
+        <div class="shader-box-preview" data-shader-preview>
+            <canvas class="shader-box-canvas" aria-hidden="true"></canvas>
+        </div>
+    </div>
+    {
+        overlay && (
+            <div class="shader-box-toolbar" data-shader-toolbar>
+                <button
+                    class="shader-box-overlay-toggle"
+                    type="button"
+                    data-shader-overlay-toggle
+                    aria-pressed="false"
+                >
+                    <svg
+                        class="shader-box-overlay-icon shader-box-overlay-icon-apply"
+                        viewBox="0 0 16 16"
+                        aria-hidden="true"
+                    >
+                        <path d="M4 2.75 13 8l-9 5.25z" fill="currentColor" />
+                    </svg>
+                    <svg
+                        class="shader-box-overlay-icon shader-box-overlay-icon-close"
+                        viewBox="0 0 16 16"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="m4 4 8 8m0-8-8 8"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-width="1.75"
+                        />
+                    </svg>
+                    <span data-shader-overlay-label>应用到页面</span>
+                </button>
+            </div>
+        )
+    }
+</mdx-shader-box>
+
+<script>
+    import './shader-box'
+</script>

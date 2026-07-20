@@ -8,6 +8,7 @@ import Underline from './rough-notation/Underline.astro'
 import Piano from './piano/Piano.astro'
 import Sidenote from './sidenote/Sidenote.astro'
 import SidenoteText from './sidenote/SidenoteText.astro'
+import ShaderBox from './shader-box/ShaderBox.astro'
 import Term from './term/Term.astro'
 
 export const mdxComponents = {
@@ -20,6 +21,7 @@ export const mdxComponents = {
   Sidenote,
   SidenoteText,
   StrikeThrough,
+  ShaderBox,
   Term,
   Underline,
 }

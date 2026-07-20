@@ -1,0 +1,169 @@
+.markdown-body .shader-box {
+  display: block;
+  margin: 1.5rem 0;
+}
+
+.markdown-body .shader-box-window {
+  overflow: hidden;
+  border: 1px solid var(--theme-border);
+  border-radius: 0.5rem;
+}
+
+.markdown-body .shader-box-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--theme-border);
+  background-color: var(--theme-bg);
+  color: var(--theme-muted);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.markdown-body .shader-box-header-icon {
+  display: block;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: var(--theme-accent);
+}
+
+.markdown-body .shader-box-header-title {
+  color: var(--theme-fg);
+  font-weight: 600;
+}
+
+.markdown-body .shader-box-header-description {
+  margin-left: auto;
+}
+
+.markdown-body .shader-box-source {
+  min-width: 0;
+}
+
+.markdown-body .shader-box-source > .astro-code {
+  max-height: min(60vh, 32rem);
+  margin: 0 !important;
+  overflow-y: auto !important;
+  border: 0;
+  border-radius: 0;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--theme-border) transparent;
+  scrollbar-width: thin;
+}
+
+.markdown-body .shader-box-preview {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-top: 1px solid var(--theme-border);
+  background:
+    radial-gradient(circle at 25% 20%, var(--theme-accent-soft), transparent 45%), var(--theme-bg);
+}
+
+.shader-box-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.shader-box-canvas[data-overlay-active] {
+  position: fixed;
+  inset: 0;
+}
+
+.markdown-body .shader-box[data-overlay-active] .shader-box-preview::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--theme-muted);
+  content: 'Shader 已应用到页面';
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+.markdown-body .shader-box-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.625rem;
+}
+
+.shader-box-overlay-toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--theme-border);
+  border-radius: 0.375rem;
+  background-color: color-mix(in srgb, var(--theme-code-bg) 88%, transparent);
+  box-shadow: 0 0.75rem 1.5rem -1rem var(--theme-shadow);
+  color: var(--theme-fg);
+  font: inherit;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  backdrop-filter: blur(0.5rem);
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.shader-box-overlay-icon {
+  display: block;
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.shader-box-overlay-icon-close,
+.shader-box-overlay-toggle[aria-pressed='true'] .shader-box-overlay-icon-apply {
+  display: none;
+}
+
+.shader-box-overlay-toggle[aria-pressed='true'] .shader-box-overlay-icon-close {
+  display: block;
+}
+
+.shader-box-overlay-toggle:hover {
+  border-color: var(--theme-accent);
+  background-color: var(--theme-accent-soft);
+}
+
+.shader-box-overlay-toggle[aria-pressed='true'] {
+  border-color: var(--theme-accent);
+  background-color: var(--theme-accent);
+  color: var(--theme-accent-contrast);
+}
+
+@media (min-width: 720px) {
+  .markdown-body .shader-box-window {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .markdown-body .shader-box-header {
+    grid-column: 1 / -1;
+  }
+
+  .markdown-body .shader-box-preview {
+    min-width: 0;
+    min-height: 14rem;
+    border-top: 0;
+    border-left: 1px solid var(--theme-border);
+    aspect-ratio: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shader-box-overlay-toggle {
+    transition: none;
+  }
+}
