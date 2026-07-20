@@ -7,6 +7,10 @@
   line-height: 1.4;
 }
 
+.post-toc-mobile .post-toc {
+  align-self: flex-start;
+}
+
 .post-toc-title {
   margin: 0 0 0.375rem;
   color: var(--theme-fg);
