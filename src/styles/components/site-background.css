@@ -14,12 +14,13 @@
   mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
 }
 
+.site-background-image,
 .site-background-header > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.12;
+  opacity: var(--site-background-opacity, 0.12);
 }
 
 .markdown-body {
@@ -27,7 +28,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  .site-background-image,
   .site-background-header > img {
-    opacity: 0.16;
+    opacity: var(--site-background-opacity, 0.16);
   }
 }

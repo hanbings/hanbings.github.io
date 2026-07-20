@@ -1,0 +1,340 @@
+.music-background {
+  --music-canvas: color-mix(in srgb, #f3ca62 24%, var(--theme-bg));
+  --music-coral: color-mix(in srgb, #ef7465 34%, var(--theme-bg));
+  --music-teal: color-mix(in srgb, #59aaa4 30%, var(--theme-bg));
+  --music-blue: color-mix(in srgb, #5878c0 28%, var(--theme-bg));
+  --music-ink: color-mix(in srgb, #26384c 70%, var(--theme-fg));
+  position: fixed;
+  inset: 0;
+  isolation: isolate;
+  width: 100%;
+  overflow: hidden;
+  color: var(--music-ink);
+  background-color: var(--music-canvas);
+  opacity: var(--site-background-opacity, 1);
+  animation: music-background-pixel-palette 24s steps(6, end) infinite alternate;
+}
+
+.music-background-pixel-field,
+.music-background-fragments,
+.music-background-pixel-grid,
+.music-background-vignette {
+  position: absolute;
+}
+
+.music-background-pixel-field {
+  opacity: 0.82;
+}
+
+.music-background-pixel-field-coral {
+  top: -22%;
+  left: -10%;
+  width: max(30rem, 52vw);
+  aspect-ratio: 1;
+  background-color: var(--music-coral);
+  clip-path: polygon(
+    0 0,
+    72% 0,
+    72% 7%,
+    82% 7%,
+    82% 16%,
+    91% 16%,
+    91% 29%,
+    100% 29%,
+    100% 66%,
+    91% 66%,
+    91% 79%,
+    82% 79%,
+    82% 89%,
+    68% 89%,
+    68% 100%,
+    0 100%
+  );
+  animation: music-background-pixel-coral 19s steps(5, end) infinite alternate;
+}
+
+.music-background-pixel-field-teal {
+  right: -12%;
+  bottom: -29%;
+  width: max(36rem, 65vw);
+  aspect-ratio: 1;
+  background-color: var(--music-teal);
+  clip-path: polygon(
+    22% 0,
+    78% 0,
+    78% 6%,
+    89% 6%,
+    89% 16%,
+    96% 16%,
+    96% 28%,
+    100% 28%,
+    100% 72%,
+    94% 72%,
+    94% 84%,
+    84% 84%,
+    84% 93%,
+    70% 93%,
+    70% 100%,
+    27% 100%,
+    27% 95%,
+    15% 95%,
+    15% 85%,
+    7% 85%,
+    7% 71%,
+    0 71%,
+    0 30%,
+    6% 30%,
+    6% 18%,
+    13% 18%,
+    13% 8%,
+    22% 8%
+  );
+  animation: music-background-pixel-teal 27s steps(6, end) infinite alternate;
+}
+
+.music-background-pixel-field-blue {
+  top: 8%;
+  right: 11%;
+  width: clamp(8rem, 15vw, 15rem);
+  aspect-ratio: 1;
+  border: clamp(1.25rem, 2.8vw, 2.75rem) solid var(--music-blue);
+  box-shadow:
+    12px 12px 0 color-mix(in srgb, var(--music-blue) 38%, transparent),
+    -8px -8px 0 color-mix(in srgb, var(--theme-bg) 38%, transparent);
+  opacity: 0.62;
+  animation: music-background-pixel-blue 14s steps(4, end) infinite alternate;
+}
+
+.music-background-fragments {
+  z-index: 2;
+  inset: -18%;
+  transform: rotate(-9deg) scale(1.12);
+  transform-origin: center;
+}
+
+.music-background-fragment {
+  position: absolute;
+  top: var(--fragment-y);
+  left: var(--fragment-x);
+  width: clamp(10rem, var(--fragment-width), 34rem);
+  opacity: 0.08;
+  transform: rotate(var(--fragment-rotation));
+  transform-origin: center;
+  animation: music-background-fragment-reveal var(--fragment-duration) steps(1, end) infinite;
+  animation-delay: var(--fragment-delay);
+}
+
+.music-background-fragment-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(6px 6px 0 color-mix(in srgb, currentColor 12%, transparent));
+  animation: music-background-fragment-jitter 7s steps(4, end) infinite alternate;
+  animation-delay: var(--fragment-delay);
+}
+
+.music-background-fragment-ink {
+  color: var(--music-ink);
+}
+
+.music-background-fragment-coral {
+  color: color-mix(in srgb, #b74642 68%, var(--theme-fg));
+}
+
+.music-background-fragment-blue {
+  color: color-mix(in srgb, #3f5fae 64%, var(--theme-fg));
+}
+
+.music-background-fragment-teal {
+  color: color-mix(in srgb, #287b79 66%, var(--theme-fg));
+}
+
+.music-background-pixel-staff {
+  opacity: 0.48;
+  fill: currentColor;
+}
+
+.music-background-pixel-note,
+.music-background-pixel-symbol {
+  fill: currentColor;
+}
+
+.music-background-pixel-note {
+  opacity: 0.72;
+}
+
+.music-background-pixel-symbol {
+  opacity: 0.58;
+}
+
+.music-background-pixel-grid {
+  z-index: 3;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgb(255 255 255 / 18%) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 18%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(20 30 45 / 8%) 2px, transparent 2px),
+    linear-gradient(rgb(20 30 45 / 8%) 2px, transparent 2px);
+  background-position:
+    0 0,
+    0 0,
+    4px 4px,
+    4px 4px;
+  background-size:
+    8px 8px,
+    8px 8px,
+    32px 32px,
+    32px 32px;
+  mix-blend-mode: soft-light;
+  opacity: 0.2;
+}
+
+.music-background-vignette {
+  z-index: 4;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--theme-bg) 3%, transparent),
+      color-mix(in srgb, var(--theme-bg) 12%, transparent) 52%,
+      color-mix(in srgb, var(--theme-bg) 30%, transparent)
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--theme-bg) 18%, transparent),
+      transparent 24%,
+      transparent 76%,
+      color-mix(in srgb, var(--theme-bg) 18%, transparent)
+    );
+}
+
+@keyframes music-background-pixel-palette {
+  from {
+    background-color: var(--music-canvas);
+  }
+
+  to {
+    background-color: color-mix(in srgb, #d994a4 23%, var(--theme-bg));
+  }
+}
+
+@keyframes music-background-pixel-coral {
+  from {
+    transform: translate3d(-4%, -2%, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(14%, 10%, 0) rotate(8deg);
+  }
+}
+
+@keyframes music-background-pixel-teal {
+  from {
+    transform: translate3d(5%, 8%, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(-13%, -9%, 0) rotate(-6deg);
+  }
+}
+
+@keyframes music-background-pixel-blue {
+  from {
+    transform: translate3d(8%, -8%, 0) rotate(8deg);
+  }
+
+  to {
+    transform: translate3d(-18%, 16%, 0) rotate(25deg);
+  }
+}
+
+@keyframes music-background-fragment-reveal {
+  0%,
+  10% {
+    opacity: 0.06;
+  }
+
+  11%,
+  42% {
+    opacity: 0.58;
+  }
+
+  43%,
+  59% {
+    opacity: 0.16;
+  }
+
+  60%,
+  84% {
+    opacity: 0.46;
+  }
+
+  85%,
+  100% {
+    opacity: 0.08;
+  }
+}
+
+@keyframes music-background-fragment-jitter {
+  0%,
+  24% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  25%,
+  49% {
+    transform: translate3d(var(--fragment-step-x), 0, 0);
+  }
+
+  50%,
+  74% {
+    transform: translate3d(0, var(--fragment-step-y), 0);
+  }
+
+  75%,
+  100% {
+    transform: translate3d(var(--fragment-step-x), var(--fragment-step-y), 0);
+  }
+}
+
+@media (max-width: 640px) {
+  .music-background-fragments {
+    inset: -12% -28%;
+    transform: rotate(-12deg) scale(1.18);
+  }
+
+  .music-background-fragment {
+    width: clamp(9rem, var(--fragment-width), 22rem);
+  }
+
+  .music-background-fragment-svg {
+    filter: none;
+  }
+
+  .music-background-fragment-mobile-hidden {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .music-background {
+    --music-canvas: color-mix(in srgb, #6e5938 30%, var(--theme-bg));
+    --music-coral: color-mix(in srgb, #843e4b 34%, var(--theme-bg));
+    --music-teal: color-mix(in srgb, #285c61 38%, var(--theme-bg));
+    --music-blue: color-mix(in srgb, #4f65a0 36%, var(--theme-bg));
+    --music-ink: color-mix(in srgb, #d5dced 64%, var(--theme-fg));
+  }
+
+  .music-background-fragment-coral {
+    color: color-mix(in srgb, #e18b82 60%, var(--theme-fg));
+  }
+
+  .music-background-fragment-blue {
+    color: color-mix(in srgb, #91a6e5 58%, var(--theme-fg));
+  }
+
+  .music-background-fragment-teal {
+    color: color-mix(in srgb, #78c4bf 58%, var(--theme-fg));
+  }
+}

@@ -8,6 +8,7 @@
 @import './components/theme.css';
 @import './base/scrollbars.css';
 @import './components/site-background.css';
+@import './components/backgrounds/music.css';
 @import './components/table-of-contents.css';
 @import './pages/about.css';
 @import './layouts/markdown-render.css';

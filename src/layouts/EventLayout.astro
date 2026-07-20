@@ -1,13 +1,14 @@
 ---
 import IndexLayout from './IndexLayout.astro'
 
-const {title, background} = Astro.props as {
+const {title, background, backgroundOpacity} = Astro.props as {
     title: string
     background?: string
+    backgroundOpacity?: number
 }
 ---
 
-<IndexLayout title={title} background={background}>
+<IndexLayout title={title} background={background} backgroundOpacity={backgroundOpacity}>
     <slot name="backfill-background" slot="backfill-background" />
     <slot name="header-background" slot="header-background" />
     <slot name="site-overlay" slot="site-overlay" />

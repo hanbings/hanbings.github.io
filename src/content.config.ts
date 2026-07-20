@@ -11,6 +11,7 @@ const postsCollection = defineCollection({
     tags: z.array(z.string()),
     draft: z.boolean().optional(),
     background: z.string().optional(),
+    backgroundOpacity: z.number().min(0).max(1).optional(),
     author: z.string().optional(),
   }),
 })
@@ -23,6 +24,7 @@ const eventsCollection = defineCollection({
     date: z.string(),
     draft: z.boolean().optional(),
     background: z.string().optional(),
+    backgroundOpacity: z.number().min(0).max(1).optional(),
     author: z.string().optional(),
   }),
 })

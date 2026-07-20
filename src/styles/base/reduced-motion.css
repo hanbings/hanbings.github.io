@@ -6,4 +6,15 @@
   .markdown-body a[href] {
     transition: none;
   }
+
+  .music-background,
+  .music-background-pixel-field,
+  .music-background-fragment,
+  .music-background-fragment-svg {
+    animation: none;
+  }
+
+  .music-background-fragment {
+    opacity: 0.42;
+  }
 }

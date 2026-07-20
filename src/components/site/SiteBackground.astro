@@ -1,0 +1,34 @@
+---
+import MusicBackground from './backgrounds/MusicBackground.astro'
+
+interface Props {
+    background?: string
+    layer: 'backfill' | 'header'
+}
+
+const {background, layer} = Astro.props
+
+const backgroundPresets = {
+    music: MusicBackground,
+} as const
+
+type BackgroundPreset = keyof typeof backgroundPresets
+
+const presetName =
+    background && Object.hasOwn(backgroundPresets, background)
+        ? (background as BackgroundPreset)
+        : undefined
+const PresetBackground =
+    layer === 'backfill' && presetName ? backgroundPresets[presetName] : undefined
+const imageSource = layer === 'header' && background && !presetName ? background : undefined
+---
+
+{
+    PresetBackground ? (
+        <PresetBackground />
+    ) : (
+        imageSource && (
+            <img class="site-background-image" src={imageSource} alt="" decoding="async" />
+        )
+    )
+}

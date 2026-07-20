@@ -12,7 +12,11 @@ const allPosts = (await getCollection('posts', ({data}) => !data.draft)).sort(
 )
 ---
 
-<IndexLayout title="主页" background={frontmatter.background}>
+<IndexLayout
+    title="主页"
+    background={frontmatter.background}
+    backgroundOpacity={frontmatter.backgroundOpacity}
+>
     <div class="markdown-body">
         <Content />
     </div>

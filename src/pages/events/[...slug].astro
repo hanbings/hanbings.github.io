@@ -16,6 +16,10 @@ const {entry} = Astro.props
 const {Content} = await render(entry)
 ---
 
-<EventLayout title={entry.data['title']} background={entry.data['background']}>
+<EventLayout
+    title={entry.data['title']}
+    background={entry.data['background']}
+    backgroundOpacity={entry.data['backgroundOpacity']}
+>
     <Content components={mdxComponents} />
 </EventLayout>

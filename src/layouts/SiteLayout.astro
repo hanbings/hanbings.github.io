@@ -4,17 +4,27 @@ import Header from '../components/site/Header.astro'
 import Navigation from '../components/site/Navigation.astro'
 import Footer from '../components/site/Footer.astro'
 import BackfillBackground from '../components/site/BackfillBackground.astro'
+import SiteBackground from '../components/site/SiteBackground.astro'
 import '../styles/global.css'
 
 const {
     title,
     background,
+    backgroundOpacity,
     markdownRender = false,
 } = Astro.props as {
     title: string
     background?: string
+    backgroundOpacity?: number
     markdownRender?: boolean
 }
+
+const normalizedBackgroundOpacity =
+    backgroundOpacity === undefined ? undefined : Math.min(1, Math.max(0, backgroundOpacity))
+const siteBackgroundStyle =
+    normalizedBackgroundOpacity === undefined
+        ? undefined
+        : `--site-background-opacity: ${normalizedBackgroundOpacity}`
 ---
 
 <!doctype html>
@@ -27,12 +37,14 @@ const {
             <div
                 class="site-background pointer-events-none absolute inset-0 z-0 min-h-full overflow-hidden"
                 data-site-region="background"
+                style={siteBackgroundStyle}
                 aria-hidden="true"
             >
                 <BackfillBackground />
+                <SiteBackground background={background} layer="backfill" />
                 <slot name="backfill-background" />
                 <div class="site-background-header" data-site-region="header-background">
-                    {background && <img src={background} alt="" decoding="async" />}
+                    <SiteBackground background={background} layer="header" />
                     <slot name="header-background" />
                 </div>
             </div>
