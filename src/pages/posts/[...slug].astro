@@ -32,7 +32,8 @@ const tags = [...entry.data['tags']]
             {tags.map((tag) => <a href={`/tags/${tag}`} class="theme-muted-link">{`#${tag}`}</a>)}
         </div>
     </div>
-    <div class="post-toc-mobile">
+    <div class="post-toc-mobile flex flex-col items-start gap-3" aria-label="文章导航">
+        <a class="theme-entry self-start text-left" href="/">返回主页</a>
         <TableOfContents headings={headings} />
     </div>
     <div class="markdown-body">
