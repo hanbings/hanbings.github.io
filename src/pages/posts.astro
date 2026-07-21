@@ -3,22 +3,41 @@ import IndexLayout from '../layouts/IndexLayout.astro'
 import EntryList from '../components/index/EntryList.astro'
 import {getCollection} from 'astro:content'
 
-const allPosts = (await getCollection('posts', ({data}) => !data.draft)).sort(
+const posts = (await getCollection('posts')).sort(
     (a, b) =>
         new Date(b.data.date.replace(' ', 'T')).getTime() -
         new Date(a.data.date.replace(' ', 'T')).getTime(),
 )
+const publishedPosts = posts.filter(({data}) => !data.draft)
+const draftPosts = posts.filter(({data}) => data.draft)
 ---
 
 <IndexLayout title="文章">
+    <h1 class="text-2xl font-bold">文章</h1>
     <EntryList
-        heading="文章"
-        headingId="posts-title"
-        items={allPosts.map((post) => ({
+        class="mt-6"
+        heading="发布的文章"
+        headingId="published-posts-title"
+        items={publishedPosts.map((post) => ({
             title: post.data.title,
             href: `/posts/${post.id}`,
             date: post.data.date,
             tags: post.data.tags,
         }))}
     />
+    {
+        draftPosts.length > 0 && (
+            <EntryList
+                class="mt-6"
+                heading="草稿文章"
+                headingId="draft-posts-title"
+                items={draftPosts.map((post) => ({
+                    title: post.data.title,
+                    href: `/posts/${post.id}`,
+                    date: post.data.date,
+                    tags: post.data.tags,
+                }))}
+            />
+        )
+    }
 </IndexLayout>

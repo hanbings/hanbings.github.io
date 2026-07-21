@@ -1,9 +1,10 @@
 ---
-title: 'oscamp：操作系统 Hypervisor 方向（Draft）'
+title: 'oscamp：操作系统 Hypervisor 方向'
 description: 'oscamp：操作系统 Hypervisor 方向'
 date: '2024-12-20 21:01:12'
 tags: ['rust', 'os', 'hypervisor']
 author: '寒冰'
+draft: true
 ---
 
 > 跪了，开发环境好麻烦哦！！！

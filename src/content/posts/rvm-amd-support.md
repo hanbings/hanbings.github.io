@@ -1,9 +1,10 @@
 ---
-title: '虚拟化技术：AMD SVM Hypervisor（Draft）'
+title: '虚拟化技术：AMD SVM Hypervisor'
 description: '基于 rvm 适配 AMD SVM 的 Hypervisor'
 date: '2024-12-20 21:01:12'
 tags: ['rust', 'os', 'hypervisor']
 author: '寒冰'
+draft: true
 ---
 
 本文是基于 https://github.com/equation314/RVM-Tutorial 做的 AMD SVM 适配，尽可能展示相关代码，但限于篇幅不会完全贴入代码。以及参考了 https://web.archive.org/web/20220815132158/https://key08.com/index.php/2021/04/11/1004.html 和 https://web.archive.org/web/20241008083327/https://blog.back.engineering/04/08/2022/，感谢前辈详细的文章。
