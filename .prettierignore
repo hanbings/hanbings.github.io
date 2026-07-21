@@ -4,3 +4,4 @@ dist/
 public/
 package-lock.json
 src/content/**/*.md
+src/**/*.glsl
