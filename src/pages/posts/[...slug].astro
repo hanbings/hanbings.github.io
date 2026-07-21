@@ -3,6 +3,8 @@ import {getCollection, render} from 'astro:content'
 import PostLayout from '../../layouts/PostLayout.astro'
 import PostSidebar from '../../components/post/PostSidebar.astro'
 import TableOfContents from '../../components/post/TableOfContents.astro'
+import HandDrawnHighlightLink from '../../components/site/HandDrawnHighlightLink.astro'
+import MarkdownLinkAnnotations from '../../components/mdx/MarkdownLinkAnnotations.astro'
 import {mdxComponents} from '../../components/mdx'
 import '../../styles/markdown/github.css'
 
@@ -43,14 +45,23 @@ const tags = [...entry.data['tags']]
         </div>
         <div class="flex flex-row flex-wrap items-center gap-2">
             <span aria-hidden="true" class="leading-none">🏷</span>
-            {tags.map((tag) => <a href={`/tags/${tag}`} class="theme-muted-link">{`#${tag}`}</a>)}
+            {
+                tags.map((tag) => (
+                    <HandDrawnHighlightLink href={`/tags/${tag}`}>
+                        {`#${tag}`}
+                    </HandDrawnHighlightLink>
+                ))
+            }
         </div>
     </div>
     <div class="post-toc-mobile flex flex-col items-start gap-3" aria-label="文章导航">
-        <a class="theme-entry self-start text-left" href="/">返回主页</a>
+        <HandDrawnHighlightLink class="self-start text-left" href="/">
+            返回主页
+        </HandDrawnHighlightLink>
         <TableOfContents headings={headings} />
     </div>
     <div class="markdown-body">
         <Content components={mdxComponents} />
+        <MarkdownLinkAnnotations />
     </div>
 </PostLayout>

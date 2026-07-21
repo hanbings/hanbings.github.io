@@ -1,0 +1,21 @@
+---
+import Highlight from '../mdx/rough-notation/Highlight.astro'
+
+interface Props {
+    href: string
+    class?: string
+}
+
+const {href, class: className} = Astro.props
+---
+
+<a class:list={['theme-hand-drawn-highlight-link', className]} href={href}>
+    <Highlight
+        color="var(--theme-accent-soft)"
+        trigger="hover"
+        animationDuration={320}
+        padding={[0, 2, 0, 2]}
+    >
+        <slot />
+    </Highlight>
+</a>

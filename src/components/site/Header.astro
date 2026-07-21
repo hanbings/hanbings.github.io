@@ -1,4 +1,12 @@
+---
+import Highlight from '../mdx/rough-notation/Highlight.astro'
+---
+
 <div class="flex flex-col items-start justify-center gap-2">
-    <div class="theme-title text-3xl">寒冰是喵喵</div>
+    <div class="theme-title text-3xl">
+        <Highlight color="var(--theme-accent-soft)" animationDuration={500} padding={[0, 4, 0, 4]}>
+            寒冰是喵喵
+        </Highlight>
+    </div>
     <div class="text-lg">欢迎来到我的小世界</div>
 </div>

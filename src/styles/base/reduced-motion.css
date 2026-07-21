@@ -2,6 +2,8 @@
   body,
   .theme-nav-link,
   .theme-entry,
+  .theme-hand-drawn-entry,
+  .theme-hand-drawn-highlight-link,
   .theme-friend-card,
   .markdown-body a[href] {
     transition: none;

@@ -1,5 +1,6 @@
 ---
 import Header from '../site/Header.astro'
+import HandDrawnHighlightLink from '../site/HandDrawnHighlightLink.astro'
 import TableOfContents from './TableOfContents.astro'
 
 interface Heading {
@@ -16,6 +17,8 @@ const {headings} = Astro.props as {headings: Heading[]}
     aria-label="文章导航"
 >
     <Header />
-    <a class="theme-entry self-start text-left" href="/">返回主页</a>
+    <HandDrawnHighlightLink class="self-start text-left" href="/">
+        返回主页
+    </HandDrawnHighlightLink>
     <TableOfContents headings={headings} />
 </aside>

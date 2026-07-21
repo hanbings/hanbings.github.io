@@ -1,4 +1,6 @@
 ---
+import HandDrawnHighlightLink from '../site/HandDrawnHighlightLink.astro'
+
 interface Heading {
     depth: number
     slug: string
@@ -16,9 +18,12 @@ const entries = headings.filter(({depth}) => depth >= 2 && depth <= 3)
             <ol class="post-toc-list">
                 {entries.map(({depth, slug, text}) => (
                     <li>
-                        <a class={`post-toc-link post-toc-depth-${depth}`} href={`#${slug}`}>
+                        <HandDrawnHighlightLink
+                            class={`post-toc-link post-toc-depth-${depth}`}
+                            href={`#${slug}`}
+                        >
                             {text}
-                        </a>
+                        </HandDrawnHighlightLink>
                     </li>
                 ))}
             </ol>

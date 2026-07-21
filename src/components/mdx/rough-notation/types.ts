@@ -3,6 +3,7 @@ export type RoughNotationType =
 
 export type RoughNotationPadding = number | [number, number] | [number, number, number, number]
 export type RoughNotationBracket = 'left' | 'right' | 'top' | 'bottom'
+export type RoughNotationTrigger = 'immediate' | 'hover'
 
 export interface RoughNotationProps {
   color?: string
@@ -13,6 +14,7 @@ export interface RoughNotationProps {
   animate?: boolean
   multiline?: boolean
   rtl?: boolean
+  trigger?: RoughNotationTrigger
   class?: string
 }
 

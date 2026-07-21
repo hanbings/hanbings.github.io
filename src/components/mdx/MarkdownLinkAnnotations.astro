@@ -1,0 +1,67 @@
+<script>
+    import {annotate} from 'rough-notation'
+
+    const links = document.querySelectorAll<HTMLAnchorElement>('.markdown-body a[href]')
+
+    for (const link of links) {
+        if (
+            link.dataset.markdownLinkAnnotated ||
+            link.querySelector('img') ||
+            link.querySelector('rough-notation')
+        ) {
+            continue
+        }
+
+        const annotation = annotate(link, {
+            type: 'underline',
+            color: 'var(--markdown-link-underline)',
+            strokeWidth: 2,
+            iterations: 2,
+            padding: [0, 0, 1, 0],
+            animationDuration: 0,
+            animate: false,
+            multiline: true,
+        })
+        annotation.show()
+
+        const annotationSvg = link.nextElementSibling
+        if (
+            !(annotationSvg instanceof SVGElement) ||
+            !annotationSvg.classList.contains('rough-annotation')
+        ) {
+            annotation.remove()
+            continue
+        }
+
+        link.dataset.markdownLinkAnnotated = 'true'
+        annotationSvg.setAttribute('aria-hidden', 'true')
+        annotationSvg.setAttribute('focusable', 'false')
+
+        let pointerActive = false
+        let focusActive = false
+        const updateColor = () => {
+            annotationSvg.style.setProperty(
+                '--markdown-link-underline',
+                pointerActive || focusActive ? 'var(--theme-accent)' : 'var(--theme-accent-soft)',
+            )
+        }
+
+        link.addEventListener('pointerenter', () => {
+            pointerActive = true
+            updateColor()
+        })
+        link.addEventListener('pointerleave', () => {
+            pointerActive = false
+            updateColor()
+        })
+        link.addEventListener('focus', () => {
+            focusActive = true
+            updateColor()
+        })
+        link.addEventListener('blur', () => {
+            focusActive = false
+            updateColor()
+        })
+        updateColor()
+    }
+</script>

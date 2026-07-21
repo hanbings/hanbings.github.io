@@ -17,6 +17,7 @@ const {
     animate = true,
     multiline = true,
     rtl = false,
+    trigger = 'immediate',
     brackets,
     gap = 0,
     class: className,
@@ -44,13 +45,19 @@ const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : render
     data-rough-notation-animate={String(animate)}
     data-rough-notation-multiline={String(multiline)}
     data-rough-notation-rtl={String(rtl)}
+    data-rough-notation-trigger={trigger}
     data-rough-notation-brackets={serializedBrackets}
     set:html={inlineContent}
 />
 
 <script>
     import {annotate} from 'rough-notation'
-    import type {RoughNotationBracket, RoughNotationPadding, RoughNotationType} from './types'
+    import type {
+        RoughNotationBracket,
+        RoughNotationPadding,
+        RoughNotationTrigger,
+        RoughNotationType,
+    } from './types'
 
     const notationTypes = new Set<RoughNotationType>([
         'underline',
@@ -101,8 +108,14 @@ const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : render
     const parseType = (value: string | undefined): RoughNotationType =>
         notationTypes.has(value as RoughNotationType) ? (value as RoughNotationType) : 'underline'
 
+    const parseTrigger = (value: string | undefined): RoughNotationTrigger =>
+        value === 'hover' ? 'hover' : 'immediate'
+
     class RoughNotationElement extends HTMLElement {
         private annotation?: ReturnType<typeof annotate>
+        private interactionAbort?: AbortController
+        private pointerActive = false
+        private focusActive = false
 
         connectedCallback() {
             if (this.annotation) return
@@ -120,7 +133,61 @@ const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : render
                 brackets: parseBrackets(this.dataset.roughNotationBrackets),
                 animate: !reduceMotion && this.dataset.roughNotationAnimate !== 'false',
             })
+            this.dataset.roughNotationReady = 'true'
 
+            if (parseTrigger(this.dataset.roughNotationTrigger) === 'hover') {
+                this.connectInteractionTarget()
+            } else {
+                this.showAnnotation()
+            }
+        }
+
+        disconnectedCallback() {
+            this.interactionAbort?.abort()
+            this.annotation?.remove()
+            this.annotation = undefined
+            this.interactionAbort = undefined
+            this.pointerActive = false
+            this.focusActive = false
+            delete this.dataset.roughNotationReady
+        }
+
+        private connectInteractionTarget() {
+            const target = this.closest<HTMLElement>('a[href], button') ?? this
+            const controller = new AbortController()
+            target.addEventListener('pointerenter', this.handlePointerEnter, {
+                signal: controller.signal,
+            })
+            target.addEventListener('pointerleave', this.handlePointerLeave, {
+                signal: controller.signal,
+            })
+            target.addEventListener('focus', this.handleFocus, {signal: controller.signal})
+            target.addEventListener('blur', this.handleBlur, {signal: controller.signal})
+            this.interactionAbort = controller
+        }
+
+        private handlePointerEnter = () => {
+            this.pointerActive = true
+            this.showAnnotation()
+        }
+
+        private handlePointerLeave = () => {
+            this.pointerActive = false
+            if (!this.focusActive) this.annotation?.hide()
+        }
+
+        private handleFocus = () => {
+            this.focusActive = true
+            this.showAnnotation()
+        }
+
+        private handleBlur = () => {
+            this.focusActive = false
+            if (!this.pointerActive) this.annotation?.hide()
+        }
+
+        private showAnnotation() {
+            this.annotation?.show()
             const annotationSvg =
                 this.dataset.roughNotationType === 'highlight'
                     ? this.previousElementSibling
@@ -129,15 +196,6 @@ const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : render
                 annotationSvg.setAttribute('aria-hidden', 'true')
                 annotationSvg.setAttribute('focusable', 'false')
             }
-
-            this.annotation.show()
-            this.dataset.roughNotationReady = 'true'
-        }
-
-        disconnectedCallback() {
-            this.annotation?.remove()
-            this.annotation = undefined
-            delete this.dataset.roughNotationReady
         }
     }
 
@@ -159,6 +217,10 @@ const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : render
         text-underline-offset: 0.15em;
     }
 
+    .rough-notation-underline[data-rough-notation-trigger='hover'] {
+        text-decoration: none;
+    }
+
     .rough-notation-box,
     .rough-notation-circle {
         outline: 0.12em solid var(--rough-notation-color);
@@ -176,6 +238,10 @@ const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : render
             var(--rough-notation-color) 90%,
             transparent 90%
         );
+    }
+
+    .rough-notation-highlight[data-rough-notation-trigger='hover'] {
+        background-image: none;
     }
 
     .rough-notation-strike-through {

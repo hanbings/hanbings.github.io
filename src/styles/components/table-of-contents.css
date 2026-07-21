@@ -33,12 +33,6 @@
   text-decoration: none;
 }
 
-.post-toc-link:hover {
-  border-radius: 0.25rem;
-  background-color: var(--theme-accent-soft);
-  color: var(--theme-fg);
-}
-
 .post-toc-depth-3 {
   padding-left: 0.75rem;
 }

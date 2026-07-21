@@ -1,9 +1,6 @@
 @layer components {
   .theme-title {
-    border-radius: 0.5rem;
-    background-color: var(--theme-accent);
-    color: var(--theme-accent-contrast);
-    padding: 0.25rem 0.75rem;
+    color: var(--theme-fg);
     font-weight: 600;
   }
 
@@ -19,6 +16,8 @@
   }
 
   .theme-entry,
+  .theme-hand-drawn-entry,
+  .theme-hand-drawn-highlight-link,
   .theme-muted-link {
     color: var(--theme-muted);
   }
@@ -40,6 +39,20 @@
   .theme-entry:hover,
   .theme-entry:focus-visible {
     background-size: 100% 25%;
+    color: var(--theme-fg);
+    text-decoration: none;
+  }
+
+  .theme-hand-drawn-entry,
+  .theme-hand-drawn-highlight-link {
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .theme-hand-drawn-entry:hover,
+  .theme-hand-drawn-entry:focus-visible,
+  .theme-hand-drawn-highlight-link:hover,
+  .theme-hand-drawn-highlight-link:focus-visible {
     color: var(--theme-fg);
     text-decoration: none;
   }

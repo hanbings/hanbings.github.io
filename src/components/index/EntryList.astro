@@ -1,4 +1,6 @@
 ---
+import Underline from '../mdx/rough-notation/Underline.astro'
+import HandDrawnHighlightLink from '../site/HandDrawnHighlightLink.astro'
 import {convertDateFormat} from '../../utils/date'
 
 export interface EntryListItem {
@@ -12,10 +14,11 @@ interface Props {
     heading: string
     headingId: string
     items: EntryListItem[]
+    handDrawnLinks?: boolean
     class?: string
 }
 
-const {heading, headingId, items, class: className} = Astro.props
+const {heading, headingId, items, handDrawnLinks = false, class: className} = Astro.props
 ---
 
 <section class={className} aria-labelledby={headingId}>
@@ -35,8 +38,17 @@ const {heading, headingId, items, class: className} = Astro.props
                     >
                         {convertDateFormat(item.date)}
                     </time>
-                    <a class="theme-entry" href={item.href}>
-                        {item.title}
+                    <a
+                        class={handDrawnLinks ? 'theme-hand-drawn-entry' : 'theme-entry'}
+                        href={item.href}
+                    >
+                        {handDrawnLinks ? (
+                            <Underline trigger="hover" animationDuration={320}>
+                                {item.title}
+                            </Underline>
+                        ) : (
+                            item.title
+                        )}
                     </a>
                     {item.tags && item.tags.length > 0 && (
                         <div
@@ -44,7 +56,9 @@ const {heading, headingId, items, class: className} = Astro.props
                             aria-label="标签"
                         >
                             {item.tags.map((tag) => (
-                                <a class="theme-muted-link" href={`/tags/${tag}`}>{`#${tag}`}</a>
+                                <HandDrawnHighlightLink href={`/tags/${tag}`}>
+                                    {`#${tag}`}
+                                </HandDrawnHighlightLink>
                             ))}
                         </div>
                     )}

@@ -28,6 +28,7 @@ const allPosts = posts
         class="mt-6"
         heading="近期文章"
         headingId="recent-posts-title"
+        handDrawnLinks
         items={allPosts.map((post) => ({
             title: post.data.title,
             href: `/posts/${post.id}`,
