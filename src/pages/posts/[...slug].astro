@@ -4,7 +4,6 @@ import PostLayout from '../../layouts/PostLayout.astro'
 import PostSidebar from '../../components/post/PostSidebar.astro'
 import TableOfContents from '../../components/post/TableOfContents.astro'
 import HandDrawnHighlightLink from '../../components/site/HandDrawnHighlightLink.astro'
-import MarkdownLinkAnnotations from '../../components/mdx/MarkdownLinkAnnotations.astro'
 import {mdxComponents} from '../../components/mdx'
 import '../../styles/markdown/github.css'
 
@@ -62,6 +61,5 @@ const tags = [...entry.data['tags']]
     </div>
     <div class="markdown-body">
         <Content components={mdxComponents} />
-        <MarkdownLinkAnnotations />
     </div>
 </PostLayout>

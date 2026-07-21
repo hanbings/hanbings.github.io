@@ -3,6 +3,7 @@ import Meta from '../components/site/Meta.astro'
 import Header from '../components/site/Header.astro'
 import Navigation from '../components/site/Navigation.astro'
 import Footer from '../components/site/Footer.astro'
+import MarkdownLinkAnnotations from '../components/mdx/MarkdownLinkAnnotations.astro'
 import BackfillBackground from '../components/site/BackfillBackground.astro'
 import SiteBackground from '../components/site/SiteBackground.astro'
 import '../styles/global.css'
@@ -70,6 +71,7 @@ const siteBackgroundStyle =
                     <Navigation />
                 </nav>
                 <slot />
+                <MarkdownLinkAnnotations />
                 <footer
                     class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6"
                     data-site-region="footer"

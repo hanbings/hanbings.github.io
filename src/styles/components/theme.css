@@ -15,32 +15,10 @@
     border-color: var(--theme-accent);
   }
 
-  .theme-entry,
   .theme-hand-drawn-entry,
   .theme-hand-drawn-highlight-link,
   .theme-muted-link {
     color: var(--theme-muted);
-  }
-
-  .theme-entry {
-    background-image: linear-gradient(var(--theme-accent), var(--theme-accent));
-    background-position: left bottom;
-    background-repeat: no-repeat;
-    background-size: 0% 25%;
-    border-radius: 0.125rem;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    text-decoration: none;
-    transition:
-      color 150ms ease,
-      background-size 180ms ease;
-  }
-
-  .theme-entry:hover,
-  .theme-entry:focus-visible {
-    background-size: 100% 25%;
-    color: var(--theme-fg);
-    text-decoration: none;
   }
 
   .theme-hand-drawn-entry,

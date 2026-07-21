@@ -1,7 +1,6 @@
 ---
 import {getCollection, render} from 'astro:content'
 import EventLayout from '../../layouts/EventLayout.astro'
-import MarkdownLinkAnnotations from '../../components/mdx/MarkdownLinkAnnotations.astro'
 import {mdxComponents} from '../../components/mdx'
 import '../../styles/markdown/github.css'
 
@@ -23,5 +22,4 @@ const {Content} = await render(entry)
     backgroundOpacity={entry.data['backgroundOpacity']}
 >
     <Content components={mdxComponents} />
-    <MarkdownLinkAnnotations />
 </EventLayout>
