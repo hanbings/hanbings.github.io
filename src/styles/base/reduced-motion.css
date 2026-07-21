@@ -9,12 +9,17 @@
 
   .music-background,
   .music-background-pixel-field,
-  .music-background-fragment,
-  .music-background-fragment-svg {
+  .music-background-stream {
     animation: none;
   }
 
-  .music-background-fragment {
-    opacity: 0.42;
+  .music-background-stream {
+    opacity: 0.72;
+    transform: rotate(-7deg);
+    will-change: auto;
+  }
+
+  .music-background-stream:nth-child(2) {
+    display: none;
   }
 }
