@@ -28,13 +28,10 @@ const tags = [...entry.data['tags']]
     {
         entry.data['draft'] && (
             <aside
-                class="flex flex-wrap items-center gap-2 rounded-lg border bg-(--theme-surface-muted) px-4 py-3 text-(--theme-muted)"
+                class="rounded-lg border border-(--theme-accent) bg-(--theme-accent-soft) px-4 py-3 text-(--theme-fg)"
                 aria-label="草稿状态"
             >
-                <strong class="border px-1 text-[0.75rem] leading-[1.4] font-normal text-(--theme-muted)">
-                    DRAFT
-                </strong>
-                <span>这篇文章还在施工中，内容可能随时变化。</span>
+                这篇文章还在施工中，内容可能随时变化
             </aside>
         )
     }
