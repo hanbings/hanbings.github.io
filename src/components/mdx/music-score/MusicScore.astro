@@ -1,0 +1,90 @@
+---
+interface Props {
+    abc: string
+    title?: string
+    responsive?: boolean
+    staffWidth?: number
+    class?: string
+}
+
+const {abc, title = '五线谱', responsive = true, staffWidth, class: className} = Astro.props
+
+const source = typeof abc === 'string' ? abc.trim() : ''
+if (!source) throw new Error('MusicScore 的 abc 属性不能为空')
+
+if (staffWidth !== undefined && (!Number.isFinite(staffWidth) || staffWidth <= 0)) {
+    throw new Error('MusicScore 的 staffWidth 必须是正数')
+}
+const resolvedStaffWidth =
+    staffWidth === undefined ? undefined : Math.max(240, Math.round(staffWidth))
+---
+
+<mdx-music-score
+    data-responsive={responsive}
+    data-staff-width={resolvedStaffWidth}
+    data-title={title}
+>
+    <figure class:list={['music-score-window', className]}>
+        <figcaption class="music-score-caption">{title}</figcaption>
+        <div class="music-score-viewport">
+            <div class="music-score-target" data-music-score-target hidden></div>
+            <pre
+                class="music-score-source"
+                data-music-score-source
+                aria-label={`${title}的 ABC 记谱源码`}><code>{source}</code></pre>
+        </div>
+    </figure>
+</mdx-music-score>
+
+<script>
+    import {renderAbc, type AbcVisualParams} from 'abcjs'
+
+    class MdxMusicScore extends HTMLElement {
+        private initialized = false
+
+        connectedCallback() {
+            if (this.initialized) return
+
+            const target = this.querySelector<HTMLElement>('[data-music-score-target]')
+            const source = this.querySelector<HTMLElement>('[data-music-score-source]')
+            const abc = source?.textContent?.trim()
+            if (!target || !source || !abc) return
+
+            const options: AbcVisualParams = {
+                add_classes: true,
+                ariaLabel: this.dataset.title || '五线谱',
+                paddingbottom: 12,
+                paddingleft: 12,
+                paddingright: 12,
+                paddingtop: 12,
+            }
+            if (this.dataset.responsive === 'true') options.responsive = 'resize'
+
+            const staffWidth = Number(this.dataset.staffWidth)
+            if (Number.isFinite(staffWidth) && staffWidth > 0) {
+                options.staffwidth = staffWidth
+            }
+
+            try {
+                renderAbc(target, abc, options)
+                if (!target.querySelector('svg')) return
+
+                this.initialized = true
+                target.hidden = false
+                source.hidden = true
+            } catch {
+                target.replaceChildren()
+            }
+        }
+    }
+
+    if (!customElements.get('mdx-music-score')) {
+        customElements.define('mdx-music-score', MdxMusicScore)
+    }
+</script>
+
+<style>
+    mdx-music-score {
+        display: block;
+    }
+</style>

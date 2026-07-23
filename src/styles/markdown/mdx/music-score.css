@@ -1,0 +1,71 @@
+.markdown-body .music-score-window {
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border: 1px solid var(--theme-border);
+  border-radius: 0.375rem;
+  background-color: var(--theme-code-bg);
+  color: var(--theme-fg);
+  break-inside: avoid;
+}
+
+.markdown-body .music-score-caption {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--theme-border);
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.markdown-body .music-score-viewport {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  background-color: #fff;
+  color: #242424;
+  scrollbar-color: var(--theme-border) transparent;
+  scrollbar-width: thin;
+}
+
+.markdown-body .music-score-target {
+  min-width: 0;
+  padding: 0.25rem;
+}
+
+.markdown-body .music-score-target svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown-body .music-score-source {
+  margin: 0 !important;
+  padding: 1rem !important;
+  overflow-x: auto !important;
+  border: 0 !important;
+  border-radius: 0;
+  background-color: #fff !important;
+  color: #242424;
+  font-size: 0.75rem !important;
+  line-height: 1.5;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.markdown-body .music-score-source code {
+  color: inherit;
+  white-space: inherit;
+}
+
+@media (max-width: 480px) {
+  .markdown-body .music-score-window {
+    margin-inline: -0.5rem;
+  }
+
+  .markdown-body .music-score-caption {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+  }
+}

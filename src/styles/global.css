@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './markdown/mdx/chat-box.css';
+@import './markdown/mdx/music-score.css';
 @import './markdown/mdx/piano.css';
 @import './markdown/mdx/shader-box.css';
 @import './markdown/mdx/sidenotes.css';
