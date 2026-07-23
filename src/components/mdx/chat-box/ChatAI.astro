@@ -1,0 +1,15 @@
+---
+interface Props {
+    name?: string
+    class?: string
+}
+
+const {name = 'AI', class: className} = Astro.props
+---
+
+<span class:list={['chat-ai-notice', className]} role="note">
+    <span class="chat-ai-notice-icon" aria-hidden="true">⚠</span>
+    <span>
+        与 <strong>{name}</strong> 的对话 · 聊天窗内 AI 内容未经验证
+    </span>
+</span>

@@ -5,6 +5,9 @@ import CrossedOff from './rough-notation/CrossedOff.astro'
 import Highlight from './rough-notation/Highlight.astro'
 import StrikeThrough from './rough-notation/StrikeThrough.astro'
 import Underline from './rough-notation/Underline.astro'
+import ChatAI from './chat-box/ChatAI.astro'
+import ChatBox from './chat-box/ChatBox.astro'
+import ChatMessage from './chat-box/ChatMessage.astro'
 import Piano from './piano/Piano.astro'
 import Sidenote from './sidenote/Sidenote.astro'
 import SidenoteText from './sidenote/SidenoteText.astro'
@@ -14,6 +17,9 @@ import Term from './term/Term.astro'
 export const mdxComponents = {
   Box,
   Bracket,
+  ChatAI,
+  ChatBox,
+  ChatMessage,
   Circle,
   CrossedOff,
   Highlight,

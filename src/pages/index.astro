@@ -1,7 +1,7 @@
 ---
 import IndexLayout from '../layouts/IndexLayout.astro'
 import EntryList from '../components/index/EntryList.astro'
-import Content, {frontmatter} from '../content/specs/home.md'
+import Content from '../content/specs/home.md'
 import {getCollection} from 'astro:content'
 import '../styles/markdown/github.css'
 
@@ -16,11 +16,7 @@ const allPosts = posts
     )
 ---
 
-<IndexLayout
-    title="主页"
-    background={frontmatter.background}
-    backgroundOpacity={frontmatter.backgroundOpacity}
->
+<IndexLayout title="主页">
     <div class="markdown-body">
         <Content />
     </div>

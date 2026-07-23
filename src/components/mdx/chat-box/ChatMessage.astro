@@ -1,0 +1,29 @@
+---
+type ChatRole = 'humen' | 'ai'
+
+interface Props {
+    role: ChatRole
+    time?: string
+    datetime?: string
+    class?: string
+}
+
+const {role: chatRole, time, datetime, class: className} = Astro.props
+---
+
+<article
+    class:list={['chat-message', `chat-message-${chatRole}`, className]}
+    data-chat-role={chatRole}
+    aria-label={chatRole === 'humen' ? '我的消息' : 'AI 的消息'}
+>
+    <div class="chat-message-bubble">
+        <slot />
+    </div>
+    {
+        time && (
+            <time class="chat-message-time" datetime={datetime}>
+                {time}
+            </time>
+        )
+    }
+</article>

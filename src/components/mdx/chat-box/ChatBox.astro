@@ -1,0 +1,28 @@
+---
+import ChatAI from './ChatAI.astro'
+
+interface Props {
+    title?: string
+    open?: boolean
+    class?: string
+}
+
+const {title = '聊天记录', open = true, class: className} = Astro.props
+---
+
+<details class:list={['chat-box', className]} open={open}>
+    <summary class="chat-box-summary">
+        <span class="chat-box-heading">
+            <span class="chat-box-title-row">
+                <span class="chat-box-title">{title}</span>
+                <span class="chat-box-chevron" aria-hidden="true"></span>
+            </span>
+            <slot name="ai">
+                <ChatAI />
+            </slot>
+        </span>
+    </summary>
+    <div class="chat-box-transcript">
+        <slot />
+    </div>
+</details>
