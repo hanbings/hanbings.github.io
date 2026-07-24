@@ -1,10 +1,24 @@
 .markdown-body .chat-box {
+  --chat-background: #ffffff;
+  --chat-surface: #f6f7f8;
+  --chat-fg: #383a42;
+  --chat-muted: #696c77;
+  --chat-border: #dbdbdc;
+  --color-canvas-default: var(--chat-background);
+  --color-canvas-subtle: var(--chat-surface);
+  --color-fg-default: var(--chat-fg);
+  --color-fg-muted: var(--chat-muted);
+  --color-border-default: var(--chat-border);
+  --color-border-muted: var(--chat-border);
+  --color-neutral-muted: rgb(175 184 193 / 20%);
+
   margin: 1.5rem 0;
   overflow: visible;
-  border: 1px solid var(--theme-border);
+  border: 1px solid var(--chat-border);
   border-radius: 0.625rem;
-  background-color: var(--theme-code-bg);
-  color: var(--theme-fg);
+  background-color: var(--chat-background);
+  color: var(--chat-fg);
+  color-scheme: light;
   font-size: 0.8125rem;
 }
 
@@ -12,8 +26,8 @@
   display: block;
   padding: 0.625rem 0.75rem;
   border-radius: calc(0.625rem - 1px);
-  background-color: var(--theme-bg);
-  color: var(--theme-fg);
+  background-color: var(--chat-background);
+  color: var(--chat-fg);
   cursor: pointer;
   list-style: none;
   user-select: none;
@@ -24,7 +38,7 @@
 }
 
 .markdown-body .chat-box[open] > .chat-box-summary {
-  border-bottom: 1px solid var(--theme-border);
+  border-bottom: 1px solid var(--chat-border);
   border-radius: calc(0.625rem - 1px) calc(0.625rem - 1px) 0 0;
 }
 
@@ -61,7 +75,7 @@
   margin-right: 0.125rem;
   border-right: 1.5px solid currentcolor;
   border-bottom: 1.5px solid currentcolor;
-  color: var(--theme-muted);
+  color: var(--chat-muted);
   transform: rotate(45deg);
   transition: transform 150ms ease;
 }
@@ -75,7 +89,7 @@
   align-items: flex-start;
   gap: 0.375rem;
   margin-top: 0.25rem;
-  color: var(--color-attention-fg, #986801);
+  color: #986801;
   font-size: 0.6875rem;
   line-height: 1.4;
 }
@@ -88,7 +102,7 @@
 .markdown-body .chat-box-transcript {
   padding: 1rem;
   border-radius: 0 0 calc(0.625rem - 1px) calc(0.625rem - 1px);
-  background-color: color-mix(in srgb, var(--theme-code-bg) 72%, transparent);
+  background-color: var(--chat-background);
 }
 
 .markdown-body .chat-message {
@@ -112,22 +126,23 @@
 .markdown-body .chat-message-bubble {
   max-width: min(84%, 34rem);
   padding: 0.625rem 0.75rem;
-  border: 1px solid var(--theme-border);
+  border: 1px solid var(--chat-border);
   border-radius: 0.25rem 0.75rem 0.75rem;
-  background-color: var(--theme-surface-muted);
+  background-color: var(--chat-background);
+  font-size: 0.75rem;
   line-height: 1.55;
   overflow-wrap: anywhere;
 }
 
 .markdown-body .chat-message-humen .chat-message-bubble {
-  border-color: color-mix(in srgb, var(--theme-accent) 52%, var(--theme-border));
+  border-color: color-mix(in srgb, var(--theme-accent) 52%, var(--chat-border));
   border-radius: 0.75rem 0.25rem 0.75rem 0.75rem;
   background-color: var(--theme-accent-soft);
 }
 
 .markdown-body .chat-message-time {
   margin-top: 0.25rem;
-  color: var(--theme-muted);
+  color: var(--chat-muted);
   font-size: 0.625rem;
   font-variant-numeric: tabular-nums;
   line-height: 1.25;
@@ -141,20 +156,119 @@
   margin-bottom: 0 !important;
 }
 
-.markdown-body .chat-message-bubble :where(p, ul, ol, blockquote, pre, table) {
-  margin-bottom: 0.625rem;
+.markdown-body .chat-markdown :where(h1, h2, h3, h4, h5, h6) {
+  margin: 0.875rem 0 0.375rem;
+  padding: 0;
+  border: 0;
+  color: var(--chat-fg);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.35;
 }
 
-.markdown-body .chat-message-bubble :where(ul, ol) {
-  padding-left: 1.25rem;
+.markdown-body .chat-markdown h1 {
+  font-size: 1rem;
 }
 
-.markdown-body .chat-message-bubble pre {
+.markdown-body .chat-markdown h2 {
+  font-size: 0.9375rem;
+}
+
+.markdown-body .chat-markdown h3 {
+  font-size: 0.875rem;
+}
+
+.markdown-body .chat-markdown :where(h4, h5, h6) {
+  font-size: 0.8125rem;
+}
+
+.markdown-body .chat-markdown p {
+  margin: 0 0 0.5rem;
+}
+
+.markdown-body .chat-markdown :where(ul, ol) {
+  margin: 0 0 0.5rem;
+  padding-left: 1.125rem;
+}
+
+.markdown-body .chat-markdown li + li {
+  margin-top: 0.125rem;
+}
+
+.markdown-body .chat-markdown blockquote {
+  margin: 0 0 0.5rem;
+  padding: 0.125rem 0 0.125rem 0.625rem !important;
+  border: 0 !important;
+  border-left: 2px solid var(--chat-border) !important;
+  color: var(--chat-muted);
+}
+
+.markdown-body .chat-markdown blockquote::before {
+  display: none;
+}
+
+.markdown-body .chat-markdown :where(code, tt, samp, pre) {
+  font-size: 0.6875rem;
+}
+
+.markdown-body .chat-markdown :where(code, tt) {
+  padding: 0.1em 0.3em;
+  border-radius: 0.25rem;
+  background-color: var(--chat-surface);
+  color: var(--chat-fg);
+}
+
+.markdown-body .chat-markdown pre {
   max-width: 100%;
+  margin: 0 0 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--chat-border);
+  border-radius: 0.375rem;
+  background-color: var(--chat-surface);
+  font-size: 0.625rem;
+  line-height: 1.5;
   overflow-x: auto;
 }
 
-.markdown-body .chat-message-bubble img {
+.markdown-body .chat-markdown pre :where(code, span) {
+  font-size: inherit;
+}
+
+.markdown-body .chat-markdown .astro-code {
+  margin-bottom: 0.5rem !important;
+  background-color: var(--chat-surface) !important;
+  font-size: 0.625rem !important;
+  line-height: 1.5;
+}
+
+.markdown-body .chat-markdown .astro-code,
+.markdown-body .chat-markdown .astro-code span {
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
+.markdown-body .chat-markdown table {
+  width: 100%;
+  margin: 0 0 0.5rem;
+  font-size: 0.6875rem;
+}
+
+.markdown-body .chat-markdown :where(th, td) {
+  border-color: var(--chat-border);
+  padding: 0.375rem 0.5rem;
+}
+
+.markdown-body .chat-markdown hr {
+  height: 1px;
+  margin: 0.75rem 0;
+  border: 0;
+  background-color: var(--chat-border);
+}
+
+.markdown-body .chat-markdown img {
+  margin: 0.25rem 0 0.5rem;
   border-radius: 0.375rem;
 }
 

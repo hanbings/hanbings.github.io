@@ -1,0 +1,176 @@
+---
+title: '剪贴板获取带格式的消息是怎么实现的？'
+description: '理解剪贴板的多格式表示、浏览器 Clipboard API、富文本粘贴、安全清洗与应用私有格式。'
+date: '2026-07-24 00:00:00'
+tags: ['Web', 'Clipboard']
+author: '寒冰'
+---
+
+<ChatBox title="关于剪贴板富文本的讨论">
+  <ChatAI slot="ai" name="OpenAI Codex" />
+
+<ChatMessage role="humen">剪切板获取带格式的消息是怎么实现的？</ChatMessage>
+
+  <ChatMessage role="ai">
+    通常写作“剪贴板”。它获取“带格式消息”的关键，不是从一段字符串里还原样式，而是读出同一份内容的多种表示（representation）。
+
+    ## 剪贴板里实际保存了什么
+
+    复制一段富文本时，来源应用可以同时写入：
+
+    ```text
+    一个剪贴板条目
+    ├── text/plain   纯文本兜底
+    ├── text/html    标题、链接、列表和行内样式
+    ├── image/png    图片
+    ├── text/rtf     原生应用常用的富文本
+    └── 私有格式      消息卡片、引用关系等结构化数据
+    ```
+
+    粘贴方先查看有哪些格式，再选择自己能够理解且愿意信任的那一种。富文本编辑器一般优先处理 HTML，普通输入框只使用纯文本；同一个应用的两处界面还可能使用私有格式还原更完整的消息结构。
+
+    因此，“带格式复制”通常要同时准备富文本和纯文本版本。只写 HTML 会让不支持 HTML 的目标应用无法正常粘贴，只写纯文本又会丢失样式。
+
+    ## 在粘贴事件里读取
+
+    对网页编辑器来说，最自然的入口是用户触发的 `paste` 事件。事件中的 `clipboardData` 是一个 `DataTransfer`，可以读取文本、HTML和文件：
+
+    ```js
+    const editor = document.querySelector('[contenteditable]')
+
+    editor.addEventListener('paste', async (event) => {
+      const clipboard = event.clipboardData
+      if (!clipboard) return
+
+      const html = clipboard.getData('text/html')
+      const text = clipboard.getData('text/plain')
+      const images = [...clipboard.items]
+        .filter(
+          (item) =>
+            item.kind === 'file' && item.type.startsWith('image/'),
+        )
+        .map((item) => item.getAsFile())
+        .filter((file) => file !== null)
+
+      if (!html && !text && images.length === 0) return
+
+      // 接管浏览器原本的粘贴行为。
+      event.preventDefault()
+
+      if (html) {
+        insertSanitizedHtml(html)
+      } else if (images.length > 0) {
+        await insertImages(images)
+      } else {
+        insertText(text)
+      }
+    })
+    ```
+
+    `insertSanitizedHtml`、`insertImages` 和 `insertText` 需要按照编辑器的数据模型实现。例如，结构化编辑器不会直接修改 `innerHTML`，而是把 HTML 转换成段落、链接、列表等节点，再插入当前选区。
+
+    如果只需要纯文本，可以直接读取 `text/plain`，不必处理 HTML。只有确实接管了这次粘贴时才调用 `preventDefault()`，否则浏览器的默认粘贴也会被取消。
+
+    ## 主动读取系统剪贴板
+
+    如果不是响应一次粘贴，而是点击“从剪贴板导入”按钮，可以使用异步 Clipboard API：
+
+    ```js
+    async function readClipboard() {
+      try {
+        const items = await navigator.clipboard.read()
+
+        for (const item of items) {
+          console.log('可用格式：', item.types)
+
+          if (item.types.includes('text/html')) {
+            const blob = await item.getType('text/html')
+            const html = await blob.text()
+            insertSanitizedHtml(html)
+            continue
+          }
+
+          if (item.types.includes('text/plain')) {
+            const blob = await item.getType('text/plain')
+            insertText(await blob.text())
+          }
+        }
+      } catch (error) {
+        if (error.name === 'NotAllowedError') {
+          console.warn('用户或浏览器拒绝了剪贴板读取')
+        } else {
+          throw error
+        }
+      }
+    }
+    ```
+
+    这种方式只能在安全上下文中使用，实际部署通常意味着 HTTPS。读取是否要求一次点击、是否弹出提示以及能否查询权限，会因浏览器而异，因此不能把某一种权限流程当成所有浏览器的共同实现。编辑器若只需处理用户粘贴的内容，优先使用 `paste` 事件会更自然。
+
+    ## 带格式内容是怎样写进去的
+
+    读取端之所以能看到多种格式，是因为复制端写入了多个表示。在浏览器中可以这样写入 HTML 和纯文本：
+
+    ```js
+    const html =
+      '<strong>你好</strong>，访问 <a href="https://example.com">示例网站</a>'
+    const text = '你好，访问示例网站：https://example.com'
+
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([text], { type: 'text/plain' }),
+    })
+
+    await navigator.clipboard.write([item])
+    ```
+
+    一个 `ClipboardItem` 表示一个逻辑条目，其中每个 MIME 类型都是它的一种表示。浏览器和操作系统不一定支持一次写入多个条目，所以通常把同一份内容的多个格式放进一个条目，而不是拆成多个条目。
+
+    Web 标准还定义了以 `web ` 开头的自定义格式。不过它更适合同源或同一产品内传递额外数据，必须先做能力检测，也不能假设它会被所有操作系统、浏览器或目标应用保留下来。实际产品仍应始终提供 `text/plain`，需要富文本时再提供 `text/html` 作为通用回退。
+
+    ## 为什么不能直接插入 HTML
+
+    剪贴板中的 HTML 属于外部输入。下面这种写法可能把脚本、事件属性、危险 URL 或恶意样式带进页面：
+
+    ```js
+    editor.innerHTML = html // 不要直接信任剪贴板 HTML
+    ```
+
+    正确做法是先使用成熟的 HTML 清洗库，按白名单保留编辑器支持的标签和属性，再转换成编辑器节点。例如：
+
+    ```js
+    const safeHtml = DOMPurify.sanitize(html, {
+      USE_PROFILES: { html: true },
+    })
+
+    editor.insertAdjacentHTML('beforeend', safeHtml)
+    ```
+
+    实际项目还应根据业务限制链接协议、图片来源、内联样式和可接受的标签。粘贴的文件也要检查类型与大小。若不需要任何格式，插入 `text/plain` 是更简单的选择。
+
+    ## 微信、飞书或 Slack 的消息为什么更复杂
+
+    原生应用同样采用“一份内容，多种格式”的机制，只是系统接口和格式名称不同。macOS 使用 `NSPasteboard` 与 `UTType`，Windows 使用 Clipboard Format，Electron 则提供了 `readHTML()`、`readRTF()`、`readText()` 和 `availableFormats()` 等接口。
+
+    聊天应用为了保留引用、提及、卡片、代码块或内部消息 ID，可能额外写入只有自己认识的私有格式。同一应用粘贴时可以完整还原；其他应用无法理解或拿不到这种格式时，就只能退化到 HTML、图片或纯文本。这也是为什么从一个聊天软件复制到另一个软件时，外观经常会发生变化。
+
+    ## 一个实用的处理顺序
+
+    1. 读取并枚举剪贴板提供的格式。
+    2. 若存在可信且支持的内部格式，先校验版本和数据结构，再解析。
+    3. 否则读取 `text/html`，清洗后转换为编辑器节点。
+    4. 若没有 HTML，则处理图片等文件。
+    5. 最后使用 `text/plain` 兜底。
+    6. 无论读取哪一种格式，都把剪贴板内容视为不可信输入。
+
+    简单来说，所谓“获取带格式的消息”，就是复制端写入多种表示，粘贴端枚举格式、选择最合适的一种，并在安全处理后转换成自己的内容模型。
+
+    ## 参考资料
+
+    - [W3C Clipboard API and events](https://www.w3.org/TR/clipboard-apis/)
+    - [MDN：Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
+    - [MDN：paste 事件](https://developer.mozilla.org/en-US/docs/Web/API/Element/paste_event)
+    - [Electron：clipboard](https://www.electronjs.org/docs/latest/api/clipboard)
+
+  </ChatMessage>
+</ChatBox>

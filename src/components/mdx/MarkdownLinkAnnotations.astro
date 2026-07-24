@@ -1,15 +1,14 @@
 <script>
     import {annotate} from 'rough-notation'
 
-    const links = document.querySelectorAll<HTMLAnchorElement>('.markdown-body a[href]')
-
-    for (const link of links) {
+    const annotateLink = (link: HTMLAnchorElement) => {
         if (
             link.dataset.markdownLinkAnnotated ||
             link.querySelector('img') ||
-            link.querySelector('rough-notation')
+            link.querySelector('rough-notation') ||
+            link.getClientRects().length === 0
         ) {
-            continue
+            return
         }
 
         const annotation = annotate(link, {
@@ -30,7 +29,7 @@
             !annotationSvg.classList.contains('rough-annotation')
         ) {
             annotation.remove()
-            continue
+            return
         }
 
         link.dataset.markdownLinkAnnotated = 'true'
@@ -64,4 +63,30 @@
         })
         updateColor()
     }
+
+    const annotateLinks = (root: ParentNode) => {
+        const links = root.querySelectorAll<HTMLAnchorElement>('.markdown-body a[href]')
+        for (const link of links) annotateLink(link)
+    }
+
+    const scheduleAnnotation = (root: ParentNode) => {
+        window.requestAnimationFrame(() => annotateLinks(root))
+    }
+
+    scheduleAnnotation(document)
+
+    document.addEventListener(
+        'toggle',
+        (event) => {
+            const details = event.target
+            if (details instanceof HTMLDetailsElement && details.open) {
+                scheduleAnnotation(details)
+            }
+        },
+        true,
+    )
+
+    document.addEventListener('astro:page-load', () => {
+        scheduleAnnotation(document)
+    })
 </script>

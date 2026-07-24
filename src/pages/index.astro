@@ -6,7 +6,6 @@ import {getCollection} from 'astro:content'
 import '../styles/markdown/github.css'
 
 const posts = await getCollection('posts')
-const draftCount = posts.filter(({data}) => data.draft).length
 const allPosts = posts
     .filter(({data}) => !data.draft)
     .sort(
@@ -31,12 +30,4 @@ const allPosts = posts
             tags: post.data.tags,
         }))}
     />
-    {
-        draftCount > 0 && (
-            <p class="mt-3 text-sm text-(--theme-muted)">
-                寒冰还有 <span class="text-(--theme-fg)">{draftCount}</span> 篇 draft
-                中的文章，谴责它摸鱼！
-            </p>
-        )
-    }
 </IndexLayout>

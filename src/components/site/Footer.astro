@@ -1,10 +1,12 @@
 ---
-const author = '🐱 hanbings'
-const framework = '🚀 Astro'
+import {getCollection} from 'astro:content'
+
+const posts = await getCollection('posts')
+const draftCount = posts.filter(({data}) => data.draft).length
 ---
 
 <div class="flex items-center justify-start">
     <div class="text-sm">
-        {author} using {framework}
+        寒冰还有 <span class="text-(--theme-fg)">{draftCount}</span> 篇 draft 中的文章，谴责它摸鱼！
     </div>
 </div>

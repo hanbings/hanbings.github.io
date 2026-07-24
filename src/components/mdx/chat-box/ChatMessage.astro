@@ -16,7 +16,7 @@ const {role: chatRole, time, datetime, class: className} = Astro.props
     data-chat-role={chatRole}
     aria-label={chatRole === 'humen' ? '我的消息' : 'AI 的消息'}
 >
-    <div class="chat-message-bubble">
+    <div class="chat-message-bubble chat-markdown">
         <slot />
     </div>
     {
