@@ -1,6 +1,6 @@
 ---
-title: 'Markdown 边注、术语、聊天框、钢琴窗与五线谱测试'
-description: 'MDX 富文本组件的使用说明与渲染测试，包括手绘标注、文章边注、术语原文、聊天记录、交互式钢琴窗和五线谱。'
+title: 'Markdown 边注、术语、聊天框与交互组件测试'
+description: 'MDX 富文本组件的使用说明与渲染测试，包括手绘标注、文章边注、术语原文、聊天记录、函数图像、钢琴窗和五线谱。'
 date: '2026-07-18 14:00:00'
 tags: ['markdown', '排版']
 author: '寒冰'
@@ -8,11 +8,11 @@ author: '寒冰'
 
 export const contentFormat = 'MDX'
 
-这篇文章既是本站 Markdown 扩展的使用说明，也是文章边注、术语原文、聊天记录、钢琴窗与五线谱的渲染测试，当前由 **{contentFormat}** 渲染。
+这篇文章既是本站 Markdown 扩展的使用说明，也是文章边注、术语原文、聊天记录、函数图像、钢琴窗与五线谱的渲染测试，当前由 **{contentFormat}** 渲染。
 
 ## MDX 组件
 
-本站将复杂的富文本能力注册为全局 MDX 组件。文章可以直接使用手绘标注、术语、边注、聊天框、钢琴窗和五线谱组件，无需在每篇文章中重复导入。普通 Markdown 继续使用 Astro 默认渲染器，适合不需要组件的内容。
+本站将复杂的富文本能力注册为全局 MDX 组件。文章可以直接使用手绘标注、术语、边注、聊天框、函数图像、钢琴窗和五线谱组件，无需在每篇文章中重复导入。普通 Markdown 继续使用 Astro 默认渲染器，适合不需要组件的内容。
 
 ## MDX 手绘标注
 
@@ -169,6 +169,54 @@ MDX 页面可以使用全局注册的 `<Term>` 组件，通过 `original` 保留
 </p>
 
 每张卡片保留自己的颜色和文字范围；点击当前卡片可以切换到下一张，把鼠标移到对应文字上也会切换到那张卡片。
+
+## 函数图像
+
+`<FunctionPlot>` 使用接近普通数学书写的表达式绘制函数。单个函数可以直接通过 `expression` 传入：
+
+```mdx
+<FunctionPlot
+  title="正弦函数"
+  expression="sin(x)"
+  xDomain={[-2 * Math.PI, 2 * Math.PI]}
+  yDomain={[-1.5, 1.5]}
+/>
+```
+
+<FunctionPlot
+  title="正弦函数"
+  expression="sin(x)"
+  xDomain={[-2 * Math.PI, 2 * Math.PI]}
+  yDomain={[-1.5, 1.5]}
+/>
+
+拖动画布可以平移，滚轮可以围绕指针位置缩放；“重置视图”会恢复文章中设置的坐标范围。需要对比多个函数时，使用 `functions` 数组：
+
+```mdx
+<FunctionPlot
+  title="正弦与余弦"
+  functions={[
+    {expression: 'sin(x)', label: 'y = sin(x)'},
+    {expression: 'cos(x)', label: 'y = cos(x)'},
+  ]}
+  xDomain={[-2 * Math.PI, 2 * Math.PI]}
+  yDomain={[-1.5, 1.5]}
+  height={320}
+/>
+```
+
+<FunctionPlot
+  title="正弦与余弦"
+  functions={[
+    {expression: 'sin(x)', label: 'y = sin(x)'},
+    {expression: 'cos(x)', label: 'y = cos(x)'},
+  ]}
+  xDomain={[-2 * Math.PI, 2 * Math.PI]}
+  yDomain={[-1.5, 1.5]}
+  height={320}
+/>
+
+表达式支持 `+`、`-`、`*`、`/`、`%`、`^`，变量 `x`，常量 `pi`、`π`、`e`，以及常见的三角、反三角、双曲、指数、对数、取整和绝对值函数。乘号可以省略，因此 `2x`、`2sin(x)` 和 `(x + 1)(x - 1)` 都能直接使用。每张图最多绘制六个函数；表达式、坐标范围或高度无效时，构建会直接报错。
 
 ## 钢琴窗
 

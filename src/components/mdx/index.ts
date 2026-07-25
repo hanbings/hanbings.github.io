@@ -8,6 +8,7 @@ import Underline from './rough-notation/Underline.astro'
 import ChatAI from './chat-box/ChatAI.astro'
 import ChatBox from './chat-box/ChatBox.astro'
 import ChatMessage from './chat-box/ChatMessage.astro'
+import FunctionPlot from './function-plot/FunctionPlot.astro'
 import MusicScore from './music-score/MusicScore.astro'
 import Piano from './piano/Piano.astro'
 import Sidenote from './sidenote/Sidenote.astro'
@@ -23,6 +24,7 @@ export const mdxComponents = {
   ChatMessage,
   Circle,
   CrossedOff,
+  FunctionPlot,
   Highlight,
   MusicScore,
   Piano,
