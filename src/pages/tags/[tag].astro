@@ -4,7 +4,7 @@ import IndexLayout from '../../layouts/IndexLayout.astro'
 import EntryList from '../../components/index/EntryList.astro'
 
 export async function getStaticPaths() {
-    const allPosts = await getCollection('posts', ({data}) => !data.draft)
+    const allPosts = await getCollection('posts')
 
     const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))]
 
@@ -19,22 +19,45 @@ export async function getStaticPaths() {
 
 const {tag} = Astro.params
 const {posts} = Astro.props
-posts.sort(
+const sortedPosts = [...posts].sort(
     (a, b) =>
         new Date(b.data.date.replace(' ', 'T')).getTime() -
         new Date(a.data.date.replace(' ', 'T')).getTime(),
 )
+const publishedPosts = sortedPosts.filter(({data}) => !data.draft)
+const draftPosts = sortedPosts.filter(({data}) => data.draft)
 ---
 
 <IndexLayout title={tag}>
-    <EntryList
-        heading={`包含「${tag}」标签的文章`}
-        headingId="tag-posts-title"
-        items={posts.map((post) => ({
-            title: post.data.title,
-            href: `/posts/${post.id}`,
-            date: post.data.date,
-            tags: post.data.tags,
-        }))}
-    />
+    <h1 class="text-2xl font-bold">{`#${tag}`}</h1>
+    {
+        publishedPosts.length > 0 && (
+            <EntryList
+                class="mt-6"
+                heading="发布的文章"
+                headingId="published-posts-title"
+                items={publishedPosts.map((post) => ({
+                    title: post.data.title,
+                    href: `/posts/${post.id}`,
+                    date: post.data.date,
+                    tags: post.data.tags,
+                }))}
+            />
+        )
+    }
+    {
+        draftPosts.length > 0 && (
+            <EntryList
+                class="mt-6"
+                heading="草稿文章"
+                headingId="draft-posts-title"
+                items={draftPosts.map((post) => ({
+                    title: post.data.title,
+                    href: `/posts/${post.id}`,
+                    date: post.data.date,
+                    tags: post.data.tags,
+                }))}
+            />
+        )
+    }
 </IndexLayout>
