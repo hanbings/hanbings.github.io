@@ -1,0 +1,26 @@
+---
+import QuoteFrame from './QuoteFrame.astro'
+
+interface Props {
+    href: string
+    title: string
+    source?: string
+    locator?: string
+    lang?: string
+    class?: string
+}
+
+const {href, title, source, locator, lang, class: className} = Astro.props
+---
+
+<QuoteFrame
+    kind="pdf"
+    href={href}
+    title={title}
+    source={source}
+    locator={locator}
+    lang={lang}
+    class={className}
+>
+    <slot />
+</QuoteFrame>

@@ -9,6 +9,9 @@ import ChatAI from './chat-box/ChatAI.astro'
 import ChatBox from './chat-box/ChatBox.astro'
 import ChatMessage from './chat-box/ChatMessage.astro'
 import FunctionPlot from './function-plot/FunctionPlot.astro'
+import GitHubQuote from './source-quote/GitHubQuote.astro'
+import PDFQuote from './source-quote/PDFQuote.astro'
+import PDFQuoteText from './source-quote/PDFQuoteText.astro'
 import MusicScore from './music-score/MusicScore.astro'
 import Piano from './piano/Piano.astro'
 import Sidenote from './sidenote/Sidenote.astro'
@@ -25,8 +28,11 @@ export const mdxComponents = {
   Circle,
   CrossedOff,
   FunctionPlot,
+  GitHubQuote,
   Highlight,
   MusicScore,
+  PDFQuote,
+  PDFQuoteText,
   Piano,
   Sidenote,
   SidenoteText,

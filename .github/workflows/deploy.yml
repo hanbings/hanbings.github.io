@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+      - name: Restore GitHub quote cache
+        uses: actions/cache@v5
+        with:
+          path: .cache/github-quotes
+          key: github-quotes-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            github-quotes-${{ runner.os }}-
       - name: Install, build, and upload site
         uses: withastro/action@v6
         with:

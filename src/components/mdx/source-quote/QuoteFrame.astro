@@ -1,0 +1,52 @@
+---
+type QuoteKind = 'pdf' | 'github'
+
+interface Props {
+    href: string
+    title: string
+    kind: QuoteKind
+    source?: string
+    locator?: string
+    lang?: string
+    class?: string
+}
+
+const {href, title, kind, source, locator, lang, class: className} = Astro.props
+
+if (!href?.trim()) throw new Error('QuoteFrame requires a non-empty href')
+if (!title?.trim()) throw new Error('QuoteFrame requires a non-empty title')
+
+const kindLabels: Record<QuoteKind, string> = {
+    pdf: 'PDF Quote',
+    github: 'GitHub Quote',
+}
+const opensNewTab = /^https?:\/\//i.test(href)
+---
+
+<figure class:list={['source-quote', className]} data-source-quote data-source-kind={kind}>
+    <figcaption class="source-quote-caption">
+        <div class="source-quote-meta">
+            <span class="source-quote-kind">{kindLabels[kind]}</span>
+            {locator && <span class="source-quote-locator">{locator}</span>}
+        </div>
+        <cite class="source-quote-title">
+            <a
+                class="source-quote-title-link"
+                href={href}
+                target={opensNewTab ? '_blank' : undefined}
+                rel={opensNewTab ? 'noopener' : undefined}
+                aria-label={`回到来源：${title}${opensNewTab ? '（在新标签页打开）' : ''}`}
+            >
+                <span>{title}</span>
+            </a>
+            <span class="source-quote-title-arrow" aria-hidden="true">↗</span>
+        </cite>
+        {source && <span class="source-quote-source">{source}</span>}
+    </figcaption>
+
+    <blockquote class="source-quote-body" cite={href} lang={lang}>
+        <div class="source-quote-content">
+            <slot />
+        </div>
+    </blockquote>
+</figure>

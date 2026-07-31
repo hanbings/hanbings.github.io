@@ -1,0 +1,76 @@
+---
+import {Code} from 'astro:components'
+import type {ShikiTransformer} from 'shiki'
+
+interface Props {
+    code: string
+    lang?: string
+    startLine?: number
+    focusLines?: string | number | number[]
+    class?: string
+}
+
+const {code, lang = 'text', startLine = 1, focusLines, class: className} = Astro.props
+
+if (!Number.isInteger(startLine) || startLine < 1) {
+    throw new Error('SourceCode startLine must be a positive integer')
+}
+
+const normalizedCode = code.replace(/\r\n?/g, '\n')
+const lineCount = normalizedCode.split('\n').length
+
+const parseFocusLines = (value: Props['focusLines']) => {
+    if (value === undefined) return undefined
+    const focused = new Set<number>()
+    const values = Array.isArray(value) ? value : [value]
+
+    for (const item of values) {
+        if (typeof item === 'number') {
+            if (!Number.isInteger(item)) throw new Error('SourceCode focusLines must use integers')
+            focused.add(item)
+            continue
+        }
+
+        for (const part of item.split(',')) {
+            const match = part.trim().match(/^(\d+)(?:\s*-\s*(\d+))?$/)
+            if (!match) throw new Error(`Invalid SourceCode focusLines range: ${part.trim()}`)
+            const first = Number(match[1])
+            const last = Number(match[2] ?? match[1])
+            if (last < first) throw new Error(`Invalid SourceCode focusLines range: ${part.trim()}`)
+            for (let line = first; line <= last; line += 1) focused.add(line)
+        }
+    }
+
+    const snippetLastLine = startLine + lineCount - 1
+    if ([...focused].some((line) => line < startLine || line > snippetLastLine)) {
+        throw new Error(`SourceCode focusLines must stay within ${startLine}-${snippetLastLine}`)
+    }
+    return focused
+}
+
+const focusedLines = parseFocusLines(focusLines)
+const lineTransformer: ShikiTransformer = {
+    name: 'source-code-lines',
+    line(node, line) {
+        const sourceLine = startLine + line - 1
+        node.properties['data-line-number'] = String(sourceLine)
+        this.addClassToHast(
+            node,
+            !focusedLines || focusedLines.has(sourceLine)
+                ? 'source-code-line-focus'
+                : 'source-code-line-context',
+        )
+    },
+}
+---
+
+<div class:list={['source-code-frame', className]} data-source-code>
+    <Code
+        code={normalizedCode}
+        lang={lang as any}
+        themes={{light: 'one-light', dark: 'tokyo-night'}}
+        defaultColor={false}
+        wrap={false}
+        transformers={[lineTransformer]}
+    />
+</div>

@@ -1,0 +1,42 @@
+.markdown-body .source-quote[data-source-kind='pdf'] {
+  --source-quote-accent: #e45649;
+}
+
+.markdown-body .source-quote[data-source-kind='pdf'] .source-quote-body {
+  color: color-mix(in srgb, var(--theme-muted) 72%, var(--theme-bg));
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.markdown-body
+  .source-quote[data-source-kind='pdf']
+  .source-quote-content
+  > :where(p, ul, ol, dl, pre, table, details) {
+  width: calc(100% - 2.5rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.markdown-body .source-quote[data-source-kind='pdf'] .source-quote-content p {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body .source-quote[data-source-kind='pdf'] .source-quote-content :where(ul, ol) {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  padding-left: 1.125rem;
+}
+
+.markdown-body .source-quote[data-source-kind='pdf'] .source-quote-content li + li {
+  margin-top: 0.125rem;
+}
+
+.markdown-body .source-quote[data-source-kind='pdf'] .source-quote-content > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body .pdf-quote-text {
+  color: var(--theme-fg);
+  font-weight: 500;
+}

@@ -1,0 +1,21 @@
+---
+interface Props {
+    lang?: string
+    class?: string
+}
+
+const {lang, class: className} = Astro.props
+const renderedContent = (await Astro.slots.render('default')).trim()
+const hasSingleParagraph =
+    renderedContent.startsWith('<p>') &&
+    renderedContent.endsWith('</p>') &&
+    !renderedContent.slice(3, -4).includes('</p>')
+const inlineContent = hasSingleParagraph ? renderedContent.slice(3, -4) : renderedContent
+---
+
+<span
+    class:list={['pdf-quote-text', className]}
+    lang={lang}
+    data-pdf-quote-text
+    set:html={inlineContent}
+/>

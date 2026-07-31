@@ -8,7 +8,7 @@ author: '寒冰'
 
 export const contentFormat = 'MDX'
 
-这篇文章既是本站 Markdown 扩展的使用说明，也是文章边注、术语原文、聊天记录、函数图像、钢琴窗与五线谱的渲染测试，当前由 **{contentFormat}** 渲染。
+这篇文章既是本站 Markdown 扩展的使用说明，也是文章边注、外部引用、术语原文、聊天记录、函数图像、钢琴窗与五线谱的渲染测试，当前由 **{contentFormat}** 渲染。
 
 ## MDX 组件
 
@@ -169,6 +169,72 @@ MDX 页面可以使用全局注册的 `<Term>` 组件，通过 `original` 保留
 </p>
 
 每张卡片保留自己的颜色和文字范围；点击当前卡片可以切换到下一张，把鼠标移到对应文字上也会切换到那张卡片。
+
+## 外部资料引用
+
+### PDF Quote
+
+`<PDFQuote>` 用来引用外部 PDF 或文献。`href` 应直接包含原文的页码或章节定位，`locator` 把这个位置显示给读者。可以把较长的原文片段直接放进引用框：前后文默认使用较浅的文字色，真正引用的部分用 `<PDFQuoteText>` 标出并恢复为正文颜色。
+
+`<PDFQuoteText>` 是行内组件，不要求独占一个段落。它可以只包住半句话、完整的一句话，也可以包住会随行宽自然换行的连续文字。`<SidenoteText>` 仍可嵌在其中关联边注：
+
+```mdx
+<PDFQuote
+  href="https://example.com/paper.pdf#page=12"
+  title="示例论文标题"
+  source="作者 · 会议或出版物 · 年份"
+  locator="§3.2 · p.12"
+>
+  这是第一段前文。它交代这一节正在处理的问题、作者采用的定义，以及接下来判断所依赖的条件。
+
+第二段前文继续保留推理过程。真正需要引用的内容不必另起一段，也可以直接出现在一段上下文中。
+
+<Sidenote title="译注">这条边注只解释真正引文中被标记的部分。</Sidenote>
+
+作者在列出几个例外之后总结道： <PDFQuoteText>这是文章实际需要引用的一句话，其中的 <SidenoteText>关键术语或推理步骤</SidenoteText> 仍然可以关联边注；当句子较长时，它会跟随引用框的行宽自然换行。</PDFQuoteText> 随后作者开始说明这个结论不能覆盖的情况。
+
+这里是第一段后文，它补充结论的适用范围，并解释下一节为什么要换用另一种分析方法。
+
+最后再保留一小段后文，让读者能判断这句话在原资料中的位置和作用。
+
+</PDFQuote>
+```
+
+<PDFQuote
+  href="https://example.com/paper.pdf#page=12"
+  title="示例论文标题"
+  source="作者 · 会议或出版物 · 年份"
+  locator="§3.2 · p.12"
+>
+  作者先回顾上一节得到的结果，然后限定这一节所讨论的问题。这里保留完整的过渡，是为了避免抽出一句话后改变原意。
+
+接下来作者比较了两种情形，并逐步引出本文真正需要引用的判断。前文虽然不是引用重点，但仍为这句话提供必要条件。
+
+<Sidenote title="译注">边注仍然与真正引文中的标记范围配对；宽屏时会位于引用框右侧。</Sidenote>
+
+在完成上述比较后，作者写道： <PDFQuoteText>这只是文章实际引用的一句话，其中的 <SidenoteText>关键术语或推理步骤</SidenoteText> 仍然可以继续关联边注；整句话即使跨越多行，也保持为同一个强调范围。</PDFQuoteText> 原文随后转向这一判断的限制条件。
+
+第一段后文给出一个不满足条件的反例，提醒读者不要把前面的结论推广到所有情况。
+
+第二段后文说明作者接下来如何处理这个反例。它们以较浅的颜色保留，因此不会抢走真正引文的视觉重点。
+
+</PDFQuote>
+
+点击顶部标题会保留作者传入的完整定位；外部地址在新标签页打开，站内来源则直接跳转。
+
+### GitHub Quote
+
+GitHub 代码引用只需要一个带行号范围的 `<GitHubQuote>`。组件会在构建时拉取原始文件，自动识别仓库、分支、文件名、语言和行号，并在引用范围前后各保留 5 行上下文。拉取结果默认缓存 24 小时，缓存过期后会向 GitHub 重新验证；可以用 `contextLines` 调整上下文行数，用 `cacheHours` 调整缓存时长，用 `lang` 覆盖自动推断的语言：
+
+```mdx
+<GitHubQuote
+  href="https://github.com/user/repo/blob/main/src/task.ts#L44-L46"
+  contextLines={5}
+  cacheHours={24}
+/>
+```
+
+<GitHubQuote href="https://github.com/hanbings/hanbings.github.io/blob/main/src/components/mdx/sidenote/sidenotes.ts#L78-L96" />
 
 ## 函数图像
 

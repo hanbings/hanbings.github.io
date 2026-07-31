@@ -1,0 +1,141 @@
+---
+import SourceCode from './SourceCode.astro'
+import QuoteFrame from './QuoteFrame.astro'
+import {fetchGitHubSource} from '../../../utils/githubSourceCache'
+
+interface Props {
+    href: string
+    contextLines?: number
+    cacheHours?: number
+    lang?: string
+    title?: string
+    class?: string
+}
+
+const {
+    href,
+    contextLines = 5,
+    cacheHours = 24,
+    lang: customLanguage,
+    title: customTitle,
+    class: className,
+} = Astro.props
+
+if (!Number.isInteger(contextLines) || contextLines < 0 || contextLines > 100) {
+    throw new Error('GitHubQuote contextLines must be an integer between 0 and 100')
+}
+
+if (!Number.isFinite(cacheHours) || cacheHours < 0 || cacheHours > 8760) {
+    throw new Error('GitHubQuote cacheHours must be a number between 0 and 8760')
+}
+
+let sourceUrl: URL
+try {
+    sourceUrl = new URL(href)
+} catch {
+    throw new Error(`GitHubQuote requires a valid GitHub URL: ${href}`)
+}
+
+if (sourceUrl.protocol !== 'https:' || sourceUrl.hostname !== 'github.com') {
+    throw new Error('GitHubQuote only supports https://github.com URLs')
+}
+
+const pathParts = sourceUrl.pathname
+    .split('/')
+    .filter(Boolean)
+    .map((part) => decodeURIComponent(part))
+const [owner, repository, route, ref, ...fileParts] = pathParts
+if (!owner || !repository || route !== 'blob' || !ref || fileParts.length === 0) {
+    throw new Error('GitHubQuote URL must point to a GitHub file using /blob/<ref>/<path>')
+}
+
+const lineMatch = sourceUrl.hash.match(/^#L(\d+)(?:-L(\d+))?$/)
+if (!lineMatch) {
+    throw new Error('GitHubQuote URL must end with a line anchor such as #L24-L38')
+}
+
+const focusStart = Number(lineMatch[1])
+const focusEnd = Number(lineMatch[2] ?? lineMatch[1])
+if (focusEnd < focusStart) throw new Error('GitHubQuote line range must be ascending')
+
+const encodedPath = fileParts.map((part) => encodeURIComponent(part)).join('/')
+const rawUrl = `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/${encodeURIComponent(ref)}/${encodedPath}`
+
+let fetchedSource: string
+try {
+    fetchedSource = await fetchGitHubSource(rawUrl, cacheHours * 60 * 60 * 1000)
+} catch (error) {
+    throw new Error(
+        `GitHubQuote could not fetch ${rawUrl}: ${error instanceof Error ? error.message : String(error)}`,
+    )
+}
+
+const sourceText = fetchedSource.replace(/\r\n?/g, '\n')
+const sourceLines = sourceText.split('\n')
+if (sourceLines.at(-1) === '') sourceLines.pop()
+if (focusStart < 1 || focusEnd > sourceLines.length) {
+    throw new Error(
+        `GitHubQuote line range ${focusStart}-${focusEnd} is outside the file's 1-${sourceLines.length} lines`,
+    )
+}
+
+const snippetStart = Math.max(1, focusStart - contextLines)
+const snippetEnd = Math.min(sourceLines.length, focusEnd + contextLines)
+const code = sourceLines.slice(snippetStart - 1, snippetEnd).join('\n')
+const filePath = fileParts.join('/')
+const fileName = fileParts.at(-1) ?? filePath
+const extension = fileName.includes('.') ? fileName.split('.').at(-1)?.toLowerCase() : undefined
+const languageByExtension: Record<string, string> = {
+    c: 'c',
+    cc: 'cpp',
+    cpp: 'cpp',
+    cs: 'csharp',
+    css: 'css',
+    go: 'go',
+    h: 'c',
+    hpp: 'cpp',
+    html: 'html',
+    java: 'java',
+    js: 'js',
+    json: 'json',
+    jsx: 'jsx',
+    kt: 'kotlin',
+    kts: 'kotlin',
+    md: 'md',
+    mdx: 'mdx',
+    nix: 'nix',
+    py: 'python',
+    rb: 'ruby',
+    rs: 'rust',
+    scss: 'scss',
+    sh: 'bash',
+    sql: 'sql',
+    svelte: 'svelte',
+    toml: 'toml',
+    ts: 'ts',
+    tsx: 'tsx',
+    vue: 'vue',
+    yaml: 'yaml',
+    yml: 'yaml',
+    zsh: 'bash',
+}
+const language =
+    customLanguage || (extension ? languageByExtension[extension] : undefined) || 'text'
+const focusLabel = focusStart === focusEnd ? `L${focusStart}` : `L${focusStart}–L${focusEnd}`
+---
+
+<QuoteFrame
+    kind="github"
+    href={href}
+    title={customTitle || fileName}
+    source={`${owner}/${repository} · ${ref}`}
+    locator={`${filePath} · ${focusLabel}`}
+    class={className}
+>
+    <SourceCode
+        code={code}
+        lang={language}
+        startLine={snippetStart}
+        focusLines={`${focusStart}-${focusEnd}`}
+    />
+</QuoteFrame>
