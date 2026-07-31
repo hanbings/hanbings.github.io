@@ -20,7 +20,7 @@ const draftPosts = posts.filter(({data}) => data.draft)
         headingId="published-posts-title"
         items={publishedPosts.map((post) => ({
             title: post.data.title,
-            href: `/posts/${post.id}`,
+            href: `/posts/${post.id}/`,
             date: post.data.date,
             tags: post.data.tags,
         }))}
@@ -33,7 +33,7 @@ const draftPosts = posts.filter(({data}) => data.draft)
                 headingId="draft-posts-title"
                 items={draftPosts.map((post) => ({
                     title: post.data.title,
-                    href: `/posts/${post.id}`,
+                    href: `/posts/${post.id}/`,
                     date: post.data.date,
                     tags: post.data.tags,
                 }))}

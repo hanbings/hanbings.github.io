@@ -16,7 +16,7 @@ const allEvents = (await getCollection('events', ({data}) => !data.draft)).sort(
         headingId="events-title"
         items={allEvents.map((event) => ({
             title: event.data.title,
-            href: `/events/${event.id}`,
+            href: `/events/${event.id}/`,
             date: event.data.date,
         }))}
     />

@@ -8,7 +8,7 @@ background: https://picture.hanbings.com/2022/05/24/88eb3a319991f.jpg
 <h5 align="center">There are so many interesting things in the world, nothing worth getting stuck with for the rest of my life.</h5>
 
 <p align="center">
-  <a target="_blank" rel="noopener noreferrer" href="https://blog.hanbings.io/">🐱 Blog</a> •
+  <a target="_blank" rel="noopener noreferrer" href="/">🐱 Blog</a> •
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/hanbings">Github</a> •
   <a target="_blank" rel="noopener noreferrer" href="mailto:hanbings@hanbings.io">Email</a> •
   <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/IceCatHanbings">Twitter</a>

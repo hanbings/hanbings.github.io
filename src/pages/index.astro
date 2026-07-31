@@ -25,7 +25,7 @@ const allPosts = posts
         headingId="recent-posts-title"
         items={allPosts.map((post) => ({
             title: post.data.title,
-            href: `/posts/${post.id}`,
+            href: `/posts/${post.id}/`,
             date: post.data.date,
             tags: post.data.tags,
         }))}

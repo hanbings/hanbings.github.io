@@ -112,4 +112,4 @@ $ hexdump -C /home/hanbings/github/arceos-umhv/arceos-vmm/arceos-vmm_x86_64-qemu
 
 ## 进度
 
-[虚拟化技术：AMD SVM Hypervisor](https://blog.hanbings.io/posts/rvm-amd-support)
+[虚拟化技术：AMD SVM Hypervisor](/posts/rvm-amd-support/)

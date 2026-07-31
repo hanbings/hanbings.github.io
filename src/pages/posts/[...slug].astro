@@ -47,7 +47,7 @@ const articleHeadings = headings.filter((_, index) => !chatBoxHeadingIndexes.has
     <div class="flex flex-row flex-wrap items-center gap-2">
         {
             tags.map((tag) => (
-                <HandDrawnHighlightLink href={`/tags/${encodeURIComponent(tag)}`}>
+                <HandDrawnHighlightLink href={`/tags/${encodeURIComponent(tag)}/`}>
                     {`#${tag}`}
                 </HandDrawnHighlightLink>
             ))
