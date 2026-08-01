@@ -23,20 +23,26 @@ const model = createFunctionPlotModel({
 const serializedSeries = JSON.stringify(model.series)
 const serializedXDomain = JSON.stringify(model.xDomain)
 const serializedYDomain = JSON.stringify(model.yDomain)
-const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${model.xDomain[1]}，纵轴范围 ${model.yDomain[0]} 到 ${model.yDomain[1]}，绘制 ${model.series.map(({label}) => label).join('、')}。可拖动平移并使用滚轮缩放。`
+const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${model.xDomain[1]}，纵轴范围 ${model.yDomain[0]} 到 ${model.yDomain[1]}，绘制 ${model.series.map(({label}) => label).join('、')}。可拖动平移；点击图像后可使用滚轮缩放。`
 ---
 
 <mdx-function-plot
     data-series={serializedSeries}
     data-x-domain={serializedXDomain}
     data-y-domain={serializedYDomain}
+    data-wheel-active="false"
 >
     <figure
         class:list={['function-plot-window', className]}
         style={`--function-plot-height: ${model.height}px`}
     >
         <figcaption class="function-plot-caption">
-            <span class="function-plot-title">{model.title}</span>
+            <span class="function-plot-heading">
+                <span class="function-plot-title">{model.title}</span>
+                <span class="function-plot-hint" data-function-plot-hint aria-live="polite"
+                    >点击图像后可用滚轮缩放</span
+                >
+            </span>
             <button type="button" class="function-plot-reset" data-function-plot-reset>
                 重置视图
             </button>
@@ -47,6 +53,7 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
                 data-function-plot-canvas
                 role="img"
                 aria-label={description}
+                tabindex="0"
             >
                 {description}
             </canvas>
@@ -136,6 +143,7 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
         private coordinates?: HTMLOutputElement
         private reset?: HTMLButtonElement
         private error?: HTMLElement
+        private hint?: HTMLElement
         private series: Array<FunctionPlotSeries & {evaluate: (x: number) => number}> = []
         private initialView?: PlotView
         private view?: PlotView
@@ -144,6 +152,7 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
         private colorScheme?: MediaQueryList
         private activePointer?: number
         private dragStart?: {clientX: number; clientY: number; view: PlotView}
+        private wheelActive = false
 
         connectedCallback() {
             if (this.abortController) return
@@ -157,6 +166,7 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
             this.reset =
                 this.querySelector<HTMLButtonElement>('[data-function-plot-reset]') ?? undefined
             this.error = this.querySelector<HTMLElement>('[data-function-plot-error]') ?? undefined
+            this.hint = this.querySelector<HTMLElement>('[data-function-plot-hint]') ?? undefined
             if (!this.canvas || !this.context || !this.reset) return
 
             try {
@@ -195,9 +205,16 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
             this.canvas.addEventListener('pointercancel', this.handlePointerUp, listenerOptions)
             this.canvas.addEventListener('pointerleave', this.handlePointerLeave, listenerOptions)
             this.canvas.addEventListener('dblclick', this.handleReset, listenerOptions)
+            this.canvas.addEventListener('focus', this.handleCanvasFocus, listenerOptions)
+            this.canvas.addEventListener('blur', this.handleCanvasBlur, listenerOptions)
+            this.canvas.addEventListener('keydown', this.handleCanvasKeyDown, listenerOptions)
             this.canvas.addEventListener('wheel', this.handleWheel, {
                 signal: controller.signal,
                 passive: false,
+            })
+            document.addEventListener('pointerdown', this.handleDocumentPointerDown, {
+                capture: true,
+                signal: controller.signal,
             })
             this.reset.addEventListener('click', this.handleReset, listenerOptions)
             this.abortController = controller
@@ -216,6 +233,7 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
             this.abortController = undefined
             this.activePointer = undefined
             this.dragStart = undefined
+            this.setWheelActive(false)
         }
 
         private getMetrics(): PlotMetrics | undefined {
@@ -265,6 +283,8 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
 
         private handlePointerDown = (event: PointerEvent) => {
             if (!this.canvas || !this.view || event.button !== 0) return
+            this.canvas.focus({preventScroll: true})
+            this.setWheelActive(true)
             this.activePointer = event.pointerId
             this.dragStart = {
                 clientX: event.clientX,
@@ -317,7 +337,34 @@ const description = `${model.title}，横轴范围 ${model.xDomain[0]} 到 ${mod
             }
         }
 
+        private handleCanvasFocus = () => this.setWheelActive(true)
+
+        private handleCanvasBlur = () => this.setWheelActive(false)
+
+        private handleCanvasKeyDown = (event: KeyboardEvent) => {
+            if (event.key !== 'Escape' || !this.canvas) return
+            this.canvas.blur()
+        }
+
+        private handleDocumentPointerDown = (event: PointerEvent) => {
+            if (event.target instanceof Node && !this.contains(event.target)) {
+                this.setWheelActive(false)
+            }
+        }
+
+        private setWheelActive(active: boolean) {
+            if (this.wheelActive === active) return
+            this.wheelActive = active
+            this.dataset.wheelActive = String(active)
+            if (this.hint) {
+                this.hint.textContent = active
+                    ? '滚轮缩放已启用 · 点击外部退出'
+                    : '点击图像后可用滚轮缩放'
+            }
+        }
+
         private handleWheel = (event: WheelEvent) => {
+            if (!this.wheelActive) return
             const metrics = this.getMetrics()
             if (!metrics || !this.view) return
             event.preventDefault()

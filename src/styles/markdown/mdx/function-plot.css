@@ -28,8 +28,32 @@
 }
 
 .markdown-body .function-plot-title {
+  display: block;
   font-size: 1rem;
   font-weight: 700;
+  line-height: 1.4;
+}
+
+.markdown-body .function-plot-heading {
+  display: block;
+  min-width: 0;
+}
+
+.markdown-body .function-plot-hint {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--theme-muted);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    SF Mono,
+    Menlo,
+    Consolas,
+    Liberation Mono,
+    monospace;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
   line-height: 1.4;
 }
 
@@ -68,9 +92,19 @@
   height: var(--function-plot-height, 360px);
   margin: 0;
   background-color: var(--theme-code-bg);
-  cursor: crosshair;
+  cursor: pointer;
   touch-action: none;
   user-select: none;
+}
+
+.markdown-body mdx-function-plot[data-wheel-active='true'] .function-plot-canvas {
+  cursor: crosshair;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--theme-accent) 55%, transparent);
+}
+
+.markdown-body .function-plot-canvas:focus-visible {
+  outline: 2px solid var(--theme-focus);
+  outline-offset: -2px;
 }
 
 .markdown-body .function-plot-canvas.is-dragging {
@@ -153,6 +187,10 @@
 
   .markdown-body .function-plot-title {
     font-size: 0.875rem;
+  }
+
+  .markdown-body .function-plot-hint {
+    font-size: 0.75rem;
   }
 
   .markdown-body .function-plot-legend {
