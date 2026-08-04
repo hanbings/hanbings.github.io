@@ -5,13 +5,31 @@ import Content from '../content/specs/home.md'
 import {getCollection} from 'astro:content'
 import '../styles/markdown/github.css'
 
-const posts = await getCollection('posts')
-const allPosts = posts
-    .filter(({data}) => !data.draft)
+const [markdownPosts, typstPosts] = await Promise.all([
+    getCollection('posts'),
+    getCollection('typstPosts'),
+])
+const allPosts = [
+    ...markdownPosts.map((post) => ({
+        id: post.id,
+        title: post.data.title,
+        date: post.data.date,
+        tags: post.data.tags,
+        draft: Boolean(post.data.draft),
+    })),
+    ...typstPosts.map((post) => ({
+        id: post.id,
+        title: post.data.title,
+        date: post.data.date,
+        tags: post.data.tags,
+        draft: Boolean(post.data.draft),
+    })),
+]
+    .filter(({draft}) => !draft)
     .sort(
         (a, b) =>
-            new Date(b.data.date.replace(' ', 'T')).getTime() -
-            new Date(a.data.date.replace(' ', 'T')).getTime(),
+            new Date(b.date.replace(' ', 'T')).getTime() -
+            new Date(a.date.replace(' ', 'T')).getTime(),
     )
 ---
 
@@ -24,10 +42,10 @@ const allPosts = posts
         heading="近期文章"
         headingId="recent-posts-title"
         items={allPosts.map((post) => ({
-            title: post.data.title,
+            title: post.title,
             href: `/posts/${post.id}/`,
-            date: post.data.date,
-            tags: post.data.tags,
+            date: post.date,
+            tags: post.tags,
         }))}
     />
 </IndexLayout>

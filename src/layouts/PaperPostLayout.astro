@@ -1,0 +1,24 @@
+---
+import PostLayout from './PostLayout.astro'
+
+interface Props {
+    title: string
+    background?: string
+    backgroundOpacity?: number
+}
+
+const {title, background, backgroundOpacity} = Astro.props
+---
+
+<PostLayout
+    title={title}
+    background={background}
+    backgroundOpacity={backgroundOpacity}
+    variant="paper"
+>
+    <slot name="head" slot="head" />
+    <slot name="backfill-background" slot="backfill-background" />
+    <slot name="header-background" slot="header-background" />
+    <slot name="site-overlay" slot="site-overlay" />
+    <slot />
+</PostLayout>

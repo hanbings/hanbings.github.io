@@ -1,0 +1,458 @@
+.paper-render-main {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.paper-masthead {
+  color: var(--theme-fg);
+}
+
+.paper-masthead-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  color: var(--theme-muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.paper-back-link,
+.paper-author-link,
+.paper-publication-meta a,
+.paper-actions a,
+.typst-body a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.paper-back-link:hover,
+.paper-author-link:hover,
+.paper-publication-meta a:hover {
+  color: var(--theme-fg);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.paper-draft-notice {
+  margin-bottom: 1.25rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 45%, var(--theme-border));
+  border-radius: 0.375rem;
+  background: var(--theme-accent-soft);
+  color: var(--theme-fg);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.paper-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.paper-subtitle {
+  margin: 0.5rem 0 0;
+  color: var(--theme-muted);
+  font-family:
+    Iowan Old Style,
+    Palatino Linotype,
+    Noto Serif SC,
+    Source Han Serif SC,
+    serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.paper-authors {
+  display: flex;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  list-style: none;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.paper-authors li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.paper-authors sup,
+.paper-affiliations sup {
+  color: var(--theme-accent);
+  font-size: 0.65em;
+  font-weight: 700;
+}
+
+.paper-author-link {
+  color: var(--theme-muted);
+  font-size: 0.6875rem;
+  font-weight: 650;
+}
+
+.paper-affiliations {
+  display: flex;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  flex-direction: column;
+  gap: 0.15rem;
+  color: var(--theme-muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  list-style: none;
+}
+
+.paper-affiliations li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.paper-publication-meta {
+  display: flex;
+  margin-top: 0.9rem;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.75rem;
+  color: var(--theme-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.paper-publication-meta > * + *::before {
+  margin-right: 0.75rem;
+  color: var(--theme-border);
+  content: '/';
+}
+
+.paper-abstract {
+  margin-top: 1.5rem;
+  padding: 1rem 0;
+  border-block: 1px solid var(--theme-border);
+}
+
+.paper-abstract h2 {
+  margin: 0;
+  color: var(--theme-fg);
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+.paper-abstract p {
+  margin: 0.65rem 0 0;
+  color: var(--theme-fg);
+  font-family:
+    Iowan Old Style,
+    Palatino Linotype,
+    Noto Serif SC,
+    Source Han Serif SC,
+    serif;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+.paper-keywords {
+  display: grid;
+  margin-top: 0.75rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: baseline;
+  color: var(--theme-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.paper-keywords > span {
+  color: var(--theme-fg);
+  font-weight: 700;
+}
+
+.paper-keywords ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.65rem;
+  list-style: none;
+}
+
+.paper-keywords li + li::before {
+  margin-right: 0.65rem;
+  color: var(--theme-border);
+  content: '·';
+}
+
+.paper-actions {
+  display: flex;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.paper-actions a {
+  display: inline-flex;
+  min-height: 2rem;
+  padding: 0.35rem 0.7rem;
+  align-items: center;
+  border: 1px solid var(--theme-border);
+  border-radius: 0.3rem;
+  background: var(--theme-bg);
+  color: var(--theme-fg);
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.paper-actions a:hover {
+  border-color: var(--theme-accent);
+  background: var(--theme-accent-soft);
+}
+
+.paper-build-meta {
+  display: flex;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  color: var(--theme-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+}
+
+.paper-build-meta div {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.paper-build-meta dt {
+  color: var(--theme-fg);
+  font-weight: 700;
+}
+
+.paper-build-meta dd {
+  margin: 0;
+}
+
+.paper-content {
+  min-width: 0;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--theme-border);
+}
+
+.typst-body {
+  min-width: 0;
+  color: var(--theme-fg);
+  font-family:
+    Iowan Old Style,
+    Palatino Linotype,
+    Noto Serif SC,
+    Source Han Serif SC,
+    serif;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.typst-body > :first-child {
+  margin-top: 0;
+}
+
+.typst-body > :last-child {
+  margin-bottom: 0;
+}
+
+.typst-body :is(h1, h2, h3, h4, h5, h6) {
+  margin: 2.25rem 0 0.75rem;
+  color: var(--theme-fg);
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  scroll-margin-top: 2rem;
+  text-wrap: balance;
+}
+
+.typst-body h1 {
+  font-size: 1.65rem;
+}
+
+.typst-body h2 {
+  font-size: 1.4rem;
+}
+
+.typst-body h3 {
+  font-size: 1.15rem;
+}
+
+.typst-body :is(h4, h5, h6) {
+  font-size: 1rem;
+}
+
+.typst-body p {
+  margin: 0.9rem 0;
+  text-align: justify;
+  text-wrap: pretty;
+}
+
+.typst-body a {
+  color: var(--theme-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentcolor 45%, transparent);
+  text-underline-offset: 0.16em;
+}
+
+.typst-body a:hover {
+  text-decoration-color: currentcolor;
+}
+
+.typst-body :is(ul, ol) {
+  margin: 0.9rem 0;
+  padding-left: 1.5rem;
+}
+
+.typst-body li + li {
+  margin-top: 0.3rem;
+}
+
+.typst-body code {
+  padding: 0.1em 0.3em;
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--theme-border) 45%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+}
+
+.typst-body pre {
+  max-width: 100%;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--theme-border);
+  border-radius: 0.4rem;
+  background: var(--theme-bg);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.typst-body pre code {
+  padding: 0;
+  background: transparent;
+}
+
+.typst-body blockquote {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--theme-border);
+  color: var(--theme-muted);
+}
+
+.typst-body figure {
+  max-width: 100%;
+  margin: 1.75rem 0;
+  overflow-x: auto;
+}
+
+.typst-body figcaption {
+  margin-top: 0.6rem;
+  color: var(--theme-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.typst-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.typst-body :is(th, td) {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--theme-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.typst-body math[display='block'] {
+  display: block;
+  max-width: 100%;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+.typst-body mjx-container[jax='CHTML'] {
+  color: inherit;
+  font-size: 1.05em;
+}
+
+.typst-body mjx-container[jax='CHTML'][display='true'] {
+  display: block;
+  max-width: 100%;
+  margin: 1.25rem 0;
+  padding-block: 0.1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+.typst-body svg {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .paper-publication-meta {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .paper-publication-meta > * + *::before {
+    content: none;
+  }
+
+  .paper-abstract p,
+  .typst-body p {
+    text-align: left;
+  }
+
+  .paper-keywords {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
+
+@media print {
+  .site-header,
+  .site-navigation,
+  .site-footer,
+  .paper-masthead-topline,
+  .paper-actions,
+  .paper-build-meta,
+  .paper-draft-notice {
+    display: none !important;
+  }
+
+  .paper-post-render {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}

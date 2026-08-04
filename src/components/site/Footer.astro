@@ -1,8 +1,11 @@
 ---
 import {getCollection} from 'astro:content'
 
-const posts = await getCollection('posts')
-const draftCount = posts.filter(({data}) => data.draft).length
+const [markdownPosts, typstPosts] = await Promise.all([
+    getCollection('posts'),
+    getCollection('typstPosts'),
+])
+const draftCount = [...markdownPosts, ...typstPosts].filter(({data}) => data.draft).length
 ---
 
 <div class="flex items-center justify-start">

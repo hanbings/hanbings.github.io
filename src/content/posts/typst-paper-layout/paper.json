@@ -1,0 +1,22 @@
+{
+  "title": "A Typst HTML Paper Pipeline for Astro",
+  "subtitle": "A small architectural note",
+  "description": "An example academic paper rendered from native Typst source as semantic HTML inside Astro.",
+  "date": "2026-08-04",
+  "authors": [
+    {
+      "name": "Hanbings",
+      "affiliation": "Independent Researcher",
+      "email": "hanbings@hanbings.io"
+    }
+  ],
+  "abstract": "This note demonstrates a dual-target content pipeline in which Typst emits semantic HTML for reading inside an Astro blog and a paged PDF for archival and print use. The renderer remains distinct from Markdown without becoming visually detached from the surrounding website.",
+  "keywords": ["Typst", "Astro", "HTML", "academic publishing", "static sites"],
+  "tags": ["typst", "astro"],
+  "draft": true,
+  "venue": "Architecture Preview",
+  "repository": "https://github.com/hanbings/hanbings.github.io",
+  "license": "CC BY 4.0",
+  "language": "en",
+  "source": "paper.typ"
+}

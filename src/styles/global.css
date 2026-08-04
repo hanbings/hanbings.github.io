@@ -19,5 +19,6 @@
 @import './components/table-of-contents.css';
 @import './pages/about.css';
 @import './layouts/markdown-render.css';
+@import './layouts/paper-render.css';
 @import './markdown/overrides.css';
 @import './base/reduced-motion.css';

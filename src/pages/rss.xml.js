@@ -10,7 +10,11 @@ import {sanitizeMarkdownForRss} from '../utils/sanitizeRss.mjs'
 import {mdxComponents} from '../components/mdx'
 
 export async function GET(context) {
-  const allPosts = (await getCollection('posts')).sort(
+  const [allPosts, typstPosts] = await Promise.all([
+    getCollection('posts'),
+    getCollection('typstPosts'),
+  ])
+  allPosts.sort(
     (a, b) =>
       new Date(b.data.date.replace(' ', 'T')).getTime() -
       new Date(a.data.date.replace(' ', 'T')).getTime(),
@@ -47,6 +51,20 @@ export async function GET(context) {
         content: sanitizeMarkdownForRss(code),
       }
     }),
+  )
+  items.push(
+    ...typstPosts.map((post) => ({
+      title: post.data.draft ? `[Draft] ${post.data.title}` : post.data.title,
+      pubDate: post.data.date,
+      description: post.data.draft ? `Draft · ${post.data.description}` : post.data.description,
+      link: `/posts/${post.id}/`,
+      content: sanitizeMarkdownForRss(post.data.htmlBody),
+    })),
+  )
+  items.sort(
+    (a, b) =>
+      new Date(b.pubDate.replace(' ', 'T')).getTime() -
+      new Date(a.pubDate.replace(' ', 'T')).getTime(),
   )
 
   return rss({

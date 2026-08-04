@@ -12,12 +12,14 @@ const {
     title,
     background,
     backgroundOpacity,
-    markdownRender = false,
+    postRender = false,
+    hideFooter = false,
 } = Astro.props as {
     title: string
     background?: string
     backgroundOpacity?: number
-    markdownRender?: boolean
+    postRender?: boolean
+    hideFooter?: boolean
 }
 
 const normalizedBackgroundOpacity =
@@ -32,6 +34,7 @@ const siteBackgroundStyle =
 <html lang="zh-CN">
     <head>
         <Meta title={title} />
+        <slot name="head" />
     </head>
     <body>
         <div class="site-foreground relative min-h-lvh w-full isolate" data-site-root>
@@ -49,13 +52,13 @@ const siteBackgroundStyle =
                     <slot name="header-background" />
                 </div>
             </div>
-            <div class="site-content relative z-1" data-site-region="content">
+            <div class="site-content relative z-1 pb-24" data-site-region="content">
                 <header
                     data-site-region="header"
                     class:list={[
                         'site-header mx-auto w-[min(720px,calc(100%-3rem))] pt-[25dvh]',
-                        markdownRender &&
-                            'markdown-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)',
+                        postRender &&
+                            'post-render-page-header [&_.theme-title]:bg-transparent [&_.theme-title]:p-0 [&_.theme-title]:text-[1.5rem] [&_.theme-title]:text-(--theme-fg)',
                     ]}
                 >
                     <Header />
@@ -64,7 +67,7 @@ const siteBackgroundStyle =
                     data-site-region="navigation"
                     class:list={[
                         'site-navigation mx-auto w-[min(720px,calc(100%-3rem))] py-2',
-                        markdownRender && 'hidden',
+                        postRender && 'hidden',
                     ]}
                     aria-label="主导航"
                 >
@@ -72,12 +75,16 @@ const siteBackgroundStyle =
                 </nav>
                 <slot />
                 <MarkdownLinkAnnotations />
-                <footer
-                    class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2 pb-6"
-                    data-site-region="footer"
-                >
-                    <Footer />
-                </footer>
+                {
+                    !hideFooter && (
+                        <footer
+                            class="site-footer mx-auto w-[min(720px,calc(100%-3rem))] pt-2"
+                            data-site-region="footer"
+                        >
+                            <Footer />
+                        </footer>
+                    )
+                }
             </div>
             <div
                 class="site-overlay pointer-events-none absolute inset-0 z-2"

@@ -1,10 +1,16 @@
 ---
 import SiteLayout from './SiteLayout.astro'
 
-const {title, background, backgroundOpacity} = Astro.props as {
+const {
+    title,
+    background,
+    backgroundOpacity,
+    variant = 'markdown',
+} = Astro.props as {
     title: string
     background?: string
     backgroundOpacity?: number
+    variant?: 'markdown' | 'paper'
 }
 ---
 
@@ -12,14 +18,23 @@ const {title, background, backgroundOpacity} = Astro.props as {
     title={title}
     background={background}
     backgroundOpacity={backgroundOpacity}
-    markdownRender
+    postRender
+    hideFooter={variant === 'paper'}
 >
+    <slot name="head" slot="head" />
     <slot name="backfill-background" slot="backfill-background" />
     <slot name="header-background" slot="header-background" />
     <slot name="site-overlay" slot="site-overlay" />
-    <main class="markdown-render" data-site-region="main" aria-label={title}>
+    <main
+        class:list={['markdown-render', variant === 'paper' && 'paper-post-render']}
+        data-site-region="main"
+        aria-label={title}
+    >
         <article
-            class="markdown-render-main w-full max-w-180 flex flex-col gap-4"
+            class:list={[
+                'markdown-render-main w-full max-w-180 flex flex-col gap-4',
+                variant === 'paper' && 'paper-render-main',
+            ]}
             data-site-region="article"
         >
             <slot />

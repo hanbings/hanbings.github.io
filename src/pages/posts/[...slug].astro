@@ -1,65 +1,42 @@
 ---
-import {getCollection, render} from 'astro:content'
-import PostLayout from '../../layouts/PostLayout.astro'
-import PostSidebar from '../../components/post/PostSidebar.astro'
-import TableOfContents from '../../components/post/TableOfContents.astro'
-import HandDrawnHighlightLink from '../../components/site/HandDrawnHighlightLink.astro'
-import {mdxComponents} from '../../components/mdx'
-import '../../styles/markdown/github.css'
+import {getCollection, type CollectionEntry} from 'astro:content'
+import MarkdownPost from '../../components/post/MarkdownPost.astro'
+import TypstPost from '../../components/post/TypstPost.astro'
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection('posts')
-    return blogEntries.map((entry) => ({
-        params: {slug: entry.id},
-        props: {entry},
-    }))
+    const [markdownPosts, typstPosts] = await Promise.all([
+        getCollection('posts'),
+        getCollection('typstPosts'),
+    ])
+    const markdownIds = new Set(markdownPosts.map(({id}) => id))
+    const duplicate = typstPosts.find(({id}) => markdownIds.has(id))
+    if (duplicate) {
+        throw new Error(`Markdown 和 Typst post 使用了相同的 slug：${duplicate.id}`)
+    }
+
+    return [
+        ...markdownPosts.map((entry) => ({
+            params: {slug: entry.id},
+            props: {format: 'markdown' as const, entry},
+        })),
+        ...typstPosts.map((entry) => ({
+            params: {slug: entry.id},
+            props: {format: 'typst' as const, entry},
+        })),
+    ]
 }
 
-const {entry} = Astro.props
-const {Content, headings, remarkPluginFrontmatter} = await render(entry)
-const tags = [...entry.data['tags']]
-const chatBoxHeadingIndexes = new Set<number>(
-    remarkPluginFrontmatter['chatBoxHeadingIndexes'] ?? [],
-)
-const articleHeadings = headings.filter((_, index) => !chatBoxHeadingIndexes.has(index))
+type Props =
+    | {format: 'markdown'; entry: CollectionEntry<'posts'>}
+    | {format: 'typst'; entry: CollectionEntry<'typstPosts'>}
+
+const props = Astro.props as Props
 ---
 
-<PostLayout
-    title={entry.data['title']}
-    background={entry.data['background']}
-    backgroundOpacity={entry.data['backgroundOpacity']}
->
-    <PostSidebar slot="left" headings={articleHeadings} />
-    {
-        entry.data['draft'] && (
-            <aside
-                class="post-draft-notice flex items-start gap-2 rounded-lg border border-(--theme-accent) bg-(--theme-accent-soft) px-4 py-3 text-(--theme-fg)"
-                aria-label="草稿状态"
-            >
-                <span class="post-draft-notice-icon" aria-hidden="true">
-                    <span class="post-draft-notice-icon-board" />
-                </span>
-                <span>这篇文章还在施工中，内容可能随时变化</span>
-            </aside>
-        )
-    }
-    <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
-    <div class="flex flex-row flex-wrap items-center gap-2">
-        {
-            tags.map((tag) => (
-                <HandDrawnHighlightLink href={`/tags/${encodeURIComponent(tag)}/`}>
-                    {`#${tag}`}
-                </HandDrawnHighlightLink>
-            ))
-        }
-    </div>
-    <div class="post-toc-mobile flex flex-col items-start gap-3" aria-label="文章导航">
-        <HandDrawnHighlightLink class="self-start text-left" href="/">
-            返回主页
-        </HandDrawnHighlightLink>
-        <TableOfContents headings={articleHeadings} />
-    </div>
-    <div class="markdown-body">
-        <Content components={mdxComponents} />
-    </div>
-</PostLayout>
+{
+    props.format === 'typst' ? (
+        <TypstPost entry={props.entry} />
+    ) : (
+        <MarkdownPost entry={props.entry} />
+    )
+}

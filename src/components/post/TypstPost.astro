@@ -1,0 +1,163 @@
+---
+import type {CollectionEntry} from 'astro:content'
+import PaperPostLayout from '../../layouts/PaperPostLayout.astro'
+import {convertDateFormat} from '../../utils/date'
+
+interface Props {
+    entry: CollectionEntry<'typstPosts'>
+}
+
+const {entry} = Astro.props as Props
+const {data} = entry
+const affiliations = [
+    ...new Set(
+        data.authors
+            .map(({affiliation}) => affiliation)
+            .filter((affiliation): affiliation is string => Boolean(affiliation)),
+    ),
+]
+const absolutePdfUrl = Astro.site ? new URL(data.pdfUrl, Astro.site).href : data.pdfUrl
+const doiUrl = data.doi ? `https://doi.org/${data.doi}` : undefined
+---
+
+<PaperPostLayout
+    title={data.title}
+    background={data.background}
+    backgroundOpacity={data.backgroundOpacity}
+>
+    <Fragment slot="head">
+        <meta name="description" content={data.description} />
+        <meta name="citation_title" content={data.title} />
+        {data.authors.map(({name}) => <meta name="citation_author" content={name} />)}
+        <meta name="citation_publication_date" content={data.date} />
+        <meta name="citation_pdf_url" content={absolutePdfUrl} />
+        {data.doi && <meta name="citation_doi" content={data.doi} />}
+        <link rel="alternate" type="application/pdf" href={data.pdfUrl} />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous" />
+        <style is:global set:html={data.htmlStyles}></style>
+        <script is:inline>
+            window.MathJax = {
+                options: {
+                    enableMenu: false,
+                },
+            }
+        </script>
+        <script is:inline defer src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/mml-chtml.js"
+        ></script>
+    </Fragment>
+
+    <header class="paper-masthead">
+        <div class="paper-masthead-topline">
+            <a class="paper-back-link" href="/">返回主页</a>
+        </div>
+        {
+            data.draft && (
+                <aside class="paper-draft-notice" aria-label="草稿状态">
+                    这是一份论文草稿或排版预览，内容可能继续变化。
+                </aside>
+            )
+        }
+        <h1 class="paper-title">{data.title}</h1>
+        {data.subtitle && <p class="paper-subtitle">{data.subtitle}</p>}
+
+        <ol class="paper-authors" aria-label="作者">
+            {
+                data.authors.map((author) => {
+                    const affiliationIndex = author.affiliation
+                        ? affiliations.indexOf(author.affiliation) + 1
+                        : 0
+                    return (
+                        <li>
+                            <span>{author.name}</span>
+                            {affiliationIndex > 0 && <sup>{affiliationIndex}</sup>}
+                            {author.orcid && (
+                                <a
+                                    class="paper-author-link"
+                                    href={`https://orcid.org/${author.orcid}`}
+                                    aria-label={`${author.name} 的 ORCID`}
+                                >
+                                    ORCID
+                                </a>
+                            )}
+                            {author.email && (
+                                <a
+                                    class="paper-author-link"
+                                    href={`mailto:${author.email}`}
+                                    aria-label={`给 ${author.name} 发送邮件`}
+                                >
+                                    Email
+                                </a>
+                            )}
+                        </li>
+                    )
+                })
+            }
+        </ol>
+        {
+            affiliations.length > 0 && (
+                <ol class="paper-affiliations" aria-label="作者单位">
+                    {affiliations.map((affiliation, index) => (
+                        <li>
+                            <sup>{index + 1}</sup>
+                            {affiliation}
+                        </li>
+                    ))}
+                </ol>
+            )
+        }
+
+        <div class="paper-publication-meta">
+            <time datetime={data.date}>{convertDateFormat(data.date)}</time>
+            {data.updated && <span>更新于 {convertDateFormat(data.updated)}</span>}
+            {data.venue && <span>{data.venue}</span>}
+            {doiUrl && <a href={doiUrl}>DOI: {data.doi}</a>}
+        </div>
+
+        <section class="paper-abstract" aria-labelledby="paper-abstract-title">
+            <h2 id="paper-abstract-title">摘要</h2>
+            <p lang={data.language}>{data.abstract}</p>
+        </section>
+
+        {
+            data.keywords.length > 0 && (
+                <div class="paper-keywords">
+                    <span>关键词</span>
+                    <ul>
+                        {data.keywords.map((keyword) => (
+                            <li>{keyword}</li>
+                        ))}
+                    </ul>
+                </div>
+            )
+        }
+
+        <div class="paper-actions" aria-label="论文文件">
+            <a href={data.pdfUrl} target="_blank" rel="noopener"> 打开 PDF </a>
+            <a href={data.sourceUrl} download={`${entry.id}.typ`}> 下载 Typst 源文件 </a>
+            {data.repository && <a href={data.repository}>项目仓库</a>}
+        </div>
+
+        <dl class="paper-build-meta">
+            <div>
+                <dt>格式</dt>
+                <dd>Typst</dd>
+            </div>
+            <div>
+                <dt>编译器</dt>
+                <dd>{data.typstVersion}</dd>
+            </div>
+            {
+                data.license && (
+                    <div>
+                        <dt>许可</dt>
+                        <dd>{data.license}</dd>
+                    </div>
+                )
+            }
+        </dl>
+    </header>
+
+    <section class="paper-content" aria-label="论文正文">
+        <div class="typst-body" lang={data.language} set:html={data.htmlBody} />
+    </section>
+</PaperPostLayout>

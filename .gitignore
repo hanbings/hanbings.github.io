@@ -7,6 +7,9 @@ dist/
 # build caches
 .cache/
 
+# generated Typst paper assets
+public/generated/posts/
+
 # dependencies
 node_modules/
 

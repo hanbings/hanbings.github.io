@@ -14,7 +14,7 @@
 }
 
 @media (min-width: 1160px) {
-  .markdown-render-page-header,
+  .post-render-page-header,
   .post-toc-mobile {
     display: none;
   }
