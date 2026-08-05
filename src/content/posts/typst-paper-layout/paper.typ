@@ -16,7 +16,7 @@
       #v(0.35em)
       #text(size: 11pt, style: "italic")[A small architectural note]
       #v(0.9em)
-      Hanbings \
+      hanbings \
       #text(size: 9pt)[Independent Researcher] \
       #text(size: 9pt)[hanbings\@hanbings.io]
       #v(0.55em)
