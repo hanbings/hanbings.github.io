@@ -1,0 +1,69 @@
+---
+title: '基于 Transformer 架构训练音乐模型'
+description: '本文将记录如何使用 Transformer 架构来训练一个音乐生成模型'
+date: '2026-08-05 16:02:10'
+tags: []
+author: '寒冰'
+draft: true
+---
+
+## 缘由
+
+## 前期准备
+
+前往国内最大的海鲜黑市使用 0.01 元购入 FL Studio 工程文件，获得 11000 多个工程文件，作为初期训练的数据集
+之所以是工程文件，是因为观察到现行的 suno 模型、minimax 的 music，以及学术一些的 midi-gpt 模型实际上都是基于 midi 文件进行训练的
+而 midi 文件本身是一个非常简陋的音乐表示方式，无法表达出音乐的丰富性和复杂性
+相比之下，FL Studio 工程文件包含了更多的音乐信息，如音色、效果器设置、混音参数等，这些信息对于训练一个高质量的音乐生成模型是非常有价值的
+
+我希望这个模型的能力能触及到根据当前的听感推倒补全某一个乐器的一组和弦这样的水平，而不仅仅是自动琶音工具或是自动和弦生成器那样的水平
+
+### 整理文件
+
+<ChatBox title="整理文件" time="2026-08-05 16:02:10" open={false}>
+  <ChatAI slot="ai" name="OpenAI Codex" />
+
+<ChatMessage role="humen" time="10:23">
+  帮我把这里的文件解压 “/Users/hanbings/Downloads/音乐训练数据（未整理）” 整理到
+  “/Users/hanbings/Downloads/音乐训练数据”
+  吧，主要是都要解压开然后拍平，我理想中的方式应该是点开文件夹里面再一层子文件夹是项目名字（乐曲名 /
+  原始文件夹名）然后就是 flp 项目文件和附属文件这样
+</ChatMessage>
+
+  <ChatMessage role="ai" time="10:24">
+    已经整理完成：[音乐训练数据](/Users/hanbings/Downloads/音乐训练数据)
+
+    - 11,174 个项目文件夹
+    - 11,298 个经文件头校验的有效 FLP
+    - 同名项目已添加来源/编号，没有互相覆盖
+    - 项目内部采样目录保持不变，避免破坏相对路径
+    - 原始压缩包均保留未动
+
+    另有 23 个内层压缩包因密码、校验错误或截断无法完整解压，可读取内容已尽量恢复。详情见[整理说明.txt](/Users/hanbings/Downloads/音乐训练数据/整理说明.txt)，项目与原编号映射见[项目索引.csv](/Users/hanbings/Downloads/音乐训练数据/项目索引.csv)。
+
+    未识别为有效项目及中间文件已集中放到[整理残留](</Users/hanbings/Downloads/音乐训练数据（未整理）/_整理残留（无有效FLP及中间文件）>)，没有直接删除。
+
+  </ChatMessage>
+
+<ChatMessage role="humen" time="10:25">
+  是这样，我看见有些文件名是乱码中文字符，你可能得扫描一下，然后看一下怎么样修正它们
+</ChatMessage>
+
+  <ChatMessage role="ai" time="10:25">
+    处理完成。目标目录已拍平为“项目文件夹 → FLP 与附属文件”；项目内部必要的相对目录仍保留，避免采样引用失效。
+
+    - 共整理 11,174 个项目、11,298 个有效 FLP
+    - 修复 1,693 个高置信度乱码名称，0 冲突
+    - 乱码主要是俄文旧编码被误识别成中文字符
+    - 剩余 10 个路径条目无法可靠还原，已保留原名并列入人工确认清单
+    - 无效 FLP、缺少 FLP 的项目、索引错位、大小写重名均为 0
+
+    文件：
+
+    - [整理后的音乐训练数据](/Users/hanbings/Downloads/音乐训练数据)
+    - [项目索引.csv](/Users/hanbings/Downloads/音乐训练数据/项目索引.csv)
+    - [整理说明.txt](/Users/hanbings/Downloads/音乐训练数据/整理说明.txt)
+    - [文件名乱码待人工确认.csv](/Users/hanbings/Downloads/音乐训练数据（未整理）/_整理残留（无有效FLP及中间文件）/文件名乱码待人工确认.csv)
+
+  </ChatMessage>
+</ChatBox>
