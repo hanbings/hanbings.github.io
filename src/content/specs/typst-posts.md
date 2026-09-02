@@ -38,7 +38,8 @@ Typst 的 HTML 导出目前是实验功能。页面、绝对定位等只适合�
 {
   "title": "Paper title",
   "description": "用于搜索结果的简短说明",
-  "date": "2026-08-04",
+  "created": "2026-08-04T10:00:00+08:00",
+  "published": "2026-08-04T18:00:00+08:00",
   "authors": [
     {
       "name": "Author Name",
@@ -53,6 +54,8 @@ Typst 的 HTML 导出目前是实验功能。页面、绝对定位等只适合�
   "source": "paper.typ"
 }
 ```
+
+`created` 始终必填；非草稿还必须填写 `published`。`draft: true` 的论文不会进入 RSS，移除草稿状态时必须补上 `published`。时间使用带时区的 ISO 8601 格式，例如 `2026-08-04T18:00:00+08:00`。
 
 可选字段包括 `subtitle`、`updated`、`draft`、`venue`、`doi`、`repository`、`license`、`tags`、`background` 和 `backgroundOpacity`。
 

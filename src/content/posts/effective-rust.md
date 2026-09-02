@@ -1,7 +1,8 @@
 ---
 title: 'Effective Rust - 类型 - 速查表（停止更新）'
 description: 'Effective Rust 速查表 - 类型'
-date: '2024-04-25 03:25:00'
+created: '2024-04-25T03:25:00+08:00'
+published: '2024-04-25T03:25:00+08:00'
 tags: ['rust']
 author: '寒冰'
 ---

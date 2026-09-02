@@ -1,7 +1,8 @@
 ---
 title: 'Java 实现一个简单的 EventBus'
 description: '基于 Java 编写一个 EventBus'
-date: '2020-03-10 10:57:00'
+created: '2020-03-10T10:57:00+08:00'
+published: '2020-03-10T10:57:00+08:00'
 tags: ['java']
 author: '寒冰'
 ---

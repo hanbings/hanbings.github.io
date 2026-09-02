@@ -1,9 +1,20 @@
-export const convertDateFormat = (dateString: string) => {
-  let date = new Date(dateString)
+export type DateValue = Date | string
 
-  let year = date.getFullYear()
-  let month = ('0' + (date.getMonth() + 1)).slice(-2)
-  let day = ('0' + date.getDate()).slice(-2)
+const displayDateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  timeZone: 'Asia/Shanghai',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
 
-  return year + '/' + month + '/' + day
-}
+const asDate = (value: DateValue) => (value instanceof Date ? value : new Date(value))
+
+export const convertDateFormat = (value: DateValue) => displayDateFormatter.format(asDate(value))
+
+export const toDateTime = (value: DateValue) => asDate(value).toISOString()
+
+export const compareDatesDescending = (a: DateValue, b: DateValue) =>
+  asDate(b).getTime() - asDate(a).getTime()
+
+export const getPostDate = (data: {created: Date; published?: Date; draft?: boolean}) =>
+  data.draft ? data.created : (data.published ?? data.created)

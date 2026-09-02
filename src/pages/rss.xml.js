@@ -10,18 +10,13 @@ import {sanitizeMarkdownForRss} from '../utils/sanitizeRss.mjs'
 import {mdxComponents} from '../components/mdx'
 
 export async function GET(context) {
-  const [allPosts, typstPosts] = await Promise.all([
-    getCollection('posts'),
-    getCollection('typstPosts'),
+  const [markdownPosts, typstPosts] = await Promise.all([
+    getCollection('posts', ({data}) => !data.draft),
+    getCollection('typstPosts', ({data}) => !data.draft),
   ])
-  allPosts.sort(
-    (a, b) =>
-      new Date(b.data.date.replace(' ', 'T')).getTime() -
-      new Date(a.data.date.replace(' ', 'T')).getTime(),
-  )
 
   const renderer = await createMarkdownProcessor({syntaxHighlight: false})
-  const hasMdx = allPosts.some((post) => post.filePath?.endsWith('.mdx'))
+  const hasMdx = markdownPosts.some((post) => post.filePath?.endsWith('.mdx'))
   const mdxRenderer = getContainerRenderer()
   const container = hasMdx
     ? await AstroContainer.create({
@@ -29,7 +24,7 @@ export async function GET(context) {
       })
     : undefined
   const items = await Promise.all(
-    allPosts.map(async (post) => {
+    markdownPosts.map(async (post) => {
       let code
       if (post.filePath?.endsWith('.mdx')) {
         const {Content} = await render(post)
@@ -43,29 +38,35 @@ export async function GET(context) {
         code = result.code
       }
 
+      if (!post.data.published) {
+        throw new Error(`非草稿文章“${post.id}”缺少 published 时间`)
+      }
+
       return {
-        title: post.data.draft ? `[Draft] ${post.data.title}` : post.data.title,
-        pubDate: post.data.date,
-        description: post.data.draft ? `Draft · ${post.data.description}` : post.data.description,
+        title: post.data.title,
+        pubDate: post.data.published,
+        description: post.data.description,
         link: `/posts/${post.id}/`,
         content: sanitizeMarkdownForRss(code),
       }
     }),
   )
   items.push(
-    ...typstPosts.map((post) => ({
-      title: post.data.draft ? `[Draft] ${post.data.title}` : post.data.title,
-      pubDate: post.data.date,
-      description: post.data.draft ? `Draft · ${post.data.description}` : post.data.description,
-      link: `/posts/${post.id}/`,
-      content: sanitizeMarkdownForRss(post.data.htmlBody),
-    })),
+    ...typstPosts.map((post) => {
+      if (!post.data.published) {
+        throw new Error(`非草稿文章“${post.id}”缺少 published 时间`)
+      }
+
+      return {
+        title: post.data.title,
+        pubDate: post.data.published,
+        description: post.data.description,
+        link: `/posts/${post.id}/`,
+        content: sanitizeMarkdownForRss(post.data.htmlBody),
+      }
+    }),
   )
-  items.sort(
-    (a, b) =>
-      new Date(b.pubDate.replace(' ', 'T')).getTime() -
-      new Date(a.pubDate.replace(' ', 'T')).getTime(),
-  )
+  items.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime())
 
   return rss({
     title: '🐱 寒冰是喵喵的 blog',

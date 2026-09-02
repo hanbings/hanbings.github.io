@@ -1,7 +1,8 @@
 ---
 title: 'oscamp：字节分配器 Chaos'
 description: 'oscamp：字节分配器 Chaos'
-date: '2024-12-10 14:28:48'
+created: '2024-12-10T14:28:48+08:00'
+published: '2024-12-10T14:28:48+08:00'
 tags: ['rust', 'os', 'alloc']
 author: '寒冰'
 ---

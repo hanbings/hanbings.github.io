@@ -1,12 +1,12 @@
 ---
 import Underline from '../mdx/rough-notation/Underline.astro'
 import HandDrawnHighlightLink from '../site/HandDrawnHighlightLink.astro'
-import {convertDateFormat} from '../../utils/date'
+import {convertDateFormat, toDateTime, type DateValue} from '../../utils/date'
 
 export interface EntryListItem {
     title: string
     href: string
-    date: string
+    date: DateValue
     tags?: string[]
 }
 
@@ -33,7 +33,7 @@ const {heading, headingId, items, class: className} = Astro.props
                 <article class="flex flex-col items-start gap-y-1 py-2 text-(--theme-muted) sm:grid sm:grid-cols-[6.5rem_minmax(0,1fr)] sm:items-baseline sm:gap-x-3 sm:gap-y-1 md:flex md:flex-row md:flex-wrap md:items-center md:gap-3 md:py-0">
                     <time
                         class="font-semibold tabular-nums text-(--theme-fg) sm:font-normal sm:text-(--theme-muted)"
-                        datetime={item.date.replace(' ', 'T')}
+                        datetime={toDateTime(item.date)}
                     >
                         {convertDateFormat(item.date)}
                     </time>

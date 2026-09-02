@@ -1,7 +1,7 @@
 ---
 title: '虚拟化技术：AMD SVM Hypervisor'
 description: '基于 rvm 适配 AMD SVM 的 Hypervisor'
-date: '2024-12-20 21:01:12'
+created: '2024-12-20T21:01:12+08:00'
 tags: ['rust', 'os', 'hypervisor']
 author: '寒冰'
 draft: true

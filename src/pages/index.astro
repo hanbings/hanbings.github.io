@@ -3,6 +3,7 @@ import IndexLayout from '../layouts/IndexLayout.astro'
 import EntryList from '../components/index/EntryList.astro'
 import Content from '../content/specs/home.md'
 import {getCollection} from 'astro:content'
+import {compareDatesDescending, getPostDate} from '../utils/date'
 import '../styles/markdown/github.css'
 
 const [markdownPosts, typstPosts] = await Promise.all([
@@ -13,24 +14,20 @@ const allPosts = [
     ...markdownPosts.map((post) => ({
         id: post.id,
         title: post.data.title,
-        date: post.data.date,
+        date: getPostDate(post.data),
         tags: post.data.tags,
         draft: Boolean(post.data.draft),
     })),
     ...typstPosts.map((post) => ({
         id: post.id,
         title: post.data.title,
-        date: post.data.date,
+        date: getPostDate(post.data),
         tags: post.data.tags,
         draft: Boolean(post.data.draft),
     })),
 ]
     .filter(({draft}) => !draft)
-    .sort(
-        (a, b) =>
-            new Date(b.date.replace(' ', 'T')).getTime() -
-            new Date(a.date.replace(' ', 'T')).getTime(),
-    )
+    .sort((a, b) => compareDatesDescending(a.date, b.date))
 ---
 
 <IndexLayout title="主页">

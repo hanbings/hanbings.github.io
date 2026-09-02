@@ -2,7 +2,7 @@
   "title": "A Typst HTML Paper Pipeline for Astro",
   "subtitle": "A small architectural note",
   "description": "An example academic paper rendered from native Typst source as semantic HTML inside Astro.",
-  "date": "2026-08-04",
+  "created": "2026-08-04T00:00:00+08:00",
   "authors": [
     {
       "name": "hanbings",

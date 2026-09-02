@@ -1,7 +1,7 @@
 ---
 import type {CollectionEntry} from 'astro:content'
 import PaperPostLayout from '../../layouts/PaperPostLayout.astro'
-import {convertDateFormat} from '../../utils/date'
+import {convertDateFormat, toDateTime} from '../../utils/date'
 
 interface Props {
     entry: CollectionEntry<'typstPosts'>
@@ -18,6 +18,8 @@ const affiliations = [
 ]
 const absolutePdfUrl = Astro.site ? new URL(data.pdfUrl, Astro.site).href : data.pdfUrl
 const doiUrl = data.doi ? `https://doi.org/${data.doi}` : undefined
+const showCreated =
+    data.draft || !data.published || data.created.getTime() !== data.published.getTime()
 ---
 
 <PaperPostLayout
@@ -29,7 +31,11 @@ const doiUrl = data.doi ? `https://doi.org/${data.doi}` : undefined
         <meta name="description" content={data.description} />
         <meta name="citation_title" content={data.title} />
         {data.authors.map(({name}) => <meta name="citation_author" content={name} />)}
-        <meta name="citation_publication_date" content={data.date} />
+        {
+            data.published && (
+                <meta name="citation_publication_date" content={toDateTime(data.published)} />
+            )
+        }
         <meta name="citation_pdf_url" content={absolutePdfUrl} />
         {data.doi && <meta name="citation_doi" content={data.doi} />}
         <link rel="alternate" type="application/pdf" href={data.pdfUrl} />
@@ -107,8 +113,36 @@ const doiUrl = data.doi ? `https://doi.org/${data.doi}` : undefined
         }
 
         <div class="paper-publication-meta">
-            <time datetime={data.date}>{convertDateFormat(data.date)}</time>
-            {data.updated && <span>更新于 {convertDateFormat(data.updated)}</span>}
+            {
+                showCreated && (
+                    <span>
+                        创建于{' '}
+                        <time datetime={toDateTime(data.created)}>
+                            {convertDateFormat(data.created)}
+                        </time>
+                    </span>
+                )
+            }
+            {
+                data.published && (
+                    <span>
+                        {data.draft ? '计划发布于 ' : '发布于 '}
+                        <time datetime={toDateTime(data.published)}>
+                            {convertDateFormat(data.published)}
+                        </time>
+                    </span>
+                )
+            }
+            {
+                data.updated && (
+                    <span>
+                        更新于{' '}
+                        <time datetime={toDateTime(data.updated)}>
+                            {convertDateFormat(data.updated)}
+                        </time>
+                    </span>
+                )
+            }
             {data.venue && <span>{data.venue}</span>}
             {doiUrl && <a href={doiUrl}>DOI: {data.doi}</a>}
         </div>

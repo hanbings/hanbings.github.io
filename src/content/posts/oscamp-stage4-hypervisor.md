@@ -1,7 +1,7 @@
 ---
 title: 'oscamp：操作系统 Hypervisor 方向'
 description: 'oscamp：操作系统 Hypervisor 方向'
-date: '2024-12-20 21:01:12'
+created: '2024-12-20T21:01:12+08:00'
 tags: ['rust', 'os', 'hypervisor']
 author: '寒冰'
 draft: true

@@ -2,6 +2,7 @@
 import {getCollection} from 'astro:content'
 import IndexLayout from '../../layouts/IndexLayout.astro'
 import EntryList from '../../components/index/EntryList.astro'
+import {compareDatesDescending, getPostDate} from '../../utils/date'
 
 export async function getStaticPaths() {
     const [markdownPosts, typstPosts] = await Promise.all([
@@ -12,14 +13,14 @@ export async function getStaticPaths() {
         ...markdownPosts.map((post) => ({
             id: post.id,
             title: post.data.title,
-            date: post.data.date,
+            date: getPostDate(post.data),
             tags: post.data.tags,
             draft: Boolean(post.data.draft),
         })),
         ...typstPosts.map((post) => ({
             id: post.id,
             title: post.data.title,
-            date: post.data.date,
+            date: getPostDate(post.data),
             tags: post.data.tags,
             draft: Boolean(post.data.draft),
         })),
@@ -38,10 +39,7 @@ export async function getStaticPaths() {
 
 const {tag} = Astro.params
 const {posts} = Astro.props
-const sortedPosts = [...posts].sort(
-    (a, b) =>
-        new Date(b.date.replace(' ', 'T')).getTime() - new Date(a.date.replace(' ', 'T')).getTime(),
-)
+const sortedPosts = [...posts].sort((a, b) => compareDatesDescending(a.date, b.date))
 const publishedPosts = sortedPosts.filter(({draft}) => !draft)
 const draftPosts = sortedPosts.filter(({draft}) => draft)
 ---

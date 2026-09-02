@@ -5,6 +5,7 @@ import PostSidebar from './PostSidebar.astro'
 import TableOfContents from './TableOfContents.astro'
 import HandDrawnHighlightLink from '../site/HandDrawnHighlightLink.astro'
 import {mdxComponents} from '../mdx'
+import {convertDateFormat, toDateTime} from '../../utils/date'
 import '../../styles/markdown/github.css'
 
 interface Props {
@@ -18,6 +19,10 @@ const chatBoxHeadingIndexes = new Set<number>(
     remarkPluginFrontmatter['chatBoxHeadingIndexes'] ?? [],
 )
 const articleHeadings = headings.filter((_, index) => !chatBoxHeadingIndexes.has(index))
+const showCreated =
+    entry.data.draft ||
+    !entry.data.published ||
+    entry.data.created.getTime() !== entry.data.published.getTime()
 ---
 
 <PostLayout
@@ -25,6 +30,16 @@ const articleHeadings = headings.filter((_, index) => !chatBoxHeadingIndexes.has
     background={entry.data['background']}
     backgroundOpacity={entry.data['backgroundOpacity']}
 >
+    <Fragment slot="head">
+        {
+            entry.data.published && (
+                <meta
+                    property="article:published_time"
+                    content={toDateTime(entry.data.published)}
+                />
+            )
+        }
+    </Fragment>
     <PostSidebar slot="left" headings={articleHeadings} />
     {
         entry.data['draft'] && (
@@ -40,6 +55,28 @@ const articleHeadings = headings.filter((_, index) => !chatBoxHeadingIndexes.has
         )
     }
     <h1 class="text-2xl font-bold">{entry.data['title']}</h1>
+    <div class="flex flex-row flex-wrap gap-x-3 gap-y-1 text-sm text-(--theme-muted)">
+        {
+            showCreated && (
+                <span>
+                    创建于{' '}
+                    <time datetime={toDateTime(entry.data.created)}>
+                        {convertDateFormat(entry.data.created)}
+                    </time>
+                </span>
+            )
+        }
+        {
+            entry.data.published && (
+                <span>
+                    {entry.data.draft ? '计划发布于 ' : '发布于 '}
+                    <time datetime={toDateTime(entry.data.published)}>
+                        {convertDateFormat(entry.data.published)}
+                    </time>
+                </span>
+            )
+        }
+    </div>
     <div class="flex flex-row flex-wrap items-center gap-2">
         {
             tags.map((tag) => (
